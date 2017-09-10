@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">CreaseArt</string>
+
+    <string name="message_network_problem">Please check your internet connectivity.</string>
+    <string name="message_problem">Opps! Something went wrong, please try again.</string>
+    <string name="problem_server">Problem connecting to server, Please try later.</string>
+    <string name="some_error_occurred">Unable to connect to the service, please try again later.</string>
+    <string name="timeout">Time out</string>
+    <string name="no_internet_connection">No Internet connection.  Please check your network settings.</string>
+    <string name="alert_internet_connection">Please check your internet connection.</string>
+
+</resources>
