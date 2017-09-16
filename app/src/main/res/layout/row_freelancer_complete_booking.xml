@@ -10,16 +10,17 @@
         android:id="@+id/rl_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:orientation="vertical"
-        android:padding="@dimen/dp5">
+        android:padding="@dimen/dp5"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <ImageView
             android:id="@+id/image_service"
             android:layout_width="@dimen/dp_60"
             android:layout_height="@dimen/dp_60"
+            android:visibility="gone"
             android:layout_margin="@dimen/dp5"
         />
 
@@ -36,6 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Mellisa Curning"
+                android:textStyle="bold"
                 android:textAllCaps="true"
                 android:textColor="@color/textcolordark"
                 android:textSize="@dimen/text_size_14" />
@@ -45,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp5"
-                android:layout_toRightOf="@+id/text_servicename"
+                android:layout_below="@+id/text_servicename"
                 android:text="25"
                 android:textColor="@color/textcolordark"
                 android:textSize="@dimen/text_size_12"
@@ -61,14 +63,14 @@
                 android:textAllCaps="true"
                 android:textColor="@color/textcolordark"
                 android:textSize="@dimen/text_size_11"
-                android:visibility="gone" />
+                 />
 
 
             <com.app.creaseart.utils.CustomTextView
                 android:id="@+id/text_servicesubcat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/text_servicename"
+                android:layout_below="@+id/text_serviceprice"
                 android:text="London"
                 android:textColor="@color/textcolordark"
                 android:textSize="@dimen/text_size_12" />
