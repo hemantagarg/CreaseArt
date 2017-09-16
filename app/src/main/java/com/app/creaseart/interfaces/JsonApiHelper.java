@@ -6,25 +6,16 @@ package com.app.creaseart.interfaces;
 
 public interface JsonApiHelper {
 
-    String BASEURL = "http://sfscoring.betasportzfever.com/";
-    String LOGIN = "sflogin";
-    String GET_FEEDS = "getFeeds/";
-    String GET_NOTIFICATION = "getNotifications/";
-    String GET_FRIENDREQUEST = "getFriendRequests/";
-    String GET_TEAMJOINREQUEST = "getAllTeamInvitation/";
-    String GET_MATCHINVITATIONAVAILABILITY = "getMatchAndPrctiseInvitations/";
-    String GET_UPCOMINGEVENTS = "getUpcomingEvent/";
-    String GET_COMMENTS = "getComments/";
-    String GET_LIKES = "getLikes/";
-    String GET_SHARE = "getShares/";
-    String GET_FRIENDLIST = "getFriendsList/";
-    String GET_RECENTCHAT = "getRecentChat/";
-    String SHAREFEED = "shareFeed";
-    String POSTCOMMENT = "comment";
-    String UPDATECOMMENT = "updateComment";
-    String DELETECOMMENT = "deleteComment/";
+    String BASEURL = "http://dev.stackmindz.com/creaseart/api/";
+    String LOGIN = "login.php?";
+    String PACKAGE = "package.php";
+    String FORGOTPASSWORD = "forget-password.php?";
+    String REGISTER = "register.php?";
+    String GET_NOTIFICATION = "notification-list.php?";
+    String MYCOMPLETE_BOOKING = "completeBooking.php?";
+    String MYBOOKING = "ongoingBooking.php?";
+    String CHANGEPASSWORD = "change-password.php?";
+    String PACKAGES = "package.php";
+    String FAMILYMEMBERLIST = "familymemberlist.php?";
 
-    String SEND_MESSAGE = "";
-    String GET_MESSAGE_LIST="";
-    String GET_CHAT_LIST="";
 }

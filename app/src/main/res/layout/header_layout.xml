@@ -23,7 +23,7 @@
                 android:layout_gravity="left"
                 android:layout_marginRight="@dimen/dp10"
                 android:padding="@dimen/dp5"
-                android:src="@drawable/left_arrow"
+
                 android:visibility="visible" />
 
             <ImageView

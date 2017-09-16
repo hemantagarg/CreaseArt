@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/rl_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        android:padding="@dimen/dp5">
+
+        <ImageView
+            android:id="@+id/image_service"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_60"
+            android:layout_margin="@dimen/dp5"
+             />
+
+        <RelativeLayout
+            android:id="@+id/lineartop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp10"
+            android:layout_marginTop="@dimen/dp15"
+            android:layout_toRightOf="@+id/image_service">
+
+            <com.app.creaseart.utils.CustomTextView
+                android:id="@+id/text_servicename"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mellisa Curning"
+                android:textAllCaps="true"
+                android:textColor="@color/textcolordark"
+                android:textSize="@dimen/text_size_14" />
+
+            <com.app.creaseart.utils.CustomTextView
+                android:id="@+id/text_serviceprice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp5"
+                android:layout_toRightOf="@+id/text_servicename"
+                android:text="25"
+                android:textColor="@color/textcolordark"
+                android:textSize="@dimen/text_size_12"
+                android:textStyle="bold" />
+
+
+            <com.app.creaseart.utils.CustomTextView
+                android:id="@+id/text_servicesubcat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_servicename"
+                android:text="London"
+                android:textColor="@color/textcolordark"
+                android:textSize="@dimen/text_size_12" />
+
+            <com.app.creaseart.utils.CustomTextView
+                android:id="@+id/text_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_servicesubcat"
+                android:text="2/07/17"
+                android:textAllCaps="true"
+                android:textColor="@color/textcolordark"
+                android:textSize="@dimen/text_size_11"
+                android:visibility="visible" />
+
+            <Button android:id="@+id/btn_complete"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@+id/image_user"
+                android:background="@color/appcolor"
+                android:text="Complete"
+                android:layout_alignBottom="@+id/text_date"
+                android:textColor="@color/white"
+                android:textSize="10sp" />
+
+            <com.app.creaseart.utils.CustomTextView
+                android:id="@+id/text_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_servicesubcat"
+                android:text="Booked"
+                android:textAllCaps="true"
+                android:textColor="@color/textcolordark"
+                android:textSize="@dimen/text_size_11"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/rl_top"
+        android:background="@color/view_color" />
+</RelativeLayout>

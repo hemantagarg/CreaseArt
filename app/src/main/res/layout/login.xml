@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appcolor">
+
+
+
+
+        <ImageView
+            android:id="@+id/image_logo"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/loginlogo"
+            android:layout_margin="@dimen/dp20"
+             />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@+id/image_logo"
+            android:orientation="vertical"
+            android:background="@drawable/loginbox"
+           >
+
+            <com.app.creaseart.utils.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp10"
+                android:paddingTop="@dimen/dp10"
+              android:layout_gravity="start"
+                android:text="@string/sign_in"
+                android:textStyle="bold"
+
+                android:textSize="@dimen/text_size_20" />
+            <com.app.creaseart.utils.CustomTextView
+                android:id="@+id/textOr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp10"
+                android:text="@string/or"
+                android:textColor="@color/textcolordark"
+                android:textSize="@dimen/text_size_12"
+                android:visibility="gone" />
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/edtEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp5"
+
+                android:text="amitg1370@gmail.com"
+                android:drawableLeft="@drawable/username"
+                android:inputType="textEmailAddress"
+                android:padding="@dimen/dp14"
+                android:layout_margin="@dimen/dp10"
+                android:drawablePadding="@dimen/dp10"
+                android:textColor="@color/textcolordark"
+                />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_email1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/edtPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp10"
+                android:drawablePadding="@dimen/dp10"
+
+                android:text="admin"
+                android:layout_margin="@dimen/dp10"
+                android:drawableLeft="@drawable/password"
+                android:inputType="textPassword"
+                android:padding="@dimen/dp14"
+                android:textColor="@color/textcolordark"
+            />
+            </android.support.design.widget.TextInputLayout>
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp10"
+                android:text="@string/log_in"
+                android:background="@drawable/button_selector"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_15" />
+            <RelativeLayout
+                android:id="@+id/rl_signup"
+                android:layout_width="wrap_content"
+                android:layout_margin="@dimen/dp10"
+                android:layout_height="wrap_content"
+
+               >
+
+                <com.app.creaseart.utils.CustomTextView
+                    android:id="@+id/createAccount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+              android:paddingLeft="@dimen/dp10"
+                    android:text="New User Sign Up"
+                    android:textColor="@color/textcolordark"
+                    android:textSize="@dimen/text_size_13" />
+
+                <com.app.creaseart.utils.CustomTextView
+                    android:id="@+id/forgot_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_alignParentRight="true"
+                    android:paddingLeft="@dimen/dp10"
+                    android:text="Forgot Password"
+
+                    android:textSize="@dimen/text_size_13" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+    <com.app.creaseart.utils.CustomTextView
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+
+android:layout_alignParentBottom="true"
+        android:text="www.creaseart.com"
+        android:paddingBottom="@dimen/dp10"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_13" />
+    </RelativeLayout>
+
+
+
