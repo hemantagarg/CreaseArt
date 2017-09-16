@@ -8,46 +8,86 @@ import java.util.ArrayList;
 
 public class ModelCategory {
 
-    private String UserMobile;
+    private String Status;
 
-    private String UserImage;
+    private String Quantity;
 
-    private String PackageName;
+    private String Time;
+
+    private String Date;
+
+    private String OrderNo;
+
+    private String Address;
 
     private String OrderId;
 
-    private String UserName;
+    private String userImage;
 
-    private String UserEmail;
+    private String userMobile;
 
-    public String getUserMobile ()
+    private String userName;
+
+    private String userEmail;
+
+    public String getStatus ()
     {
-        return UserMobile;
+        return Status;
     }
 
-    public void setUserMobile (String UserMobile)
+    public void setStatus (String Status)
     {
-        this.UserMobile = UserMobile;
+        this.Status = Status;
     }
 
-    public String getUserImage ()
+    public String getQuantity ()
     {
-        return UserImage;
+        return Quantity;
     }
 
-    public void setUserImage (String UserImage)
+    public void setQuantity (String Quantity)
     {
-        this.UserImage = UserImage;
+        this.Quantity = Quantity;
     }
 
-    public String getPackageName ()
+    public String getTime ()
     {
-        return PackageName;
+        return Time;
     }
 
-    public void setPackageName (String PackageName)
+    public void setTime (String Time)
     {
-        this.PackageName = PackageName;
+        this.Time = Time;
+    }
+
+    public String getDate ()
+    {
+        return Date;
+    }
+
+    public void setDate (String Date)
+    {
+        this.Date = Date;
+    }
+
+    public String getOrderNo ()
+    {
+        return OrderNo;
+    }
+
+    public void setOrderNo (String OrderNo)
+    {
+        this.OrderNo = OrderNo;
+    }
+
+    public String getAddress ()
+    {
+        return Address;
+    }
+
+    public void setAddress (String Address)
+    {
+        this.Address = Address;
     }
 
     public String getOrderId ()
@@ -60,24 +100,44 @@ public class ModelCategory {
         this.OrderId = OrderId;
     }
 
-    public String getUserName ()
+    public String getUserImage ()
     {
-        return UserName;
+        return userImage;
     }
 
-    public void setUserName (String UserName)
+    public void setUserImage (String userImage)
     {
-        this.UserName = UserName;
+        this.userImage = userImage;
+    }
+
+    public String getUserMobile ()
+    {
+        return userMobile;
+    }
+
+    public void setUserMobile (String userMobile)
+    {
+        this.userMobile = userMobile;
+    }
+
+    public String getUserName ()
+    {
+        return userName;
+    }
+
+    public void setUserName (String userName)
+    {
+        this.userName = userName;
     }
 
     public String getUserEmail ()
     {
-        return UserEmail;
+        return userEmail;
     }
 
-    public void setUserEmail (String UserEmail)
+    public void setUserEmail (String userEmail)
     {
-        this.UserEmail = UserEmail;
+        this.userEmail = userEmail;
     }
 
 

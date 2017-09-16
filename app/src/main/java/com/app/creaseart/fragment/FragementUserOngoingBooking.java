@@ -136,7 +136,13 @@ orderId=id;
                         ModelCategory serviceDetail = new ModelCategory();
 
 
-                        serviceDetail.setOrderId(jo.getString("OrderId"));
+                        serviceDetail.setOrderNo(jo.getString("OrderNo"));
+                        serviceDetail.setQuantity(jo.getString("Quantity"));
+                        serviceDetail.setAddress(jo.getString("Address"));
+                        serviceDetail.setStatus(jo.getString("Status"));
+                        serviceDetail.setDate(jo.getString("Date"));
+
+
 
                         // serviceDetail.setServicePrice(jo.getString("ServiceDate"));
                         // serviceDetail.setServicePrice(jo.getString("ServiceTime"));

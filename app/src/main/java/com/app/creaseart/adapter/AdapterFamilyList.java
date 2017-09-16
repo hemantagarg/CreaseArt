@@ -15,6 +15,8 @@ import com.app.creaseart.R;
 import com.app.creaseart.interfaces.OnCustomItemClicListener;
 import com.app.creaseart.models.ModelFamiyMember;
 import com.app.creaseart.models.ModelNotification;
+import com.app.creaseart.utils.CircleTransform;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -45,7 +47,7 @@ public class AdapterFamilyList extends RecyclerView.Adapter<RecyclerView.ViewHol
         RecyclerView.ViewHolder vh;
         if (viewType == VIEW_ITEM) {
             View v = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.row_notification, parent, false);
+                    R.layout.row_familylist, parent, false);
 
             vh = new CustomViewHolder(v);
         } else {
@@ -78,15 +80,16 @@ public class AdapterFamilyList extends RecyclerView.Adapter<RecyclerView.ViewHol
             ModelFamiyMember m1 = (ModelFamiyMember) detail.get(i);
 
             ((CustomViewHolder) holder).text_name.setText(m1.getName());
+            ((CustomViewHolder) holder).text_message.setText(m1.getMobile());
 
-          /*  if (!m1.getUserImage().equalsIgnoreCase("")) {
+           if (!m1.getProfilePic().equalsIgnoreCase("")) {
                 Picasso.with(mContext)
-                        .load(m1.getReceiverImage())
+                        .load(m1.getProfilePic())
                         .transform(new CircleTransform())
-                        .placeholder(R.drawable.user)
+                        .placeholder(R.drawable.loginlogo)
                         .into(((CustomViewHolder) holder).image_viewers);
             }
-*/
+
         } else {
             ((ProgressViewHolder) holder).progressBar.setIndeterminate(true);
         }
@@ -101,7 +104,7 @@ public class AdapterFamilyList extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView text_name, text_message, text_date;
-        ImageView image_viewers;
+        ImageView image_viewers,image_delete;
 
 
         public CustomViewHolder(View view) {
@@ -110,7 +113,7 @@ public class AdapterFamilyList extends RecyclerView.Adapter<RecyclerView.ViewHol
             this.image_viewers = (ImageView) view.findViewById(R.id.image_viewers);
             this.text_name = (TextView) view.findViewById(R.id.text_name);
             this.text_message = (TextView) view.findViewById(R.id.text_message);
-            this.text_date = (TextView) view.findViewById(R.id.text_date);
+            this.image_delete = (ImageView) view.findViewById(R.id.image_delete);
 
         }
 

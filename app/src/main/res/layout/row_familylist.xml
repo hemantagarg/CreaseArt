@@ -1,0 +1,96 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    card_view:cardElevation="0sp"
+    card_view:cardUseCompatPadding="false">
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view1"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardCornerRadius="4dp">
+    <RelativeLayout
+        android:id="@+id/rl_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/rl_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <ImageView
+                android:id="@+id/image_viewers"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="@dimen/dp5"
+                android:scaleType="fitXY"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <RelativeLayout
+                android:id="@+id/rl_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp10"
+                android:layout_toRightOf="@+id/image_viewers"
+                android:padding="@dimen/dp5">
+
+                <TextView
+                    android:id="@+id/text_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/text_date"
+                    android:text="Madhav"
+
+                    android:textColor="@color/text_color_black"
+                    android:textSize="@dimen/text_size_15" />
+
+                <TextView
+                    android:id="@+id/text_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/text_name"
+                    android:layout_marginTop="@dimen/dp3"
+                    android:maxLines="2"
+
+                    android:text="Reference site abouut lorel impsum, giving information on its origins..."
+                    android:textColor="@color/textcolordark"
+                    android:textSize="@dimen/text_size_13" />
+
+                <ImageView
+                    android:id="@+id/image_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+
+                    android:src="@drawable/delete"
+
+                    android:textColor="@color/textcolordark"
+                    android:textSize="@dimen/text_size_11" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/rl_header"
+            android:alpha=".3"
+            android:background="@color/view_color" />
+
+    </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+</RelativeLayout>

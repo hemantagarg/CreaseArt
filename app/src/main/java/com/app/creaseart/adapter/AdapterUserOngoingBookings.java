@@ -46,11 +46,14 @@ public class AdapterUserOngoingBookings extends RecyclerView.Adapter<AdapterUser
 
     @Override
     public void onBindViewHolder(CustomViewHolder customViewHolder, final int i) {
-        customViewHolder.text_servicename.setText(detail.get(i).getOrderId());
+        customViewHolder.text_servicename.setText("Order Number"+ " : "+detail.get(i).getOrderNo());
         /*Picasso.with(mContext).load(detail.get(i).getServiceImage()).transform(new CircleTransform()).into(customViewHolder.image_service);
         customViewHolder.text_servicename.setText(detail.get(i).getServiceName());
         customViewHolder.text_servicesubcat.setText(detail.get(i).getVendorName());*/
-       // customViewHolder.text_date.setText(detail.get(i).getServiceDate() + ", " + detail.get(i).getServiceTime());
+        customViewHolder.text_date.setText(detail.get(i).getDate());
+        customViewHolder.text_servicesubcat.setText("Address"+ " : "+detail.get(i).getAddress());
+        customViewHolder.text_serviceprice.setText("Quantity"+ " : "+detail.get(i).getQuantity());
+        customViewHolder.text_status.setText("Status"+ " : "+detail.get(i).getStatus());
 
         customViewHolder.btn_complete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +75,7 @@ public class AdapterUserOngoingBookings extends RecyclerView.Adapter<AdapterUser
         ImageView image_service;
         RelativeLayout rl_main;
         Button btn_complete;
-        TextView text_servicename, text_servicesubcat, text_serviceprice, text_date;
+        TextView text_servicename, text_servicesubcat, text_serviceprice, text_date,text_status;
 
         public CustomViewHolder(View view) {
             super(view);
@@ -83,6 +86,7 @@ public class AdapterUserOngoingBookings extends RecyclerView.Adapter<AdapterUser
             this.text_date = (TextView) view.findViewById(R.id.text_date);
             this.text_servicesubcat = (TextView) view.findViewById(R.id.text_servicesubcat);
             this.text_serviceprice = (TextView) view.findViewById(R.id.text_serviceprice);
+            this.text_status = (TextView) view.findViewById(R.id.text_status);
         }
 
     }
