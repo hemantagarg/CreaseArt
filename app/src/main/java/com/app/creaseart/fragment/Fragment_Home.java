@@ -48,7 +48,7 @@ public class Fragment_Home extends BaseFragment implements ApiResponse, OnCustom
     private ImageView[] dots;
     private int dotsCount;
     private LinearLayout pager_indicator;
-
+private android.support.v7.widget.CardView rlServiceRequest,rlOffers,rlHowItWorks,rlPackages,rlWallet,rlReedem;
     public static Fragment_Home getInstance() {
         if (fragment_changePassword == null)
             fragment_changePassword = new Fragment_Home();
@@ -75,6 +75,13 @@ public class Fragment_Home extends BaseFragment implements ApiResponse, OnCustom
 
         pager_indicator = (LinearLayout) view.findViewById(R.id.viewPagerCountDots);
         view_pager = (ViewPager) view.findViewById(R.id.view_pager);
+        rlServiceRequest=(android.support.v7.widget.CardView)view.findViewById(R.id.rlServiceRequest);
+        rlOffers=(android.support.v7.widget.CardView)view.findViewById(R.id.rlOffers);
+        rlHowItWorks=(android.support.v7.widget.CardView)view.findViewById(R.id.rlHowItWorks);
+        rlPackages=(android.support.v7.widget.CardView)view.findViewById(R.id.rlPackages);
+        rlWallet=(android.support.v7.widget.CardView)view.findViewById(R.id.rlWallet);
+        rlReedem=(android.support.v7.widget.CardView)view.findViewById(R.id.rlReedem);
+
         submitRequest();
 
     }

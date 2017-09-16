@@ -49,7 +49,7 @@ public class Fragment_FamilyAccuntLIst extends BaseFragment implements ApiRespon
     private int skipCount = 0;
     private boolean loading = true;
     private String maxlistLength = "";
-
+    private android.support.design.widget.FloatingActionButton addfamily_member;
     public static Fragment_FamilyAccuntLIst fragment_familyAccuntLIst;
     private final String TAG = Fragment_FamilyAccuntLIst.class.getSimpleName();
     View view_about;
@@ -116,6 +116,7 @@ public class Fragment_FamilyAccuntLIst extends BaseFragment implements ApiRespon
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout1);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorPrimaryDark);
         list_request = (RecyclerView) view.findViewById(R.id.list_request);
+        addfamily_member=(android.support.design.widget.FloatingActionButton)view.findViewById(R.id.addfamily_member);
         layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         list_request.setLayoutManager(layoutManager);
@@ -132,8 +133,15 @@ public class Fragment_FamilyAccuntLIst extends BaseFragment implements ApiRespon
 
                 getServicelistRefresh();
             }
-        });
 
+
+        });
+addfamily_member.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+
+    }
+});
 /*
         list_request.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
