@@ -3,7 +3,6 @@ package com.app.creaseart.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -13,16 +12,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
-
 import com.app.creaseart.R;
 import com.app.creaseart.aynctask.CommonAsyncTaskHashmap;
 import com.app.creaseart.interfaces.ApiResponse;
 import com.app.creaseart.interfaces.JsonApiHelper;
-
 import com.app.creaseart.utils.AppUtils;
 
-
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity implements ApiResponse {
@@ -76,7 +71,8 @@ public class LoginActivity extends AppCompatActivity implements ApiResponse {
 
                 startActivity(new Intent(mActivity, ForgotPassword.class));
             }
-        });   createAccount.setOnClickListener(new View.OnClickListener() {
+        });
+        createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -92,10 +88,10 @@ public class LoginActivity extends AppCompatActivity implements ApiResponse {
         if (AppUtils.isNetworkAvailable(mActivity)) {
 
             String url = JsonApiHelper.BASEURL + JsonApiHelper.LOGIN + "mobile=" + edtEmail.getText().toString() + "&password=" + edtPassword.getText().toString()
-                    + "&device_type=" + 1 + "&gcm=" + 123456;
+                    + "&device_type=" + 1 + "&gcm=" + 123456 + "&user_type=" + "1";
 
             //String url = JsonApiHelper.BASEURL + JsonApiHelper.LOGIN;
-            new CommonAsyncTaskHashmap(1,mActivity, this).getqueryJsonNoProgress(url, null, Request.Method.GET);
+            new CommonAsyncTaskHashmap(1, mActivity, this).getqueryJsonNoProgress(url, null, Request.Method.GET);
         } else {
             Toast.makeText(mActivity, mActivity.getResources().getString(R.string.message_network_problem), Toast.LENGTH_SHORT).show();
         }
@@ -128,7 +124,7 @@ public class LoginActivity extends AppCompatActivity implements ApiResponse {
                     AppUtils.setUserId(mActivity, data.getString("UserId"));
                     AppUtils.setUserMobile(mActivity, data.getString("Mobile"));
                     AppUtils.setUserRole(mActivity, data.getString("UserType"));
-                   // AppUtils.setUserId(mActivity, data.getString("Mobile"));
+                    // AppUtils.setUserId(mActivity, data.getString("Mobile"));
                     AppUtils.setUserName(mActivity, data.getString("Name"));
                     AppUtils.setUseremail(mActivity, data.getString("Email"));
                     AppUtils.setUserImage(mActivity, data.getString("ProfilePic"));
@@ -136,7 +132,7 @@ public class LoginActivity extends AppCompatActivity implements ApiResponse {
                     finish();
                 } else {
 
-                     Toast.makeText(mActivity, response.getString("message"), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mActivity, commandResult.getString("message"), Toast.LENGTH_SHORT).show();
                 }
             }
         } catch (Exception e) {

@@ -20,10 +20,12 @@ import com.app.creaseart.aynctask.CommonAsyncTaskHashmap;
 import com.app.creaseart.iclasses.HeaderViewManager;
 import com.app.creaseart.interfaces.ApiResponse;
 import com.app.creaseart.interfaces.HeaderViewClickListener;
+import com.app.creaseart.interfaces.JsonApiHelper;
 import com.app.creaseart.interfaces.OnCustomItemClicListener;
 import com.app.creaseart.utils.AppUtils;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,7 +44,7 @@ public class Fragment_Home extends BaseFragment implements ApiResponse, OnCustom
     View view_about;
     private ViewPager view_pager;
     private CustomPagerAdapter mCustomPagerAdapter;
-    private ArrayList<String> mResources;
+    private ArrayList<String> mResources = new ArrayList<>();
     private ImageView[] dots;
     private int dotsCount;
     private LinearLayout pager_indicator;
@@ -71,7 +73,9 @@ public class Fragment_Home extends BaseFragment implements ApiResponse, OnCustom
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        setlistener();
+        pager_indicator = (LinearLayout) view.findViewById(R.id.viewPagerCountDots);
+        view_pager = (ViewPager) view.findViewById(R.id.view_pager);
+        submitRequest();
 
     }
 
@@ -173,8 +177,8 @@ public class Fragment_Home extends BaseFragment implements ApiResponse, OnCustom
 
         if (AppUtils.isNetworkAvailable(context)) {
 
-            // http://dev.stackmindz.com/trendi/api/change-password.php?user_id=199&current_pwd=admin&new_pwd=123456&confirm_pwd=123456
-            String url = "";
+            //   http://dev.stackmindz.com/creaseart/api/banner.php
+            String url = JsonApiHelper.BASEURL + JsonApiHelper.BANNER;
 
             new CommonAsyncTaskHashmap(1, context, this).getqueryNoProgress(url);
 
@@ -212,7 +216,9 @@ public class Fragment_Home extends BaseFragment implements ApiResponse, OnCustom
             ImageView imageView = (ImageView) itemView
                     .findViewById(R.id.imageView);
             //  imageView.setImageResource(mResources.get(position));
-            Picasso.with(mContext).load(mResources.get(position)).into(imageView);
+            if (!mResources.get(position).equalsIgnoreCase("")) {
+                Picasso.with(mContext).load(mResources.get(position)).into(imageView);
+            }
             container.addView(itemView);
 
             return itemView;
@@ -233,15 +239,21 @@ public class Fragment_Home extends BaseFragment implements ApiResponse, OnCustom
                 JSONObject commandResult = response.getJSONObject("commandResult");
 
                 if (commandResult.getString("success").equalsIgnoreCase("1")) {
-                   /* ArrayList<Images> imagesArrayList = (ArrayList<Images>) bundle.getSerializable("images");
-                    for (int i = 0; i < imagesArrayList.size(); i++) {
-                        mResources.add(imagesArrayList.get(i).getImage());
-                    }*/
-                    mCustomPagerAdapter = new CustomPagerAdapter(getActivity());
+
+                    JSONObject jsonObject = commandResult.getJSONObject("data");
+                    JSONArray banners = jsonObject.getJSONArray("banners");
+
+                    for (int i = 0; i < banners.length(); i++) {
+                        JSONObject on = banners.getJSONObject(i);
+
+                        mResources.add(on.getString("image"));
+                    }
+                    mCustomPagerAdapter = new CustomPagerAdapter(context);
                     view_pager.setAdapter(mCustomPagerAdapter);
                     pager_indicator = (LinearLayout) view_about.findViewById(R.id.viewPagerCountDots);
                     setUiPageViewController();
                     view_pager.setCurrentItem(0);
+                    setlistener();
                 }
             }
 

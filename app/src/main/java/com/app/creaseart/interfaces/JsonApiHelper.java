@@ -8,6 +8,7 @@ public interface JsonApiHelper {
 
     String BASEURL = "http://dev.stackmindz.com/creaseart/api/";
     String LOGIN = "login.php?";
+    String BANNER = "banner.php";
     String PACKAGE = "package.php";
     String FORGOTPASSWORD = "forget-password.php?";
     String REGISTER = "register.php?";
