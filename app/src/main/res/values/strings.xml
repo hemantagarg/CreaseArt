@@ -54,4 +54,8 @@
     <string name="how_it_works">How it works</string>
     <string name="packages">Packages</string>
     <string name="wallet">Wallet</string>
+    <string name="please_select_zone">Please select zone</string>
+    <string name="please_select_locality">Please select locality</string>
+    <string name="please_select_city">Please select city</string>
+    <string name="please_select_state">Please select state</string>
 </resources>

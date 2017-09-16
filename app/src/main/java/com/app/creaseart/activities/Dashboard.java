@@ -32,6 +32,7 @@ import com.app.creaseart.fragment.Fragment_ChangePassword;
 import com.app.creaseart.fragment.Fragment_FamilyAccuntLIst;
 import com.app.creaseart.fragment.Fragment_Home;
 import com.app.creaseart.fragment.UserBookingFragment;
+import com.app.creaseart.fragment.UserProfileFragment;
 import com.app.creaseart.interfaces.GlobalConstants;
 import com.app.creaseart.utils.AppUtils;
 import com.app.creaseart.utils.CircleTransform;
@@ -207,7 +208,7 @@ public class Dashboard extends AppCompatActivity {
                 setWhiteColor();
                 text_profile.setTextColor(getResources().getColor(R.color.appcolor));
                 text_profile.setBackgroundResource(R.drawable.text_bg);
-                pushFragments(GlobalConstants.TAB_HOME_BAR, new Fragment_Home(), true);
+                pushFragments(GlobalConstants.TAB_HOME_BAR, new UserProfileFragment(), true);
                 drawer.closeDrawer(GravityCompat.START);
             }
         });

@@ -12,6 +12,11 @@ public interface JsonApiHelper {
     String PACKAGE = "package.php";
     String FORGOTPASSWORD = "forget-password.php?";
     String REGISTER = "register.php?";
+    String STATE = "state.php";
+    String CITY = "city.php?";
+    String LOCALITY = "locality.php?";
+    String ZONE = "zone.php?";
+    String UPDATE_PROFILE = "update-profile.php";
     String GET_NOTIFICATION = "notification-list.php?";
     String MYCOMPLETE_BOOKING = "completeBooking.php?";
     String MYBOOKING = "ongoingBooking.php?";

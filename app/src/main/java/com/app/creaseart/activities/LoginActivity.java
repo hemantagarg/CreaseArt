@@ -124,7 +124,7 @@ public class LoginActivity extends AppCompatActivity implements ApiResponse {
                     AppUtils.setUserId(mActivity, data.getString("UserId"));
                     AppUtils.setUserMobile(mActivity, data.getString("Mobile"));
                     AppUtils.setUserRole(mActivity, data.getString("UserType"));
-                    // AppUtils.setUserId(mActivity, data.getString("Mobile"));
+                    AppUtils.setUserCode(mActivity,data.getString("Token"));
                     AppUtils.setUserName(mActivity, data.getString("Name"));
                     AppUtils.setUseremail(mActivity, data.getString("Email"));
                     AppUtils.setUserImage(mActivity, data.getString("ProfilePic"));
