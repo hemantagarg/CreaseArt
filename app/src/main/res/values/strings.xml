@@ -44,8 +44,14 @@
     <string name="bokings">Service Request</string>
     <string name="changepassword">Change Password</string>
     <string name="shareapp">Share App</string>
+    <string name="activepackage">Active Packages</string>
 
     <string name="transactionhistory">Transaction History</string>
     <string name="familyaccount">Family Account</string>
     <string name="redeem">Redeem</string>
+    <string name="service_request">Service Request</string>
+    <string name="offers">Offers</string>
+    <string name="how_it_works">How it works</string>
+    <string name="packages">Packages</string>
+    <string name="wallet">Wallet</string>
 </resources>

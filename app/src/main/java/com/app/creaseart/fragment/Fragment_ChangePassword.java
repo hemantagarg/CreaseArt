@@ -1,10 +1,7 @@
 package com.app.creaseart.fragment;
 
-import android.content.Context;
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,20 +11,15 @@ import android.widget.Toast;
 
 import com.app.creaseart.R;
 import com.app.creaseart.activities.Dashboard;
-import com.app.creaseart.adapter.AdapterNotification;
 import com.app.creaseart.aynctask.CommonAsyncTaskHashmap;
+import com.app.creaseart.iclasses.HeaderViewManager;
 import com.app.creaseart.interfaces.ApiResponse;
-import com.app.creaseart.interfaces.ConnectionDetector;
+import com.app.creaseart.interfaces.HeaderViewClickListener;
 import com.app.creaseart.interfaces.JsonApiHelper;
 import com.app.creaseart.interfaces.OnCustomItemClicListener;
-import com.app.creaseart.models.ModelNotification;
 import com.app.creaseart.utils.AppUtils;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 /**
  * Created by admin on 06-01-2016.
@@ -35,21 +27,13 @@ import java.util.ArrayList;
 public class Fragment_ChangePassword extends BaseFragment implements ApiResponse, OnCustomItemClicListener {
 
 
-
     private Bundle b;
-    private Context context;
-
-
-    private ConnectionDetector cd;
-    private int pastVisiblesItems, visibleItemCount, totalItemCount;
-    private LinearLayoutManager layoutManager;
-    private int skipCount = 0;
-    private boolean loading = true;
-    private String maxlistLength = "";
-    private EditText edtold_password,edt_newpassword,edtconfirmpassword ;
+    private Activity context;
+    private EditText edtold_password, edt_newpassword, edtconfirmpassword;
     private Button btnSubmit;
     public static Fragment_ChangePassword fragment_changePassword;
     private final String TAG = Fragment_ChangePassword.class.getSimpleName();
+    View view_about;
 
     public static Fragment_ChangePassword getInstance() {
         if (fragment_changePassword == null)
@@ -62,7 +46,7 @@ public class Fragment_ChangePassword extends BaseFragment implements ApiResponse
                              Bundle savedInstanceState) {
         // Inflate the layout for this com.app.justclap.fragment
 
-        View view_about = inflater.inflate(R.layout.activity_change_password, container, false);
+        view_about = inflater.inflate(R.layout.activity_change_password, container, false);
         context = getActivity();
 
         b = getArguments();
@@ -75,13 +59,52 @@ public class Fragment_ChangePassword extends BaseFragment implements ApiResponse
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        edtold_password = (EditText) view.findViewById(R.id.edtold_password);
+        edt_newpassword = (EditText) view.findViewById(R.id.edt_newpassword);
+        edtconfirmpassword = (EditText) view.findViewById(R.id.edtconfirmpassword);
+        btnSubmit = (Button) view.findViewById(R.id.btnSubmit);
+        manageHeaderView();
+        setlistener();
 
-        layoutManager = new LinearLayoutManager(context);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        edtold_password=(EditText)view.findViewById(R.id.edtold_password);
-        edt_newpassword=(EditText)view.findViewById(R.id.edt_newpassword);
-        edtconfirmpassword=(EditText)view.findViewById(R.id.edtconfirmpassword);
-        btnSubmit=(Button) view.findViewById(R.id.btnSubmit);
+    }
+
+    /*******************************************************************
+     * Function name - manageHeaderView
+     * Description - manage the initialization, visibility and click
+     * listener of view fields on Header view
+     *******************************************************************/
+    private void manageHeaderView() {
+
+        Dashboard.getInstance().manageHeaderVisibitlity(false);
+        HeaderViewManager.getInstance().InitializeHeaderView(null, view_about, manageHeaderClick());
+        HeaderViewManager.getInstance().setHeading(true, "Change Password");
+        HeaderViewManager.getInstance().setLeftSideHeaderView(true, R.drawable.left_arrow);
+        HeaderViewManager.getInstance().setRightSideHeaderView(false, R.drawable.left_arrow);
+        HeaderViewManager.getInstance().setLogoView(false);
+        HeaderViewManager.getInstance().setProgressLoader(false, false);
+
+    }
+
+    /*****************************************************************************
+     * Function name - manageHeaderClick
+     * Description - manage the click on the left and right image view of header
+     *****************************************************************************/
+    private HeaderViewClickListener manageHeaderClick() {
+        return new HeaderViewClickListener() {
+            @Override
+            public void onClickOfHeaderLeftView() {
+                AppUtils.showLog(TAG, "onClickOfHeaderLeftView");
+                context.onBackPressed();
+            }
+
+            @Override
+            public void onClickOfHeaderRightView() {
+                //   Toast.makeText(mActivity, "Coming Soon", Toast.LENGTH_SHORT).show();
+            }
+        };
+    }
+
+    private void setlistener() {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,14 +132,6 @@ public class Fragment_ChangePassword extends BaseFragment implements ApiResponse
                 }
             }
         });
-        setlistener();
-
-
-    }
-
-    private void setlistener() {
-
-
 
 
     }
@@ -126,7 +141,7 @@ public class Fragment_ChangePassword extends BaseFragment implements ApiResponse
         if (AppUtils.isNetworkAvailable(context)) {
 
             // http://dev.stackmindz.com/trendi/api/change-password.php?user_id=199&current_pwd=admin&new_pwd=123456&confirm_pwd=123456
-            String url = JsonApiHelper.BASEURL + JsonApiHelper.CHANGEPASSWORD + "user_id=1"  + "&current_pwd=" + edtold_password.getText().toString()
+            String url = JsonApiHelper.BASEURL + JsonApiHelper.CHANGEPASSWORD + "user_id=1" + "&current_pwd=" + edtold_password.getText().toString()
                     + "&new_pwd=" + edt_newpassword.getText().toString() + "&confirm_pwd=" + edtconfirmpassword.getText().toString();
 
             new CommonAsyncTaskHashmap(1, context, this).getqueryNoProgress(url);
@@ -135,8 +150,6 @@ public class Fragment_ChangePassword extends BaseFragment implements ApiResponse
             Toast.makeText(context, context.getResources().getString(R.string.message_network_problem), Toast.LENGTH_SHORT).show();
         }
     }
-
-
 
 
     @Override

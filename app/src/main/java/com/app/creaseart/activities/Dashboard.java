@@ -11,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -27,13 +26,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-
 import com.app.creaseart.R;
 import com.app.creaseart.fragment.BaseFragment;
 import com.app.creaseart.fragment.Fragment_ChangePassword;
 import com.app.creaseart.fragment.Fragment_FamilyAccuntLIst;
-import com.app.creaseart.fragment.Fragment_Notification;
-import com.app.creaseart.fragment.Fragment_Package;
+import com.app.creaseart.fragment.Fragment_Home;
 import com.app.creaseart.fragment.UserBookingFragment;
 import com.app.creaseart.interfaces.GlobalConstants;
 import com.app.creaseart.utils.AppUtils;
@@ -49,8 +46,7 @@ public class Dashboard extends AppCompatActivity {
     private Toolbar toolbar;
     private View main_view;
     private static final String TAG = Dashboard.class.getSimpleName();
-    private FrameLayout feed_container, freinds_container, event_container, notification_container, chat_container;
-    private TabLayout tabLayout;
+    private FrameLayout home_container;
     private AppBarLayout appBar;
     private int PERMISSION_ALL = 1;
     private String[] PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -63,7 +59,7 @@ public class Dashboard extends AppCompatActivity {
       * Fragment instance
       * */
     private static Dashboard mInstance;
-    private TextView text_score,myorders, familymember,text_logout,changepass;
+    private TextView text_profile, myorders, familymember, text_logout, changepass;
     public static volatile Fragment currentFragment;
     private HashMap<String, Stack<Fragment>> mStacks;
     private ImageView image_user;
@@ -105,27 +101,17 @@ public class Dashboard extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-        context = this;
-        mInstance = Dashboard.this;
+
         init();
         mStacks = new HashMap<>();
-        mStacks.put(GlobalConstants.TAB_FEED_BAR, new Stack<Fragment>());
-        mStacks.put(GlobalConstants.TAB_FRIENDS_BAR, new Stack<Fragment>());
-        mStacks.put(GlobalConstants.TAB_NOTIFCATION_BAR, new Stack<Fragment>());
-        mStacks.put(GlobalConstants.TAB_CHAT_BAR, new Stack<Fragment>());
-        mStacks.put(GlobalConstants.TAB_EVENT_BAR, new Stack<Fragment>());
-
-        pushFragments(GlobalConstants.TAB_FRIENDS_BAR, new Fragment_Notification(), true);
-        pushFragments(GlobalConstants.TAB_NOTIFCATION_BAR, new Fragment_Notification(), true);
-        pushFragments(GlobalConstants.TAB_EVENT_BAR, new Fragment_Notification(), true);
-        pushFragments(GlobalConstants.TAB_CHAT_BAR, new Fragment_Notification(), true);
-        pushFragments(GlobalConstants.TAB_FEED_BAR, new Fragment_Notification(), true);
-
-        setupTabIcons();
+        mStacks.put(GlobalConstants.TAB_HOME_BAR, new Stack<Fragment>());
+        pushFragments(GlobalConstants.TAB_HOME_BAR, new Fragment_Home(), true);
         setListener();
     }
 
     private void init() {
+        context = Dashboard.this;
+        mInstance = Dashboard.this;
         if (!hasPermissions(this, PERMISSIONS)) {
             ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
         }
@@ -135,18 +121,13 @@ public class Dashboard extends AppCompatActivity {
         main_view = findViewById(R.id.main_view);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         text_logout = (TextView) findViewById(R.id.text_logout);
-        text_score = (TextView) findViewById(R.id.text_profile);
+        text_profile = (TextView) findViewById(R.id.text_profile);
         myorders = (TextView) findViewById(R.id.myorders);
         changepass = (TextView) findViewById(R.id.changepass);
         familymember = (TextView) findViewById(R.id.familymember);
-        tabLayout = (TabLayout) findViewById(R.id.tablayout);
         appBar = (AppBarLayout) findViewById(R.id.appBar);
         api_loading_request = (ProgressBar) findViewById(R.id.api_loading_request);
-        feed_container = (FrameLayout) findViewById(R.id.feed_container);
-        freinds_container = (FrameLayout) findViewById(R.id.freinds_container);
-        event_container = (FrameLayout) findViewById(R.id.event_container);
-        chat_container = (FrameLayout) findViewById(R.id.chat_container);
-        notification_container = (FrameLayout) findViewById(R.id.notification_container);
+        home_container = (FrameLayout) findViewById(R.id.home_container);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
       /*  ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -181,26 +162,12 @@ public class Dashboard extends AppCompatActivity {
     }
 
 
-    private void setupTabIcons() {
-
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.notification));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.notification));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.notification));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.notification));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.notification));
-
-    }
-
-
     @Override
     public void onResume() {
         super.onResume();
 
-        if (mStacks.get(mCurrentTab).lastElement() instanceof Fragment_Notification ||
-                mStacks.get(mCurrentTab).lastElement() instanceof Fragment_Notification ||
-                mStacks.get(mCurrentTab).lastElement() instanceof Fragment_Notification ||
-                mStacks.get(mCurrentTab).lastElement() instanceof Fragment_Notification ||
-                mStacks.get(mCurrentTab).lastElement() instanceof Fragment_Notification) {
+        if (mStacks.get(mCurrentTab).lastElement() instanceof Fragment_Home
+                ) {
             manageHeaderVisibitlity(true);
         } else {
             manageHeaderVisibitlity(false);
@@ -209,11 +176,15 @@ public class Dashboard extends AppCompatActivity {
     }
 
     private void setWhiteColor() {
-        text_score.setBackgroundColor(getResources().getColor(R.color.white));
+        text_profile.setBackgroundColor(getResources().getColor(R.color.white));
         text_logout.setBackgroundColor(getResources().getColor(R.color.white));
+        myorders.setBackgroundColor(getResources().getColor(R.color.white));
+        familymember.setBackgroundColor(getResources().getColor(R.color.white));
+        changepass.setBackgroundColor(getResources().getColor(R.color.white));
 
-        text_score.setTextColor(getResources().getColor(R.color.textcolordark));myorders.setBackgroundColor(getResources().getColor(R.color.white));
-
+        text_profile.setTextColor(getResources().getColor(R.color.textcolordark));
+        changepass.setTextColor(getResources().getColor(R.color.textcolordark));
+        familymember.setTextColor(getResources().getColor(R.color.textcolordark));
         myorders.setTextColor(getResources().getColor(R.color.textcolordark));
         text_logout.setTextColor(getResources().getColor(R.color.textcolordark));
     }
@@ -230,135 +201,45 @@ public class Dashboard extends AppCompatActivity {
             }
         });
 
-        text_score.setOnClickListener(new View.OnClickListener() {
+        text_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setWhiteColor();
-                text_score.setTextColor(getResources().getColor(R.color.appcolor));
-                text_score.setBackgroundResource(R.drawable.text_bg);
-                pushFragments(GlobalConstants.TAB_FEED_BAR, new Fragment_Notification(), true);
+                text_profile.setTextColor(getResources().getColor(R.color.appcolor));
+                text_profile.setBackgroundResource(R.drawable.text_bg);
+                pushFragments(GlobalConstants.TAB_HOME_BAR, new Fragment_Home(), true);
                 drawer.closeDrawer(GravityCompat.START);
-
             }
-        });  familymember.setOnClickListener(new View.OnClickListener() {
+        });
+        familymember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setWhiteColor();
-                text_score.setTextColor(getResources().getColor(R.color.appcolor));
-                text_score.setBackgroundResource(R.drawable.text_bg);
-                pushFragments(GlobalConstants.TAB_FEED_BAR, new Fragment_FamilyAccuntLIst(), true);
-                drawer.closeDrawer(GravityCompat.START);
-
-            }
-        });changepass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setWhiteColor();
-                text_score.setTextColor(getResources().getColor(R.color.appcolor));
-                text_score.setBackgroundResource(R.drawable.text_bg);
-                pushFragments(GlobalConstants.TAB_FEED_BAR, new Fragment_ChangePassword(), true);
-                drawer.closeDrawer(GravityCompat.START);
-
-            }
-        }); myorders.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setWhiteColor();
-                text_score.setTextColor(getResources().getColor(R.color.appcolor));
-                text_score.setBackgroundResource(R.drawable.text_bg);
-                pushFragments(GlobalConstants.TAB_FEED_BAR, new UserBookingFragment(), true);
+                familymember.setTextColor(getResources().getColor(R.color.appcolor));
+                familymember.setBackgroundResource(R.drawable.text_bg);
+                pushFragments(GlobalConstants.TAB_HOME_BAR, new Fragment_FamilyAccuntLIst(), true);
                 drawer.closeDrawer(GravityCompat.START);
 
             }
         });
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        changepass.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                switch (tab.getPosition()) {
-                    case 0:
-                        tab.setIcon(R.drawable.notification);
-
-                        if (mStacks.get(GlobalConstants.TAB_FEED_BAR).size() > 0) {
-                            if (!(mStacks.get(mCurrentTab).lastElement() instanceof Fragment_Notification))
-                                AppUtils.showErrorLog(TAG, "Feed clicked");
-                            activeFeedFragment();
-                        } else
-                            pushFragments(GlobalConstants.TAB_FEED_BAR, new Fragment_Notification(), true);
-
-                        break;
-                    case 1:
-                        tab.setIcon(R.drawable.notification);
-                        if (mStacks.get(GlobalConstants.TAB_FRIENDS_BAR).size() > 0) {
-                            if (!(mStacks.get(mCurrentTab).lastElement() instanceof Fragment_Notification))
-                                AppUtils.showErrorLog(TAG, "Friens clicked");
-                            activeFreindsFragment();
-                        } else
-                            pushFragments(GlobalConstants.TAB_FRIENDS_BAR, new Fragment_Notification(), true);
-
-                        break;
-                    case 2:
-                        tab.setIcon(R.drawable.notification);
-                        if (mStacks.get(GlobalConstants.TAB_EVENT_BAR).size() > 0) {
-                            if (!(mStacks.get(mCurrentTab).lastElement() instanceof Fragment_Notification))
-                                AppUtils.showErrorLog(TAG, "Friens clicked");
-                            activeEventFragment();
-                        } else
-                            pushFragments(GlobalConstants.TAB_EVENT_BAR, new Fragment_Notification(), true);
-
-
-                        break;
-                    case 3:
-                        tab.setIcon(R.drawable.notification);
-                        if (mStacks.get(GlobalConstants.TAB_NOTIFCATION_BAR).size() > 0) {
-                            if (!(mStacks.get(mCurrentTab).lastElement() instanceof Fragment_Notification))
-                                AppUtils.showErrorLog(TAG, "Friens clicked");
-                            activeNotificationFragment();
-                        } else
-                            pushFragments(GlobalConstants.TAB_NOTIFCATION_BAR, new Fragment_Notification(), true);
-
-
-                        break;
-                    case 4:
-                        tab.setIcon(R.drawable.notification);
-                        if (mStacks.get(GlobalConstants.TAB_CHAT_BAR).size() > 0) {
-                            if (!(mStacks.get(mCurrentTab).lastElement() instanceof Fragment_Notification))
-                                AppUtils.showErrorLog(TAG, "Friens clicked");
-                            activeChatFragment();
-                        } else
-                            pushFragments(GlobalConstants.TAB_CHAT_BAR, new Fragment_Notification(), true);
-
-
-                        break;
-
-                }
+            public void onClick(View view) {
+                setWhiteColor();
+                changepass.setTextColor(getResources().getColor(R.color.appcolor));
+                changepass.setBackgroundResource(R.drawable.text_bg);
+                pushFragments(GlobalConstants.TAB_HOME_BAR, new Fragment_ChangePassword(), true);
+                drawer.closeDrawer(GravityCompat.START);
             }
-
+        });
+        myorders.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                switch (tab.getPosition()) {
-                    case 0:
-                        tab.setIcon(R.drawable.offers);
-                        break;
-                    case 1:
-                        tab.setIcon(R.drawable.packages);
-                        break;
-                    case 2:
-                        tab.setIcon(R.drawable.service);
-                        break;
-                    case 3:
-                        tab.setIcon(R.drawable.notification);
-                        break;
-                    case 4:
-                        tab.setIcon(R.drawable.zone);
-                        break;
-
-                }
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
+            public void onClick(View view) {
+                setWhiteColor();
+                myorders.setTextColor(getResources().getColor(R.color.appcolor));
+                myorders.setBackgroundResource(R.drawable.text_bg);
+                pushFragments(GlobalConstants.TAB_HOME_BAR, new UserBookingFragment(), true);
+                drawer.closeDrawer(GravityCompat.START);
             }
         });
     }
@@ -371,13 +252,9 @@ public class Dashboard extends AppCompatActivity {
      ********************************************************************************/
     private void activeFeedFragment() {
 
-        mCurrentTab = GlobalConstants.TAB_FEED_BAR;
+        mCurrentTab = GlobalConstants.TAB_HOME_BAR;
         currentFragment = (BaseFragment) mStacks.get(mCurrentTab).lastElement();
-        feed_container.setVisibility(View.VISIBLE);
-        freinds_container.setVisibility(View.GONE);
-        chat_container.setVisibility(View.GONE);
-        notification_container.setVisibility(View.GONE);
-        event_container.setVisibility(View.GONE);
+        home_container.setVisibility(View.VISIBLE);
     }
 
     private void showLogoutBox() {
@@ -418,82 +295,6 @@ public class Dashboard extends AppCompatActivity {
     }
 
 
-    /*********************************************************************************
-     * Function Name - activeFreindsFragment
-     * <p/>
-     * Description - active the view of alert tab manages the visibility of
-     * five frames in this view
-     ********************************************************************************/
-    private void activeFreindsFragment() {
-
-        mCurrentTab = GlobalConstants.TAB_FRIENDS_BAR;
-        currentFragment = (BaseFragment) mStacks.get(mCurrentTab).lastElement();
-        feed_container.setVisibility(View.GONE);
-        freinds_container.setVisibility(View.VISIBLE);
-        chat_container.setVisibility(View.GONE);
-        notification_container.setVisibility(View.GONE);
-        event_container.setVisibility(View.GONE);
-
-
-    }
-
-    /*********************************************************************************
-     * Function Name - activeNotificationFragment
-     * <p/>
-     * Description - active the view of wallet tab manages the visibility of
-     * five frames in this view
-     ********************************************************************************/
-    private void activeNotificationFragment() {
-
-        mCurrentTab = GlobalConstants.TAB_NOTIFCATION_BAR;
-        currentFragment = (BaseFragment) mStacks.get(mCurrentTab).lastElement();
-        feed_container.setVisibility(View.GONE);
-        freinds_container.setVisibility(View.GONE);
-        chat_container.setVisibility(View.GONE);
-        notification_container.setVisibility(View.VISIBLE);
-        event_container.setVisibility(View.GONE);
-
-
-    }
-
-    /*********************************************************************************
-     * Function Name - activeChatFragment
-     * <p/>
-     * Description - active the view of Profile tab manages the visibility of
-     * five frames in this view
-     ********************************************************************************/
-    private void activeChatFragment() {
-
-        mCurrentTab = GlobalConstants.TAB_CHAT_BAR;
-        currentFragment = (BaseFragment) mStacks.get(mCurrentTab).lastElement();
-        feed_container.setVisibility(View.GONE);
-        freinds_container.setVisibility(View.GONE);
-        chat_container.setVisibility(View.VISIBLE);
-        notification_container.setVisibility(View.GONE);
-        event_container.setVisibility(View.GONE);
-
-    }
-
-    /*********************************************************************************
-     * Function Name - activeEventFragment
-     * <p/>
-     * Description - active the view of home tab manages the visibility of
-     * five frames in this view
-     ********************************************************************************/
-    private void activeEventFragment() {
-
-        mCurrentTab = GlobalConstants.TAB_EVENT_BAR;
-        currentFragment = (BaseFragment) mStacks.get(mCurrentTab).lastElement();
-        feed_container.setVisibility(View.GONE);
-        freinds_container.setVisibility(View.GONE);
-        chat_container.setVisibility(View.GONE);
-        notification_container.setVisibility(View.GONE);
-        event_container.setVisibility(View.VISIBLE);
-
-
-    }
-
-
     /*
          * To add fragment to a tab. tag -> Tab identifier fragment -> Fragment to
          * show, false when we switch tabs, or adding first fragment to a tab true
@@ -510,21 +311,9 @@ public class Dashboard extends AppCompatActivity {
 
             FragmentManager manager = getSupportFragmentManager();
             FragmentTransaction ft = manager.beginTransaction();
-            if (tag.equals(GlobalConstants.TAB_FEED_BAR)) {
-                ft.add(R.id.feed_container, fragment);
+            if (tag.equals(GlobalConstants.TAB_HOME_BAR)) {
+                ft.add(R.id.home_container, fragment);
                 activeFeedFragment();
-            } else if (tag.equals(GlobalConstants.TAB_FRIENDS_BAR)) {
-                ft.add(R.id.freinds_container, fragment);
-                activeFreindsFragment();
-            } else if (tag.equals(GlobalConstants.TAB_EVENT_BAR)) {
-                ft.add(R.id.event_container, fragment);
-                activeEventFragment();
-            } else if (tag.equals(GlobalConstants.TAB_CHAT_BAR)) {
-                ft.add(R.id.chat_container, fragment);
-                activeChatFragment();
-            } else if (tag.equals(GlobalConstants.TAB_NOTIFCATION_BAR)) {
-                ft.add(R.id.notification_container, fragment);
-                activeNotificationFragment();
             }
             ft.commitAllowingStateLoss();
         }
@@ -604,20 +393,12 @@ public class Dashboard extends AppCompatActivity {
                     popFragments();
                     if (mStacks.get(mCurrentTab).hashCode() != 0) {
                         // refresh screens
-                        if (mStacks.get(mCurrentTab).size() > 0 && mStacks.get(mCurrentTab).lastElement() instanceof Fragment_Notification) {
+                        if (mStacks.get(mCurrentTab).size() > 0 && mStacks.get(mCurrentTab).lastElement() instanceof Fragment_Home) {
                             AppUtils.showLog(TAG, " Current Fragment is Feed Fragment");
                             //  refreshHomeFragment();
                         }
-                        if (mStacks.get(mCurrentTab).size() > 0 && mStacks.get(mCurrentTab).lastElement() instanceof Fragment_Notification) {
-                            AppUtils.showLog(TAG, " Current Fragment is Notification Fragment");
-                            //  refreshProfileFragment();
-                        }
 
-                        if (mStacks.get(mCurrentTab).lastElement() instanceof Fragment_Notification ||
-                                mStacks.get(mCurrentTab).lastElement() instanceof Fragment_Notification ||
-                                mStacks.get(mCurrentTab).lastElement() instanceof Fragment_Notification ||
-                                mStacks.get(mCurrentTab).lastElement() instanceof Fragment_Notification ||
-                                mStacks.get(mCurrentTab).lastElement() instanceof Fragment_Notification) {
+                        if (mStacks.get(mCurrentTab).lastElement() instanceof Fragment_Home) {
                             manageHeaderVisibitlity(true);
                         } else {
                             manageHeaderVisibitlity(false);

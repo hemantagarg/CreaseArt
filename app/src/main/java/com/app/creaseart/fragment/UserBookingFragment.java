@@ -12,10 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-
 import com.app.creaseart.R;
+import com.app.creaseart.activities.Dashboard;
 import com.app.creaseart.iclasses.HeaderViewManager;
-import com.app.creaseart.interfaces.GlobalConstants;
 import com.app.creaseart.interfaces.HeaderViewClickListener;
 import com.app.creaseart.utils.AppUtils;
 
@@ -57,13 +56,12 @@ public class UserBookingFragment extends BaseFragment implements View.OnClickLis
     }
 
 
-
     private void getBundle() {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
 
-      //      vendorId = bundle.getString(AppConstant.VENDORID);
+            //      vendorId = bundle.getString(AppConstant.VENDORID);
 
         }
     }
@@ -73,7 +71,7 @@ public class UserBookingFragment extends BaseFragment implements View.OnClickLis
         viewPager = (ViewPager) view.findViewById(R.id.viewpager);
         tabLayout = (TabLayout) view.findViewById(R.id.tablayout);
 
-      }
+    }
 
     private void setupTabIcons() {
 
@@ -141,10 +139,13 @@ public class UserBookingFragment extends BaseFragment implements View.OnClickLis
      * listener of view fields on Header view
      *******************************************************************/
     private void manageHeaderView() {
+        Dashboard.getInstance().manageHeaderVisibitlity(false);
         HeaderViewManager.getInstance().InitializeHeaderView(null, view, manageHeaderClick());
         HeaderViewManager.getInstance().setHeading(true, mActivity.getResources().getString(R.string.bokings));
-        HeaderViewManager.getInstance().setLeftSideHeaderView(true, R.drawable.notification);
-        HeaderViewManager.getInstance().setRightSideHeaderView(false, R.drawable.notification);
+        HeaderViewManager.getInstance().setLeftSideHeaderView(true, R.drawable.left_arrow);
+        HeaderViewManager.getInstance().setRightSideHeaderView(false, R.drawable.left_arrow);
+        HeaderViewManager.getInstance().setLogoView(false);
+        HeaderViewManager.getInstance().setProgressLoader(false, false);
 
     }
 
@@ -169,7 +170,7 @@ public class UserBookingFragment extends BaseFragment implements View.OnClickLis
 
 
     protected void setFragment(Fragment fragment) {
-       // UserDashboard.getInstance().pushFragments(GlobalConstants.TAB_HOME_BAR, fragment, true);
+        // UserDashboard.getInstance().pushFragments(GlobalConstants.TAB_HOME_BAR, fragment, true);
     }
 
 

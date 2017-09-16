@@ -1,10 +1,9 @@
 package com.app.creaseart.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -26,21 +25,15 @@ public class Splash extends AppCompatActivity {
             @Override
             public void run() {
 
-                /*if (AppUtils.getUserId(getApplicationContext()).equalsIgnoreCase("")) {
+                if (AppUtils.getUserId(getApplicationContext()).equalsIgnoreCase("")) {
 
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(intent);
                     finish();
                 } else {
-                   *//* Intent intent = new Intent(getApplicationContext(), Dashboard.class);
+                    Intent intent = new Intent(getApplicationContext(), Dashboard.class);
                     startActivity(intent);
-                    finish();*//*
-                }*/
-
-
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
-                finish();
+                    finish();}
             }
         }, 2000);
 

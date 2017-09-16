@@ -5,10 +5,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
-
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
@@ -16,18 +14,14 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import com.app.creaseart.R;
 import com.app.creaseart.aynctask.CommonAsyncTaskHashmap;
@@ -37,14 +31,7 @@ import com.app.creaseart.utils.AppConstant;
 import com.app.creaseart.utils.AppUtils;
 import com.app.creaseart.utils.GPSTracker;
 
-
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 
 public class SignupActivity extends AppCompatActivity implements ApiResponse {
 
@@ -139,12 +126,11 @@ public class SignupActivity extends AppCompatActivity implements ApiResponse {
             /*Toast.makeText(context, "Could not found lat long",
                     Toast.LENGTH_LONG).show();*/
         }
-
     }
 
     private void initViews() {
 
-        text_select_category = (Spinner) findViewById(R.id.text_select_category);
+        text_select_category = (Spinner) findViewById(R.id.spinner_city);
         text_terms = (TextView) findViewById(R.id.text_terms);
 
         edtFirstname = (EditText) findViewById(R.id.edtFirstname);
@@ -172,67 +158,23 @@ public class SignupActivity extends AppCompatActivity implements ApiResponse {
 
     private void setListener() {
 
-
-
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-               /* if (isValidLoginDetails()) {
-                    if (isFreelancer) {
-                        if (!text_select_category.getText().toString().equalsIgnoreCase("")) {
-                            if (checkbox_terms.isChecked()) {
-                                signupUser();
-                            } else {
-                                Toast.makeText(mActivity, "Please agree to our terms & conditions", Toast.LENGTH_SHORT).show();
-                            }
-
-                        } else {
-                            Toast.makeText(getApplicationContext(), R.string.select_city, Toast.LENGTH_SHORT).show();
-                        }
+                if (isValidLoginDetails()) {
+                    if (checkbox_terms.isChecked()) {
+                        signupUser();
                     } else {
-                        if (checkbox_terms.isChecked()) {
-                            signupUser();
-                        } else {
-                            Toast.makeText(mActivity, "Please agree to our terms & conditions", Toast.LENGTH_SHORT).show();
-                        }
-
+                        Toast.makeText(mActivity, "Please agree to our terms and conditions", Toast.LENGTH_SHORT).show();
                     }
-
-                }*/
-            }
-        });
-        text_select_category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                //selectedServiceId = serviceId.get(i);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-        rl_category.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-              /*  Intent intent = new Intent(mActivity, SelctCategoryListActivity.class);
-                startActivityForResult(intent, 511);*/
+                }
             }
         });
 
     }
 
-    /*@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 511 && resultCode == 52) {
-            selectedServiceId = data.getStringExtra("serviceId");
-            selectedserviceName = data.getStringExtra("servicename");
-            text_select_category.setText(selectedserviceName);
-        }
-    }*/
+
     private void clickableText() {
         SpannableString ss = new SpannableString("I agree with terms and condition and privacy policy");
         ClickableSpan clickableSpan = new ClickableSpan() {
@@ -273,21 +215,18 @@ public class SignupActivity extends AppCompatActivity implements ApiResponse {
         text_terms.setHighlightColor(Color.TRANSPARENT);
 
     }
+
     private void signupUser() {
 
-        //  http://onlineworkpro.com/trendi/api/register.php?name=aa&mobile=7895689562&password=123456&user_type=1
-        // &country_id=3&category_id=2,3&address=aaa&email=aaa@gmail.com&gcm=sdasd&device_type=1&imei=sss&gen_type=male
-        //  user_type 2 for user and 3 for freelancer
-
-
-
+        //  http://dev.stackmindz.com/creaseart/api/register.php?name=test&mobile=1234567890&address=adadas
+        // &password=123456&email=amitg@gmail.com&gcm=23123&imei=dasda&device_type=1&user_type=&state=&locality=&city=&zone=
 
         if (AppUtils.isNetworkAvailable(mActivity)) {
 
-            String url = JsonApiHelper.BASEURL + JsonApiHelper.REGISTER + "name=" + edtFirstname.getText().toString() + edtLastname.getText().toString()
+            String url = JsonApiHelper.BASEURL + JsonApiHelper.REGISTER + "name=" + edtFirstname.getText().toString()
                     + "&mobile=" + edtMobileno.getText().toString() + "&password=" + edtPassword.getText().toString()
-                    + "&service_id=" + selectedServiceId + "&address=" + edtAddress.getText().toString() + "&email=" + edtEmailId.getText().toString() + "&gcm=" + AppUtils.getGcmRegistrationKey(mActivity)
-                    + "&device_type=" + AppConstant.DEVICE_TYPE + "&imei=" + "" + "&latitude=" + latitude + "&longitude=" + longitude;
+                    + "&email=" + edtEmailId.getText().toString() + "&gcm=" + AppUtils.getGcmRegistrationKey(mActivity)
+                    + "&device_type=" + AppConstant.DEVICE_TYPE + "&imei=" + "";
 
             url = url.replace(" ", "%20");
 
@@ -305,12 +244,10 @@ public class SignupActivity extends AppCompatActivity implements ApiResponse {
         String emailaddress = edtEmailId.getText().toString();
         String password = edtPassword.getText().toString();
         String first_name = edtFirstname.getText().toString();
-        String last_name = edtLastname.getText().toString();
         String mobileno = edtMobileno.getText().toString();
 
 
-        if (!first_name.equalsIgnoreCase("") && !emailaddress.equalsIgnoreCase("")
-                && !last_name.equalsIgnoreCase("") && !mobileno.equalsIgnoreCase("") && !password.equalsIgnoreCase("")
+        if (!first_name.equalsIgnoreCase("") && !emailaddress.equalsIgnoreCase("") && !mobileno.equalsIgnoreCase("") && !password.equalsIgnoreCase("")
                 ) {
 
             if (!AppUtils.isEmailValid(emailaddress.trim())) {
@@ -327,7 +264,7 @@ public class SignupActivity extends AppCompatActivity implements ApiResponse {
             if (first_name.equalsIgnoreCase("")) {
                 isValidLoginDetails = false;
                 Toast.makeText(getApplicationContext(), R.string.enter_name, Toast.LENGTH_SHORT).show();
-            }  else if (emailaddress.equalsIgnoreCase("")) {
+            } else if (emailaddress.equalsIgnoreCase("")) {
                 isValidLoginDetails = false;
                 Toast.makeText(getApplicationContext(), R.string.enter_email, Toast.LENGTH_SHORT).show();
             } else if (mobileno.equalsIgnoreCase("")) {
@@ -361,22 +298,10 @@ public class SignupActivity extends AppCompatActivity implements ApiResponse {
                     AppUtils.setUseremail(mActivity, data.getString("Email"));
                     AppUtils.setUserMobile(mActivity, data.getString("Mobile"));
                     AppUtils.setUserImage(mActivity, data.getString("ProfilePic"));
-                    if (data.has("services")) {
-                        AppUtils.setCategories(mActivity, data.getJSONArray("services").toString());
-                    }
-                    // AppUtils.setCategoriesId(mActivity, data.getString("CategoryId"));
-                    //  AppUtils.setCompanyName(mActivity, data.getString("CompanyName"));
-                    //AppUtils.setCountryId(mActivity, data.getString("CountryId"));
 
-//                    if (isFreelancer){
-//                        Intent intent = new Intent(mActivity, VendorDashboard.class);
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        startActivity(intent);
-//                    }else {
-//                        Intent intent = new Intent(mActivity, UserDashboard.class);
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        startActivity(intent);
-//                    }
+                    Intent intent = new Intent(mActivity, Dashboard.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
 
                 } else {
                     Toast.makeText(mActivity, commandResult.getString("message"), Toast.LENGTH_SHORT).show();

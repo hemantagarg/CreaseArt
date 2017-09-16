@@ -22,9 +22,6 @@
             android:padding="@dimen/dp20">
 
 
-
-
-
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -41,7 +38,6 @@
                     android:textSize="@dimen/text_size_14" />
 
             </android.support.design.widget.TextInputLayout>
-
 
 
             <android.support.design.widget.TextInputLayout
@@ -61,6 +57,7 @@
                     android:textSize="@dimen/text_size_14" />
 
             </android.support.design.widget.TextInputLayout>
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -78,9 +75,11 @@
                     android:textSize="@dimen/text_size_14" />
 
             </android.support.design.widget.TextInputLayout>
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_marginTop="@dimen/dp5">
 
                 <EditText
@@ -95,18 +94,14 @@
             </android.support.design.widget.TextInputLayout>
 
 
-
-
-
-
             <RelativeLayout
                 android:id="@+id/rl_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-              >
+                android:visibility="gone">
 
                 <Spinner
-                    android:id="@+id/text_select_category"
+                    android:id="@+id/spinner_city"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:layout_margin="@dimen/dp10"
@@ -118,7 +113,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_below="@+id/text_select_category"
+                    android:layout_below="@+id/spinner_city"
                     android:background="@color/view_color" />
 
             </RelativeLayout>
@@ -151,15 +146,15 @@
                     android:id="@+id/checkbox_terms"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:layout_centerVertical="true"
-                    />
+                    android:layout_marginTop="10dp" />
 
-                <TextView android:id="@+id/text_terms"
+                <TextView
+                    android:id="@+id/text_terms"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/checkbox_terms"
                     android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/checkbox_terms"
                     android:text="I agree with terms and condition and privacy policy"
 
                     android:textSize="@dimen/text_size_12" />
@@ -173,6 +168,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/dp20"
         android:background="@drawable/button_selector"
         android:text="Signup"
         android:textColor="@color/white"

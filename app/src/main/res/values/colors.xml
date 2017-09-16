@@ -4,11 +4,17 @@
     <color name="colorPrimaryDark">#B52421</color>
     <color name="colorAccent">#FF4081</color>
     <color name="appcolor">#B52421</color>
-
+    <color name="text_selected_bg">#f4f4f4</color>
     <color name="view_color">#80979797</color>
     <color name="layout_bg">#f6f7fb</color>
     <color name="textcolordark">#444444</color>
     <color name="white">#ffffff</color>
+    <color name="serviceRequest_color">#c14d34</color>
+    <color name="offer_color">#69cb9b</color>
+    <color name="how_it_works_color">#2565b5</color>
+    <color name="reedem_color">#8137cb</color>
+    <color name="package_color">#3e99d7</color>
+    <color name="wallet_color">#d72670</color>
     <color name="text_color_black">#000000</color>
     <color name="text_hint_color">#777777</color>
     <color name="tab_indicator_color">#F84713</color>

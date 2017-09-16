@@ -119,14 +119,6 @@ public class CommonAsyncTaskHashmap {
                 GlobalConstants.ONE_SECOND_DELAY * 40, 0,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-// Adding request to request queue
-        queue.add(mJsonRequest);
-
-        mJsonRequest.setRetryPolicy(new DefaultRetryPolicy(
-                GlobalConstants.ONE_SECOND_DELAY * 40, 0,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-
     }
 
     public void getqueryHashMap(String url, final HashMap<String, String> jsonBody) {

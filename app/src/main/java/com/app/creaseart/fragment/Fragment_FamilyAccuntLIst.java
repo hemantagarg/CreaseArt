@@ -1,6 +1,6 @@
 package com.app.creaseart.fragment;
 
-import android.content.Context;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,14 +13,14 @@ import android.widget.Toast;
 import com.app.creaseart.R;
 import com.app.creaseart.activities.Dashboard;
 import com.app.creaseart.adapter.AdapterFamilyList;
-import com.app.creaseart.adapter.AdapterNotification;
 import com.app.creaseart.aynctask.CommonAsyncTaskHashmap;
+import com.app.creaseart.iclasses.HeaderViewManager;
 import com.app.creaseart.interfaces.ApiResponse;
 import com.app.creaseart.interfaces.ConnectionDetector;
+import com.app.creaseart.interfaces.HeaderViewClickListener;
 import com.app.creaseart.interfaces.JsonApiHelper;
 import com.app.creaseart.interfaces.OnCustomItemClicListener;
 import com.app.creaseart.models.ModelFamiyMember;
-import com.app.creaseart.models.ModelNotification;
 import com.app.creaseart.utils.AppUtils;
 import com.google.gson.Gson;
 
@@ -38,7 +38,7 @@ public class Fragment_FamilyAccuntLIst extends BaseFragment implements ApiRespon
 
     private RecyclerView list_request;
     private Bundle b;
-    private Context context;
+    private Activity context;
     private AdapterFamilyList adapterFamilyList;
     private ModelFamiyMember modelFamiyMember;
     private ArrayList<ModelFamiyMember> arrayList;
@@ -52,6 +52,7 @@ public class Fragment_FamilyAccuntLIst extends BaseFragment implements ApiRespon
 
     public static Fragment_FamilyAccuntLIst fragment_familyAccuntLIst;
     private final String TAG = Fragment_FamilyAccuntLIst.class.getSimpleName();
+    View view_about;
 
     public static Fragment_FamilyAccuntLIst getInstance() {
         if (fragment_familyAccuntLIst == null)
@@ -64,7 +65,7 @@ public class Fragment_FamilyAccuntLIst extends BaseFragment implements ApiRespon
                              Bundle savedInstanceState) {
         // Inflate the layout for this com.app.justclap.fragment
 
-        View view_about = inflater.inflate(R.layout.fragment_familylist, container, false);
+        view_about = inflater.inflate(R.layout.fragment_familylist, container, false);
         context = getActivity();
         arrayList = new ArrayList<>();
         b = getArguments();
@@ -72,6 +73,41 @@ public class Fragment_FamilyAccuntLIst extends BaseFragment implements ApiRespon
         return view_about;
     }
 
+    /*******************************************************************
+     * Function name - manageHeaderView
+     * Description - manage the initialization, visibility and click
+     * listener of view fields on Header view
+     *******************************************************************/
+    private void manageHeaderView() {
+
+        Dashboard.getInstance().manageHeaderVisibitlity(false);
+        HeaderViewManager.getInstance().InitializeHeaderView(null, view_about, manageHeaderClick());
+        HeaderViewManager.getInstance().setHeading(true, "Family Members");
+        HeaderViewManager.getInstance().setLeftSideHeaderView(true, R.drawable.left_arrow);
+        HeaderViewManager.getInstance().setRightSideHeaderView(false, R.drawable.left_arrow);
+        HeaderViewManager.getInstance().setLogoView(false);
+        HeaderViewManager.getInstance().setProgressLoader(false, false);
+
+    }
+
+    /*****************************************************************************
+     * Function name - manageHeaderClick
+     * Description - manage the click on the left and right image view of header
+     *****************************************************************************/
+    private HeaderViewClickListener manageHeaderClick() {
+        return new HeaderViewClickListener() {
+            @Override
+            public void onClickOfHeaderLeftView() {
+                AppUtils.showLog(TAG, "onClickOfHeaderLeftView");
+                context.onBackPressed();
+            }
+
+            @Override
+            public void onClickOfHeaderRightView() {
+                //   Toast.makeText(mActivity, "Coming Soon", Toast.LENGTH_SHORT).show();
+            }
+        };
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -85,7 +121,7 @@ public class Fragment_FamilyAccuntLIst extends BaseFragment implements ApiRespon
         list_request.setLayoutManager(layoutManager);
         arrayList = new ArrayList<>();
         setlistener();
-
+        manageHeaderView();
         getServicelistRefresh();
     }
 
@@ -167,7 +203,6 @@ public class Fragment_FamilyAccuntLIst extends BaseFragment implements ApiRespon
     }
 
 
-
     private void getServicelistRefresh() {
         Dashboard.getInstance().setProgressLoader(true);
         try {
@@ -193,7 +228,7 @@ public class Fragment_FamilyAccuntLIst extends BaseFragment implements ApiRespon
             if (position == 1) {
                 Dashboard.getInstance().setProgressLoader(false);
                 JSONObject commandResult = jObject.getJSONObject("commandResult");
-                Gson gson=new Gson();
+                Gson gson = new Gson();
                 if (commandResult.getString("success").equalsIgnoreCase("1")) {
 
                     JSONObject data = commandResult.getJSONObject("data");
@@ -204,7 +239,7 @@ public class Fragment_FamilyAccuntLIst extends BaseFragment implements ApiRespon
                         JSONObject jo = array.getJSONObject(i);
 
 
-                      //  modelFamiyMember = new ModelFamiyMember();
+                        //  modelFamiyMember = new ModelFamiyMember();
                         ModelFamiyMember modelFamiyMember = null;
                         try {
                             modelFamiyMember = gson.fromJson(array.getJSONObject(i).toString(), ModelFamiyMember.class);
