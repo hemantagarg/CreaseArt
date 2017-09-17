@@ -46,7 +46,7 @@ public class AdapterCoupans extends RecyclerView.Adapter<RecyclerView.ViewHolder
         RecyclerView.ViewHolder vh;
         if (viewType == VIEW_ITEM) {
             View v = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.row_package, parent, false);
+                    R.layout.row_coupans, parent, false);
 
             vh = new CustomViewHolder(v);
         } else {
