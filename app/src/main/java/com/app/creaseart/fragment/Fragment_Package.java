@@ -1,8 +1,10 @@
 package com.app.creaseart.fragment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -58,6 +60,7 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
     private AdapterPackages adapterPackages;
     private ModelPackage modelPackage;
     private ArrayList<ModelPackage> arrayList;
+    private static final int REQUEST_CODE_PAYUMONEY = 11;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ConnectionDetector cd;
     private int pastVisiblesItems, visibleItemCount, totalItemCount;
@@ -238,7 +241,7 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
 
                 if (totalPrice > 0) {
                     Intent intent = new Intent(context, PaymentGateway.class);
-                    intent.putExtra("totalamount", finalPrice);
+                    intent.putExtra("totalamount", "1");
                     intent.putExtra("name", AppUtils.getUserName(context));
                     intent.putExtra("address", "");
                     intent.putExtra("emailid", AppUtils.getUseremail(context));
@@ -246,7 +249,7 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
                     intent.putExtra("orderid", AppUtils.getUserId(context));
                     intent.putExtra("city", "");
                     intent.putExtra("state", "");
-                    startActivity(intent);
+                    startActivityForResult(intent, REQUEST_CODE_PAYUMONEY);
                 } else {
                     Toast.makeText(context, "Please select package", Toast.LENGTH_SHORT).show();
                 }
@@ -299,6 +302,49 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_PAYUMONEY) {
+            if (data != null) {
+                Log.e("payumoneyresponse", "**" + data);
+                makePayment(data.getStringExtra("success"), data.getStringExtra("paymentId"));
+            }
+
+        }
+
+    }
+
+    private void makePayment(String payment_status, String transaction_id) {
+        try {
+            if (AppUtils.isNetworkAvailable(context)) {
+                String packages = "";
+                for (int i = 0; i < arrayList.size(); i++) {
+                    if (arrayList.get(i).isSelected()) {
+                        if (packages.equalsIgnoreCase("")) {
+                            packages = arrayList.get(i).getPackageId();
+                        } else {
+                            packages = packages + "," + arrayList.get(i).getPackageId();
+                        }
+                    }
+
+                }
+
+                //http://dev.stackmindz.com/creaseart/api/payment.php?user_id=1&transaction_id=AG565JH078
+                // &total_value=100&promo_code=TEST&package_id=2&payment_status=
+                String url = JsonApiHelper.BASEURL + JsonApiHelper.PAYMENT + "user_id=" + AppUtils.getUserId(context) + "&transaction_id="
+                        + transaction_id + "&total_value=" + finalPrice + "&promo_code=" + promocode + "&package_id=" + packages + "&payment_status=" + payment_status;
+                new CommonAsyncTaskHashmap(1, context, this).getqueryJsonbject(url, null, Request.Method.GET);
+            } else {
+                Toast.makeText(context, context.getResources().getString(R.string.message_network_problem), Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     private void getServicelistRefresh() {
         Dashboard.getInstance().setProgressLoader(true);
         try {
@@ -315,6 +361,27 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void showPaymentPopup() {
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                context);
+
+        alertDialog.setMessage("Payment is Successful");
+
+        alertDialog.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Dashboard.getInstance().pushFragments(GlobalConstants.TAB_HOME_BAR, new Fragment_Home(), true);
+                    }
+
+                });
+
+
+        alertDialog.show();
+
+
     }
 
 
@@ -358,21 +425,33 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
                     }
                 }
 
+            } else if (position == 11) {
+
+                JSONObject commandResult = jObject
+                        .getJSONObject("commandResult");
+                if (commandResult.getString("success").equalsIgnoreCase("1")) {
+
+                    showPaymentPopup();
+                } else {
+                    Toast.makeText(context,
+                            commandResult.getString("message"),
+                            Toast.LENGTH_LONG).show();
+
+                }
+
             } else if (position == 2) {
 
                 JSONObject commandResult = jObject.getJSONObject("commandResult");
                 if (commandResult.getString("success").equalsIgnoreCase("1")) {
 
                     JSONObject data = commandResult.getJSONObject("data");
-
                     finalPrice = data.getString("TotalValue");
-
                     isPromoApplied = true;
                     text_promocode.setText("Promocode Applied Sucessfully");
                     String total = totalPrice + "";
-                    SpannableString spannable = new SpannableString(total);
+                    SpannableString spannable = new SpannableString(total + finalPrice);
                     spannable.setSpan(new StrikethroughSpan(), 0, total.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                    text_price.setText(spannable + finalPrice);
+                    text_price.setText(spannable);
 
                 } else {
                     Toast.makeText(context, commandResult.getString("message"), Toast.LENGTH_SHORT).show();
@@ -394,7 +473,6 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
                         serviceDetail.setPackageId(jo.getString("packageId"));
                         serviceDetail.setPackageName(jo.getString("packageName"));
                         serviceDetail.setPackagePrice(jo.getString("packagePrice"));
-
 
                         modelPackage.setRowType(1);
 

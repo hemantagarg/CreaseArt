@@ -294,6 +294,7 @@ public class SignupActivity extends AppCompatActivity implements ApiResponse {
 
                     AppUtils.setUserId(mActivity, data.getString("UserId"));
                     AppUtils.setUserRole(mActivity, data.getString("UserType"));
+                    AppUtils.setZoneId(mActivity, data.getString("ZoneId"));
                     AppUtils.setUserName(mActivity, data.getString("Name"));
                     AppUtils.setUseremail(mActivity, data.getString("Email"));
                     AppUtils.setUserVerificationCode(mActivity, data.getString("unique_code"));

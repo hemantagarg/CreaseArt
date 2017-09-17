@@ -200,7 +200,6 @@ public class PaymentGateway extends Activity {
             String hex = Integer.toHexString(0xFF & bytes[i]);
             if (hex.length() == 1) {
                 sb.append('0');
-
             }
             sb.append(hex);
         }

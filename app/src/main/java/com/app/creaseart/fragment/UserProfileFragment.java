@@ -277,7 +277,7 @@ public class UserProfileFragment extends BaseFragment implements ApiResponse {
         user_name.setText(AppUtils.getUserName(getContext()));
         edtmobilenumber = (EditText) view.findViewById(R.id.edtmobilenumber);
         text_code = (TextView) view.findViewById(R.id.text_code);
-        text_code.setText(AppUtils.getUserCode(mActivity));
+        text_code.setText(AppUtils.getUserVerificationCode(mActivity));
         edtmobilenumber.setText(AppUtils.getUserMobile(getContext()));
         edtEmailId = (EditText) view.findViewById(R.id.edtEmailId);
         spinner_city = (Spinner) view.findViewById(R.id.spinner_city);
@@ -626,7 +626,7 @@ public class UserProfileFragment extends BaseFragment implements ApiResponse {
 
                     Toast.makeText(mActivity, commandResult.getString("message"), Toast.LENGTH_SHORT).show();
                     JSONObject data = commandResult.getJSONObject("data");
-
+                    AppUtils.setZoneId(mActivity, data.getString("ZoneId"));
                     mActivity.onBackPressed();
 
                 } else {

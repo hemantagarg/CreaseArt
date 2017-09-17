@@ -23,6 +23,7 @@ public interface JsonApiHelper {
     String MYBOOKING = "ongoingBooking.php?";
     String CHANGEPASSWORD = "change-password.php?";
     String PACKAGES = "package.php";
+    String PAYMENT = "payment.php?";
     String ACTIVEPACKAGE = "activepackage.php?";
     String FAMILYMEMBERLIST = "familymemberlist.php?";
     String SEARCHMEMBER = "searchMember.php?";
@@ -31,5 +32,6 @@ public interface JsonApiHelper {
     String APPLYCOUPON = "applycoupon.php?";
     String COUPANS = "offers.php?";
     String CANCELREQUEST = "cancelServiceRequest.php?";
+    String SENDSERVICEREQUEST = "sendServiceRequest.php?";
 
 }

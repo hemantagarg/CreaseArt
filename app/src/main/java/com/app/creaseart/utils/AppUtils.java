@@ -524,6 +524,37 @@ public class AppUtils {
         return "";
     }
 
+    public static void setZoneId(Context context, String image) {
+
+        try {
+            SharedPreferences preferences = PreferenceManager
+                    .getDefaultSharedPreferences(context);
+            SharedPreferences.Editor editor = preferences.edit();
+
+            editor.putString("zoneid", image);
+
+            editor.commit();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
+
+    public static String getZoneId(Context context) {
+
+        try {
+            SharedPreferences preferences = PreferenceManager
+                    .getDefaultSharedPreferences(context);
+            return preferences.getString("zoneid", "");
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+
     public static void setUniqueToken(Context context, String image) {
 
         try {

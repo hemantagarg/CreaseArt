@@ -154,7 +154,19 @@ public class Fragment_ChangePassword extends BaseFragment implements ApiResponse
 
     @Override
     public void onPostSuccess(int method, JSONObject response) {
-
+        try {
+            if (method == 1) {
+                JSONObject commandResult = response.getJSONObject("commandResult");
+                if (commandResult.getString("success").equalsIgnoreCase("1")) {
+                    Toast.makeText(context, commandResult.getString("message"), Toast.LENGTH_SHORT).show();
+                    context.onBackPressed();
+                } else {
+                    Toast.makeText(context, commandResult.getString("message"), Toast.LENGTH_SHORT).show();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

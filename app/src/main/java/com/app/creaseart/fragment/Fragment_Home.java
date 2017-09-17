@@ -2,7 +2,6 @@ package com.app.creaseart.fragment;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -17,7 +16,6 @@ import android.widget.Toast;
 
 import com.app.creaseart.R;
 import com.app.creaseart.activities.Dashboard;
-import com.app.creaseart.activities.PaymentGateway;
 import com.app.creaseart.aynctask.CommonAsyncTaskHashmap;
 import com.app.creaseart.iclasses.HeaderViewManager;
 import com.app.creaseart.interfaces.ApiResponse;
@@ -194,11 +192,19 @@ public class Fragment_Home extends BaseFragment implements ApiResponse, OnCustom
 
                 Dashboard.getInstance().pushFragments(GlobalConstants.TAB_HOME_BAR, new Fragment_Package(), true);
             }
-        });  rlOffers.setOnClickListener(new View.OnClickListener() {
+        });
+        rlOffers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 Dashboard.getInstance().pushFragments(GlobalConstants.TAB_HOME_BAR, new Fragment_Coupans(), true);
+            }
+        });
+        rlServiceRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Dashboard.getInstance().pushFragments(GlobalConstants.TAB_HOME_BAR, new Fragment_ServiceRequest(), true);
             }
         });
 
