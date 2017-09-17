@@ -1,18 +1,30 @@
 package com.app.creaseart.fragment;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.app.creaseart.R;
 import com.app.creaseart.activities.Dashboard;
+import com.app.creaseart.activities.PaymentGateway;
 import com.app.creaseart.adapter.AdapterPackages;
 import com.app.creaseart.aynctask.CommonAsyncTaskHashmap;
 import com.app.creaseart.iclasses.HeaderViewManager;
@@ -30,6 +42,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import static android.R.attr.id;
 
 /**
  * Created by admin on 06-01-2016.
@@ -51,6 +65,9 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
     private boolean loading = true;
     private String maxlistLength = "";
     View view_about;
+    private RelativeLayout rl_price;
+    private TextView text_price, text_paynow, text_promocode;
+    private int totalPrice = 0;
 
     public static Fragment_Package fragmentPackage;
     private final String TAG = Fragment_Package.class.getSimpleName();
@@ -66,7 +83,7 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
                              Bundle savedInstanceState) {
         // Inflate the layout for this com.app.justclap.fragment
 
-        view_about = inflater.inflate(R.layout.fragment_notification, container, false);
+        view_about = inflater.inflate(R.layout.fragment_package, container, false);
         context = getActivity();
         arrayList = new ArrayList<>();
         b = getArguments();
@@ -82,6 +99,11 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout1);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorPrimaryDark);
         list_request = (RecyclerView) view.findViewById(R.id.list_request);
+        rl_price = (RelativeLayout) view.findViewById(R.id.rl_price);
+        text_paynow = (TextView) view.findViewById(R.id.text_paynow);
+        text_price = (TextView) view.findViewById(R.id.text_price);
+        text_promocode = (TextView) view.findViewById(R.id.text_promocode);
+
         layoutManager = new GridLayoutManager(context, 2);
         list_request.setLayoutManager(layoutManager);
         arrayList = new ArrayList<>();
@@ -89,6 +111,71 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
         manageHeaderView();
         getServicelistRefresh();
     }
+
+    private void applyCode(String text) {
+        try {
+            if (AppUtils.isNetworkAvailable(context)) {
+                // http://dev.stackmindz.com/creaseart/api/addMemeber.php?unique_code=CO080071&member_id=2&user_id=1
+                String url = JsonApiHelper.BASEURL + JsonApiHelper.ADDMEMBER + "user_id=" + AppUtils.getUserId(context) + "&unique_code=" + text.trim() + "&member_id=" + id;
+                new CommonAsyncTaskHashmap(2, context, this).getqueryJsonbject(url, null, Request.Method.GET);
+
+            } else {
+                Toast.makeText(context, context.getResources().getString(R.string.message_network_problem), Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Open dialog for the add member
+     */
+    private void openAddDialog() {
+        try {
+            final Dialog dialog = new Dialog(context);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+            // inflate the layout dialog_layout.xml and set it as contentView
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View view = inflater.inflate(R.layout.promocode_dialog, null, false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setContentView(view);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+            RelativeLayout cross_img_rel = (RelativeLayout) view.findViewById(R.id.cross_img_rel);
+            final EditText edt_comment = (EditText) view.findViewById(R.id.edt_comment);
+            Button btnSubmit = (Button) view.findViewById(R.id.btnSubmit);
+
+            btnSubmit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if (!edt_comment.getText().toString().equalsIgnoreCase("")) {
+                        applyCode(edt_comment.getText().toString());
+                        dialog.dismiss();
+                    } else {
+                        edt_comment.setError("Please enter PromoCode");
+                        edt_comment.requestFocus();
+                    }
+
+                }
+            });
+
+            cross_img_rel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            if (dialog != null && !dialog.isShowing()) {
+                dialog.show();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, " Exception error : " + e);
+        }
+    }
+
 
     /*******************************************************************
      * Function name - manageHeaderView
@@ -99,7 +186,7 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
 
         Dashboard.getInstance().manageHeaderVisibitlity(false);
         HeaderViewManager.getInstance().InitializeHeaderView(null, view_about, manageHeaderClick());
-        HeaderViewManager.getInstance().setHeading(true, "Active Packages");
+        HeaderViewManager.getInstance().setHeading(true, "Packages");
         HeaderViewManager.getInstance().setLeftSideHeaderView(true, R.drawable.left_arrow);
         HeaderViewManager.getInstance().setRightSideHeaderView(false, R.drawable.left_arrow);
         HeaderViewManager.getInstance().setLogoView(false);
@@ -130,26 +217,75 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
                 getServicelistRefresh();
             }
         });
 
+        text_promocode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                openAddDialog();
+            }
+        });
+        text_paynow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (totalPrice > 0) {
+                    Intent intent = new Intent(context, PaymentGateway.class);
+                    intent.putExtra("totalamount", totalPrice + "");
+                    intent.putExtra("name", AppUtils.getUserName(context));
+                    intent.putExtra("address", "");
+                    intent.putExtra("emailid", AppUtils.getUseremail(context));
+                    intent.putExtra("mobileno", AppUtils.getUserMobile(context));
+                    intent.putExtra("orderid", "66665");
+                    intent.putExtra("city", "");
+                    intent.putExtra("state", "");
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(context, "Please select package", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
     public void onItemClickListener(int position, int flag) {
         if (flag == 1) {
-
             Fragment_Bundle fragment_bundle = new Fragment_Bundle();
             Bundle bundle = new Bundle();
             bundle.putString("array", arrayList.get(position).getJsonArray());
             fragment_bundle.setArguments(bundle);
             Dashboard.getInstance().pushFragments(GlobalConstants.TAB_HOME_BAR, fragment_bundle, true);
+        } else if (flag == 2) {
+            if (arrayList.get(position).isSelected()) {
+                arrayList.get(position).setSelected(false);
+                addPackagePrice(arrayList.get(position).getPackagePrice(), false);
+            } else {
+                addPackagePrice(arrayList.get(position).getPackagePrice(), true);
+                arrayList.get(position).setSelected(true);
+            }
+            adapterPackages.notifyDataSetChanged();
+
+
+            if (rl_price.getVisibility() == View.GONE) {
+                rl_price.setVisibility(View.VISIBLE);
+            }
+
         }
     }
 
+
+    private void addPackagePrice(String price, boolean add) {
+        if (add) {
+            totalPrice = totalPrice + Integer.parseInt(price);
+            text_price.setText(totalPrice + "");
+        } else {
+            totalPrice = totalPrice - Integer.parseInt(price);
+            text_price.setText(totalPrice + "");
+        }
+    }
 
     private void getServicelistRefresh() {
         Dashboard.getInstance().setProgressLoader(true);
@@ -191,6 +327,7 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
                         serviceDetail.setJsonArray(jo.toString());
                         serviceDetail.setPackageId(jo.getString("packageId"));
                         serviceDetail.setPackageName(jo.getString("packageName"));
+                        serviceDetail.setSelected(false);
                         serviceDetail.setPackagePrice(jo.getString("packagePrice"));
                         serviceDetail.setRowType(1);
 

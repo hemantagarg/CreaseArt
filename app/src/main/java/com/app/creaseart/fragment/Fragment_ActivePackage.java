@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.app.creaseart.R;
 import com.app.creaseart.activities.Dashboard;
-import com.app.creaseart.adapter.AdapterPackages;
+import com.app.creaseart.adapter.AdapterActivePackages;
 import com.app.creaseart.aynctask.CommonAsyncTaskHashmap;
 import com.app.creaseart.iclasses.HeaderViewManager;
 import com.app.creaseart.interfaces.ApiResponse;
@@ -40,7 +40,7 @@ public class Fragment_ActivePackage extends BaseFragment implements ApiResponse,
     private RecyclerView list_request;
     private Bundle b;
     private Activity context;
-    private AdapterPackages adapterPackages;
+    private AdapterActivePackages adapterPackages;
     private ModelPackage modelPackage;
     private ArrayList<ModelPackage> arrayList;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -196,7 +196,7 @@ public class Fragment_ActivePackage extends BaseFragment implements ApiResponse,
 
                         arrayList.add(serviceDetail);
                     }
-                    adapterPackages = new AdapterPackages(getActivity(), this, arrayList);
+                    adapterPackages = new AdapterActivePackages(getActivity(), this, arrayList);
                     list_request.setAdapter(adapterPackages);
 
                     if (mSwipeRefreshLayout != null) {

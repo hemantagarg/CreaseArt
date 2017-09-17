@@ -12,7 +12,7 @@ public class ModelPackage implements Serializable {
     //private Item[] item;
     private String itemAttribute;
     private String itemName;
-
+    private boolean isSelected = false;
     private String itemPrice;
     private String jsonArray;
 
@@ -167,5 +167,13 @@ public class ModelPackage implements Serializable {
 
     public void setJsonArray(String jsonArray) {
         this.jsonArray = jsonArray;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }

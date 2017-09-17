@@ -49,6 +49,12 @@
             android:windowSoftInputMode="stateHidden"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".activities.PaymentGateway"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+
 
         <service android:name=".MyFirebaseMessagingService">
             <intent-filter>
