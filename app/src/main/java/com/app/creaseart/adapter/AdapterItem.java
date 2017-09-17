@@ -3,7 +3,6 @@ package com.app.creaseart.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +20,7 @@ import java.util.ArrayList;
 /**
  * Created by admin on 26-11-2015.
  */
-public class AdapterPackages extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AdapterItem extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     ArrayList<ModelPackage> detail;
     Context mContext;
@@ -30,7 +29,7 @@ public class AdapterPackages extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private final int VIEW_PROG = 0;
 
 
-    public AdapterPackages(Context context, OnCustomItemClicListener lis, ArrayList<ModelPackage> list) {
+    public AdapterItem(Context context, OnCustomItemClicListener lis, ArrayList<ModelPackage> list) {
 
         this.detail = list;
         this.mContext = context;
@@ -45,7 +44,7 @@ public class AdapterPackages extends RecyclerView.Adapter<RecyclerView.ViewHolde
         RecyclerView.ViewHolder vh;
         if (viewType == VIEW_ITEM) {
             View v = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.row_package, parent, false);
+                    R.layout.row_bundle, parent, false);
 
             vh = new CustomViewHolder(v);
         } else {
@@ -77,15 +76,8 @@ public class AdapterPackages extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             ModelPackage m1 = (ModelPackage) detail.get(i);
 
-            ((CustomViewHolder) holder).text_name.setText(m1.getPackageName());
-            ((CustomViewHolder) holder).text_date.setText(m1.getPackagePrice());
-
-            ((CustomViewHolder) holder).card_view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    listener.onItemClickListener(i, 1);
-                }
-            });
+            ((CustomViewHolder) holder).text_name.setText(m1.getItemName());
+            ((CustomViewHolder) holder).text_date.setText(m1.getItemPrice());
 
         } else {
             ((ProgressViewHolder) holder).progressBar.setIndeterminate(true);
@@ -102,7 +94,7 @@ public class AdapterPackages extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView text_name, text_message, text_date;
         ImageView image_viewers;
-        CardView card_view;
+
 
         public CustomViewHolder(View view) {
             super(view);
@@ -111,7 +103,7 @@ public class AdapterPackages extends RecyclerView.Adapter<RecyclerView.ViewHolde
             this.text_name = (TextView) view.findViewById(R.id.text_name);
             this.text_message = (TextView) view.findViewById(R.id.text_message);
             this.text_date = (TextView) view.findViewById(R.id.text_date);
-            this.card_view = (CardView) view.findViewById(R.id.card_view);
+
         }
 
         @Override

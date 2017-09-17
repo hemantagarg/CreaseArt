@@ -1,10 +1,12 @@
 package com.app.creaseart.models;
 
+import java.io.Serializable;
+
 /**
  * Created by hemanta on 29-07-2017.
  */
 
-public class ModelPackage {
+public class ModelPackage implements Serializable {
     private String bundleUnit;
 
     //private Item[] item;
@@ -12,48 +14,42 @@ public class ModelPackage {
     private String itemName;
 
     private String itemPrice;
+    private String jsonArray;
 
     private String itemId;
 
-    public String getItemAttribute ()
-    {
+    public String getItemAttribute() {
         return itemAttribute;
     }
 
-    public void setItemAttribute (String itemAttribute)
-    {
+    public void setItemAttribute(String itemAttribute) {
         this.itemAttribute = itemAttribute;
     }
 
-    public String getItemName ()
-    {
+    public String getItemName() {
         return itemName;
     }
 
-    public void setItemName (String itemName)
-    {
+    public void setItemName(String itemName) {
         this.itemName = itemName;
     }
 
-    public String getItemPrice ()
-    {
+    public String getItemPrice() {
         return itemPrice;
     }
 
-    public void setItemPrice (String itemPrice)
-    {
+    public void setItemPrice(String itemPrice) {
         this.itemPrice = itemPrice;
     }
 
-    public String getItemId ()
-    {
+    public String getItemId() {
         return itemId;
     }
 
-    public void setItemId (String itemId)
-    {
+    public void setItemId(String itemId) {
         this.itemId = itemId;
     }
+
     private String bundlePrice;
 
     private String bundleId;
@@ -62,13 +58,11 @@ public class ModelPackage {
 
     private String bundleColor;
 
-    public String getBundleUnit ()
-    {
+    public String getBundleUnit() {
         return bundleUnit;
     }
 
-    public void setBundleUnit (String bundleUnit)
-    {
+    public void setBundleUnit(String bundleUnit) {
         this.bundleUnit = bundleUnit;
     }
 
@@ -82,70 +76,59 @@ public class ModelPackage {
         this.item = item;
     }*/
 
-    public String getBundlePrice ()
-    {
+    public String getBundlePrice() {
         return bundlePrice;
     }
 
-    public void setBundlePrice (String bundlePrice)
-    {
+    public void setBundlePrice(String bundlePrice) {
         this.bundlePrice = bundlePrice;
     }
 
-    public String getBundleId ()
-    {
+    public String getBundleId() {
         return bundleId;
     }
 
-    public void setBundleId (String bundleId)
-    {
+    public void setBundleId(String bundleId) {
         this.bundleId = bundleId;
     }
 
-    public String getBundleName ()
-    {
+    public String getBundleName() {
         return bundleName;
     }
 
-    public void setBundleName (String bundleName)
-    {
+    public void setBundleName(String bundleName) {
         this.bundleName = bundleName;
     }
 
-    public String getBundleColor ()
-    {
+    public String getBundleColor() {
         return bundleColor;
     }
 
-    public void setBundleColor (String bundleColor)
-    {
+    public void setBundleColor(String bundleColor) {
         this.bundleColor = bundleColor;
     }
+
     private String packagePrice;
 
     private String packageName;
 
-  //  private Bundle[] bundle;
+    //  private Bundle[] bundle;
 
     private String packageId;
 
-    public String getPackagePrice ()
-    {
+    public String getPackagePrice() {
         return packagePrice;
     }
 
-    public void setPackagePrice (String packagePrice)
-    {
+    public void setPackagePrice(String packagePrice) {
         this.packagePrice = packagePrice;
     }
 
-    public String getPackageName ()
-    {
+    public String getPackageName() {
         return packageName;
     }
 
-    public void setPackageName (String packageName)
-    {
+    public void setPackageName(String packageName) {
         this.packageName = packageName;
     }
 /*
@@ -159,13 +142,11 @@ public class ModelPackage {
         this.bundle = bundle;
     }*/
 
-    public String getPackageId ()
-    {
+    public String getPackageId() {
         return packageId;
     }
 
-    public void setPackageId (String packageId)
-    {
+    public void setPackageId(String packageId) {
         this.packageId = packageId;
     }
 
@@ -180,4 +161,11 @@ public class ModelPackage {
 
     private int rowType = 0;
 
+    public String getJsonArray() {
+        return jsonArray;
+    }
+
+    public void setJsonArray(String jsonArray) {
+        this.jsonArray = jsonArray;
+    }
 }
