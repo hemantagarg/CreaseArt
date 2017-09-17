@@ -31,6 +31,7 @@ import com.app.creaseart.fragment.BaseFragment;
 import com.app.creaseart.fragment.Fragment_ChangePassword;
 import com.app.creaseart.fragment.Fragment_FamilyAccuntLIst;
 import com.app.creaseart.fragment.Fragment_Home;
+import com.app.creaseart.fragment.Fragment_Package;
 import com.app.creaseart.fragment.UserBookingFragment;
 import com.app.creaseart.fragment.UserProfileFragment;
 import com.app.creaseart.interfaces.GlobalConstants;
@@ -60,7 +61,7 @@ public class Dashboard extends AppCompatActivity {
       * Fragment instance
       * */
     private static Dashboard mInstance;
-    private TextView text_profile, myorders, familymember, text_logout, changepass;
+    private TextView text_profile, myorders, familymember, text_logout, changepass, text_activePackage;
     public static volatile Fragment currentFragment;
     private HashMap<String, Stack<Fragment>> mStacks;
     private ImageView image_user;
@@ -124,6 +125,7 @@ public class Dashboard extends AppCompatActivity {
         text_logout = (TextView) findViewById(R.id.text_logout);
         text_profile = (TextView) findViewById(R.id.text_profile);
         myorders = (TextView) findViewById(R.id.myorders);
+        text_activePackage = (TextView) findViewById(R.id.text_activePackage);
         changepass = (TextView) findViewById(R.id.changepass);
         familymember = (TextView) findViewById(R.id.familymember);
         appBar = (AppBarLayout) findViewById(R.id.appBar);
@@ -180,6 +182,7 @@ public class Dashboard extends AppCompatActivity {
         text_profile.setBackgroundColor(getResources().getColor(R.color.white));
         text_logout.setBackgroundColor(getResources().getColor(R.color.white));
         myorders.setBackgroundColor(getResources().getColor(R.color.white));
+        text_activePackage.setBackgroundColor(getResources().getColor(R.color.white));
         familymember.setBackgroundColor(getResources().getColor(R.color.white));
         changepass.setBackgroundColor(getResources().getColor(R.color.white));
 
@@ -187,6 +190,7 @@ public class Dashboard extends AppCompatActivity {
         changepass.setTextColor(getResources().getColor(R.color.textcolordark));
         familymember.setTextColor(getResources().getColor(R.color.textcolordark));
         myorders.setTextColor(getResources().getColor(R.color.textcolordark));
+        text_activePackage.setTextColor(getResources().getColor(R.color.textcolordark));
         text_logout.setTextColor(getResources().getColor(R.color.textcolordark));
     }
 
@@ -243,6 +247,18 @@ public class Dashboard extends AppCompatActivity {
                 drawer.closeDrawer(GravityCompat.START);
             }
         });
+        text_activePackage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setWhiteColor();
+                text_activePackage.setTextColor(getResources().getColor(R.color.appcolor));
+                text_activePackage.setBackgroundResource(R.drawable.text_bg);
+                pushFragments(GlobalConstants.TAB_HOME_BAR, new Fragment_Package(), true);
+                drawer.closeDrawer(GravityCompat.START);
+            }
+        });
+
+
     }
 
     /*********************************************************************************

@@ -1,6 +1,6 @@
 package com.app.creaseart.fragment;
 
-import android.content.Context;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,15 +13,15 @@ import android.widget.Toast;
 
 import com.app.creaseart.R;
 import com.app.creaseart.activities.Dashboard;
-import com.app.creaseart.adapter.AdapterNotification;
 import com.app.creaseart.adapter.AdapterPackages;
 import com.app.creaseart.aynctask.CommonAsyncTaskHashmap;
+import com.app.creaseart.iclasses.HeaderViewManager;
 import com.app.creaseart.interfaces.ApiResponse;
 import com.app.creaseart.interfaces.ConnectionDetector;
+import com.app.creaseart.interfaces.GlobalConstants;
+import com.app.creaseart.interfaces.HeaderViewClickListener;
 import com.app.creaseart.interfaces.JsonApiHelper;
 import com.app.creaseart.interfaces.OnCustomItemClicListener;
-import com.app.creaseart.models.ModelCategory;
-import com.app.creaseart.models.ModelNotification;
 import com.app.creaseart.models.ModelPackage;
 import com.app.creaseart.utils.AppUtils;
 
@@ -39,7 +39,7 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
 
     private RecyclerView list_request;
     private Bundle b;
-    private Context context;
+    private Activity context;
     private AdapterPackages adapterPackages;
     private ModelPackage modelPackage;
     private ArrayList<ModelPackage> arrayList;
@@ -50,6 +50,7 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
     private int skipCount = 0;
     private boolean loading = true;
     private String maxlistLength = "";
+    View view_about;
 
     public static Fragment_Package fragmentPackage;
     private final String TAG = Fragment_Package.class.getSimpleName();
@@ -65,7 +66,7 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
                              Bundle savedInstanceState) {
         // Inflate the layout for this com.app.justclap.fragment
 
-        View view_about = inflater.inflate(R.layout.fragment_notification, container, false);
+        view_about = inflater.inflate(R.layout.fragment_notification, container, false);
         context = getActivity();
         arrayList = new ArrayList<>();
         b = getArguments();
@@ -81,12 +82,48 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout1);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorPrimaryDark);
         list_request = (RecyclerView) view.findViewById(R.id.list_request);
-        layoutManager = new GridLayoutManager(context,2);
+        layoutManager = new GridLayoutManager(context, 2);
         list_request.setLayoutManager(layoutManager);
         arrayList = new ArrayList<>();
         setlistener();
-
+        manageHeaderView();
         getServicelistRefresh();
+    }
+
+    /*******************************************************************
+     * Function name - manageHeaderView
+     * Description - manage the initialization, visibility and click
+     * listener of view fields on Header view
+     *******************************************************************/
+    private void manageHeaderView() {
+
+        Dashboard.getInstance().manageHeaderVisibitlity(false);
+        HeaderViewManager.getInstance().InitializeHeaderView(null, view_about, manageHeaderClick());
+        HeaderViewManager.getInstance().setHeading(true, "Active Packages");
+        HeaderViewManager.getInstance().setLeftSideHeaderView(true, R.drawable.left_arrow);
+        HeaderViewManager.getInstance().setRightSideHeaderView(false, R.drawable.left_arrow);
+        HeaderViewManager.getInstance().setLogoView(false);
+        HeaderViewManager.getInstance().setProgressLoader(false, false);
+
+    }
+
+    /*****************************************************************************
+     * Function name - manageHeaderClick
+     * Description - manage the click on the left and right image view of header
+     *****************************************************************************/
+    private HeaderViewClickListener manageHeaderClick() {
+        return new HeaderViewClickListener() {
+            @Override
+            public void onClickOfHeaderLeftView() {
+                AppUtils.showLog(TAG, "onClickOfHeaderLeftView");
+                context.onBackPressed();
+            }
+
+            @Override
+            public void onClickOfHeaderRightView() {
+                //   Toast.makeText(mActivity, "Coming Soon", Toast.LENGTH_SHORT).show();
+            }
+        };
     }
 
     private void setlistener() {
@@ -99,24 +136,19 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
         });
 
 
-
     }
 
     @Override
     public void onItemClickListener(int position, int flag) {
+        if (flag == 1) {
 
-   /*     Intent in = new Intent(context, ActivityChat.class);
-        if (arrayList.get(position).getUserId().equalsIgnoreCase(AppUtils.getUserIdChat(context))) {
-            in.putExtra("reciever_id", arrayList.get(position).getSenderID());
-        } else {
-            in.putExtra("reciever_id", arrayList.get(position).getUserId());
+            Fragment_Bundle fragment_bundle = new Fragment_Bundle();
+            Bundle bundle = new Bundle();
+            bundle.putString("array", arrayList.get(position).getJsonArray());
+            fragment_bundle.setArguments(bundle);
+            Dashboard.getInstance().pushFragments(GlobalConstants.TAB_HOME_BAR, fragment_bundle, true);
         }
-        in.putExtra("name", arrayList.get(position).getSenderName());
-        in.putExtra("image", arrayList.get(position).getReceiverImage());
-        in.putExtra("searchID", arrayList.get(position).getSearchId());
-        startActivity(in);*/
     }
-
 
 
     private void getServicelistRefresh() {
@@ -153,11 +185,10 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
 
                     for (int i = 0; i < array.length(); i++) {
 
-
-
                         JSONObject jo = array.getJSONObject(i);
                         ModelPackage serviceDetail = new ModelPackage();
 
+                        serviceDetail.setJsonArray(jo.toString());
                         serviceDetail.setPackageId(jo.getString("packageId"));
                         serviceDetail.setPackageName(jo.getString("packageName"));
                         serviceDetail.setPackagePrice(jo.getString("packagePrice"));

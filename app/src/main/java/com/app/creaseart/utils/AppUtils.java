@@ -491,6 +491,34 @@ public class AppUtils {
             e.printStackTrace();
         }
         return "";
+    } public static void setUniqueToken(Context context, String image) {
+
+        try {
+            SharedPreferences preferences = PreferenceManager
+                    .getDefaultSharedPreferences(context);
+            SharedPreferences.Editor editor = preferences.edit();
+
+            editor.putString("token", image);
+
+            editor.commit();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
+
+    public static String getUniqueToken(Context context) {
+
+        try {
+            SharedPreferences preferences = PreferenceManager
+                    .getDefaultSharedPreferences(context);
+            return preferences.getString("token", "");
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return "";
     }
 
     public static void setGender(Context context, String image) {
