@@ -186,6 +186,12 @@ public class Fragment_Home extends BaseFragment implements ApiResponse, OnCustom
 
                 Dashboard.getInstance().pushFragments(GlobalConstants.TAB_HOME_BAR, new Fragment_Package(), true);
             }
+        });  rlOffers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Dashboard.getInstance().pushFragments(GlobalConstants.TAB_HOME_BAR, new Fragment_Coupans(), true);
+            }
         });
 
     }

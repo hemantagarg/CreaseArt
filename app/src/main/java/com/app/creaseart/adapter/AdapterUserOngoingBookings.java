@@ -55,7 +55,14 @@ public class AdapterUserOngoingBookings extends RecyclerView.Adapter<AdapterUser
         customViewHolder.text_serviceprice.setText("Quantity"+ " : "+detail.get(i).getQuantity());
         customViewHolder.text_status.setText("Status"+ " : "+detail.get(i).getStatus());
 
-        customViewHolder.btn_complete.setOnClickListener(new View.OnClickListener() {
+       /* customViewHolder.btn_complete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                listener.onItemClickListener(i, 11);
+            }
+        });*/
+        customViewHolder.cancel_request.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -72,7 +79,7 @@ public class AdapterUserOngoingBookings extends RecyclerView.Adapter<AdapterUser
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView image_service;
+        ImageView image_service,cancel_request;
         RelativeLayout rl_main;
         Button btn_complete;
         TextView text_servicename, text_servicesubcat, text_serviceprice, text_date,text_status;
@@ -81,6 +88,7 @@ public class AdapterUserOngoingBookings extends RecyclerView.Adapter<AdapterUser
             super(view);
             rl_main = (RelativeLayout) view.findViewById(R.id.rl_main);
             this.image_service = (ImageView) view.findViewById(R.id.image_service);
+            this.cancel_request = (ImageView) view.findViewById(R.id.cancel_request);
             btn_complete = (Button) view.findViewById(R.id.btn_complete);
             this.text_servicename = (TextView) view.findViewById(R.id.text_servicename);
             this.text_date = (TextView) view.findViewById(R.id.text_date);

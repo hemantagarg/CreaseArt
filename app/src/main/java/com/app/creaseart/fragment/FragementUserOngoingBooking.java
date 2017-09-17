@@ -1,6 +1,8 @@
 package com.app.creaseart.fragment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -89,34 +91,63 @@ public class FragementUserOngoingBooking extends Fragment implements OnCustomIte
 
         if (AppUtils.isNetworkAvailable(mActivity)) {
 
-            String url = JsonApiHelper.BASEURL + JsonApiHelper.MYBOOKING + "user_id=1";
+            String url = JsonApiHelper.BASEURL + JsonApiHelper.MYBOOKING + "user_id="+AppUtils.getUserId(mActivity);
             new CommonAsyncTaskHashmap(1, mActivity, this).getqueryNoProgress(url);
 
         } else {
             Toast.makeText(mActivity, mActivity.getResources().getString(R.string.message_network_problem), Toast.LENGTH_SHORT).show();
         }
     }
+    private void showDeleteConfirmation(final String memberId) {
 
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                mActivity);
+
+        alertDialog.setTitle("Delete !");
+
+        alertDialog.setMessage("Are you sure you want to cancel service?");
+
+        alertDialog.setPositiveButton("YES",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        cancelService(memberId);
+                    }
+
+                });
+
+        alertDialog.setNegativeButton("NO",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.cancel();
+                    }
+                });
+
+        alertDialog.show();
+
+
+    }
 
     @Override
     public void onItemClickListener(int position, int flag) {
         if (flag == 11) {
 
-           // completeService(arrayList.get(position).getOrderId());
+            showDeleteConfirmation(arrayList.get(position).getOrderId());
         }
     }
 
-   /* private void completeService(String id) {
+    private void cancelService(String id) {
 
         if (AppUtils.isNetworkAvailable(mActivity)) {
 orderId=id;
-            String url = JsonApiHelper.BASEURL + JsonApiHelper.COMPLETE_BOOKING + "user_id=" + AppUtils.getUserId(mActivity) + "&order_id=" + id;
+            String url = JsonApiHelper.BASEURL + JsonApiHelper.CANCELREQUEST + "user_id=" + AppUtils.getUserId(mActivity) + "&service_id=" + id;
             new CommonAsyncTaskHashmap(2, mActivity, this).getqueryNoProgress(url);
 
         } else {
             Toast.makeText(mActivity, mActivity.getResources().getString(R.string.message_network_problem), Toast.LENGTH_SHORT).show();
         }
-    }*/
+    }
 
 
     @Override
@@ -141,6 +172,7 @@ orderId=id;
                         serviceDetail.setAddress(jo.getString("Address"));
                         serviceDetail.setStatus(jo.getString("Status"));
                         serviceDetail.setDate(jo.getString("Date"));
+                        serviceDetail.setOrderId(jo.getString("OrderId"));
 
 
 
@@ -156,8 +188,13 @@ orderId=id;
                     }
 
                 } else {
+                    arrayList.clear();
+                    if(adapterUserOngoingBookings!=null){
+                        adapterUserOngoingBookings.notifyDataSetChanged();
+                    }
                     if (swipeRefreshLayout != null) {
                         swipeRefreshLayout.setRefreshing(false);
+
                     }
                     Toast.makeText(mActivity, commandResult.getString("message"), Toast.LENGTH_SHORT).show();
                 }
