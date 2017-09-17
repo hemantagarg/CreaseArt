@@ -299,6 +299,7 @@ public class SignupActivity extends AppCompatActivity implements ApiResponse {
                     AppUtils.setUserMobile(mActivity, data.getString("Mobile"));
                     AppUtils.setUserImage(mActivity, data.getString("ProfilePic"));
                     AppUtils.setUserCode(mActivity,data.getString("ReferCode"));
+                    AppUtils.setUniqueToken(mActivity,data.getString("Token"));
 
                     Intent intent = new Intent(mActivity, Dashboard.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
