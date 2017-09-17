@@ -82,6 +82,18 @@
                 android:layout_toRightOf="@+id/image_user"
                 android:background="@color/appcolor"
                 android:text="Complete"
+                android:visibility="gone"
+                android:layout_alignBottom="@+id/text_servicesubcat"
+                android:textColor="@color/white"
+                android:textSize="10sp" />
+            <ImageView
+                android:id="@+id/cancel_request"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@+id/image_user"
+
+                android:src="@drawable/cancelrequest"
                 android:layout_alignBottom="@+id/text_servicesubcat"
                 android:textColor="@color/white"
                 android:textSize="10sp" />

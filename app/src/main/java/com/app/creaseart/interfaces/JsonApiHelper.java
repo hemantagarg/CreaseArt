@@ -29,5 +29,7 @@ public interface JsonApiHelper {
     String DELETEFAMILYMEMBER = "deletefamilymember.php?";
     String ADDMEMBER = "addMemeber.php?";
     String APPLYCOUPON = "applycoupon.php?";
+    String COUPANS = "offers.php?";
+    String CANCELREQUEST = "cancelServiceRequest.php?";
 
 }
