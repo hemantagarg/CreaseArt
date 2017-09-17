@@ -28,9 +28,11 @@ import android.widget.TextView;
 
 import com.app.creaseart.R;
 import com.app.creaseart.fragment.BaseFragment;
+import com.app.creaseart.fragment.Fragment_ActivePackage;
 import com.app.creaseart.fragment.Fragment_ChangePassword;
 import com.app.creaseart.fragment.Fragment_FamilyAccuntLIst;
 import com.app.creaseart.fragment.Fragment_Home;
+import com.app.creaseart.fragment.Fragment_Notification;
 import com.app.creaseart.fragment.Fragment_Package;
 import com.app.creaseart.fragment.UserBookingFragment;
 import com.app.creaseart.fragment.UserProfileFragment;
@@ -64,7 +66,7 @@ public class Dashboard extends AppCompatActivity {
     private TextView text_profile, myorders, familymember, text_logout, changepass, text_activePackage;
     public static volatile Fragment currentFragment;
     private HashMap<String, Stack<Fragment>> mStacks;
-    private ImageView image_user;
+    private ImageView image_user,notification;
 
     /***********************************************
      * Function Name : getInstance
@@ -128,6 +130,7 @@ public class Dashboard extends AppCompatActivity {
         text_activePackage = (TextView) findViewById(R.id.text_activePackage);
         changepass = (TextView) findViewById(R.id.changepass);
         familymember = (TextView) findViewById(R.id.familymember);
+        notification = (ImageView) findViewById(R.id.notification);
         appBar = (AppBarLayout) findViewById(R.id.appBar);
         api_loading_request = (ProgressBar) findViewById(R.id.api_loading_request);
         home_container = (FrameLayout) findViewById(R.id.home_container);
@@ -195,6 +198,13 @@ public class Dashboard extends AppCompatActivity {
     }
 
     private void setListener() {
+
+        notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pushFragments(GlobalConstants.TAB_HOME_BAR, new Fragment_Notification(), true);
+            }
+        });
         text_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -253,7 +263,7 @@ public class Dashboard extends AppCompatActivity {
                 setWhiteColor();
                 text_activePackage.setTextColor(getResources().getColor(R.color.appcolor));
                 text_activePackage.setBackgroundResource(R.drawable.text_bg);
-                pushFragments(GlobalConstants.TAB_HOME_BAR, new Fragment_Package(), true);
+                pushFragments(GlobalConstants.TAB_HOME_BAR, new Fragment_ActivePackage(), true);
                 drawer.closeDrawer(GravityCompat.START);
             }
         });
