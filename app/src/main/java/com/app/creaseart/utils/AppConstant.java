@@ -22,6 +22,8 @@ public class AppConstant {
     public static final String FEMALE = "2";
     public static final String DEVICE_TYPE = "1";
     public static final String USERTYPE = "1";
+    public static final String Payusalt= "w21LvUpp4y";
+    public static final String PayuKey= "f5vd27Bt";
     /*
        * Change this to your publishable key.
        *

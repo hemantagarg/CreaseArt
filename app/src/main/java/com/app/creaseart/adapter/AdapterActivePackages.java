@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -22,7 +21,7 @@ import java.util.ArrayList;
 /**
  * Created by admin on 26-11-2015.
  */
-public class AdapterPackages extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AdapterActivePackages extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     ArrayList<ModelPackage> detail;
     Context mContext;
@@ -31,7 +30,7 @@ public class AdapterPackages extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private final int VIEW_PROG = 0;
 
 
-    public AdapterPackages(Context context, OnCustomItemClicListener lis, ArrayList<ModelPackage> list) {
+    public AdapterActivePackages(Context context, OnCustomItemClicListener lis, ArrayList<ModelPackage> list) {
 
         this.detail = list;
         this.mContext = context;
@@ -46,7 +45,7 @@ public class AdapterPackages extends RecyclerView.Adapter<RecyclerView.ViewHolde
         RecyclerView.ViewHolder vh;
         if (viewType == VIEW_ITEM) {
             View v = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.row_package, parent, false);
+                    R.layout.row_active_package, parent, false);
 
             vh = new CustomViewHolder(v);
         } else {
@@ -80,8 +79,6 @@ public class AdapterPackages extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             ((CustomViewHolder) holder).text_name.setText(m1.getPackageName());
             ((CustomViewHolder) holder).text_date.setText(m1.getPackagePrice());
-            ((CustomViewHolder) holder).checkbox.setChecked(m1.isSelected());
-
 
             ((CustomViewHolder) holder).card_view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -89,13 +86,6 @@ public class AdapterPackages extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     listener.onItemClickListener(i, 1);
                 }
             });
-            ((CustomViewHolder) holder).checkbox.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    listener.onItemClickListener(i, 2);
-                }
-            });
-
 
         } else {
             ((ProgressViewHolder) holder).progressBar.setIndeterminate(true);
@@ -113,7 +103,6 @@ public class AdapterPackages extends RecyclerView.Adapter<RecyclerView.ViewHolde
         TextView text_name, text_message, text_date;
         ImageView image_viewers;
         CardView card_view;
-        CheckBox checkbox;
 
         public CustomViewHolder(View view) {
             super(view);
@@ -123,7 +112,6 @@ public class AdapterPackages extends RecyclerView.Adapter<RecyclerView.ViewHolde
             this.text_message = (TextView) view.findViewById(R.id.text_message);
             this.text_date = (TextView) view.findViewById(R.id.text_date);
             this.card_view = (CardView) view.findViewById(R.id.card_view);
-            this.checkbox = (CheckBox) view.findViewById(R.id.checkbox);
         }
 
         @Override

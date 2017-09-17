@@ -45,7 +45,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/text_date"
                     android:text="Madhav"
+
                     android:textColor="@color/text_color_black"
                     android:textSize="@dimen/text_size_15" />
 
@@ -65,18 +67,10 @@
                     android:id="@+id/text_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/text_name"
-                    android:text=""
+                    android:layout_alignParentRight="true"
+                    android:text="2:17 Pm"
                     android:textColor="@color/textcolordark"
                     android:textSize="@dimen/text_size_11" />
-
-
-                <CheckBox android:id="@+id/checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/dp5" />
 
             </RelativeLayout>
 
