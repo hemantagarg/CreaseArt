@@ -28,5 +28,6 @@ public interface JsonApiHelper {
     String SEARCHMEMBER = "searchMember.php?";
     String DELETEFAMILYMEMBER = "deletefamilymember.php?";
     String ADDMEMBER = "addMemeber.php?";
+    String APPLYCOUPON = "applycoupon.php?";
 
 }

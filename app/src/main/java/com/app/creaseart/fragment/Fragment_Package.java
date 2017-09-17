@@ -10,6 +10,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.StrikethroughSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,8 +46,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import static android.R.attr.id;
-
 /**
  * Created by admin on 06-01-2016.
  */
@@ -63,7 +64,8 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
     private LinearLayoutManager layoutManager;
     private int skipCount = 0;
     private boolean loading = true;
-    private String maxlistLength = "";
+    private String maxlistLength = "", finalPrice = "", promocode = "";
+    boolean isPromoApplied = false;
     View view_about;
     private RelativeLayout rl_price;
     private TextView text_price, text_paynow, text_promocode;
@@ -115,8 +117,8 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
     private void applyCode(String text) {
         try {
             if (AppUtils.isNetworkAvailable(context)) {
-                // http://dev.stackmindz.com/creaseart/api/addMemeber.php?unique_code=CO080071&member_id=2&user_id=1
-                String url = JsonApiHelper.BASEURL + JsonApiHelper.ADDMEMBER + "user_id=" + AppUtils.getUserId(context) + "&unique_code=" + text.trim() + "&member_id=" + id;
+                // http://dev.stackmindz.com/creaseart/api/applycoupon.php?user_id=1&coupon_code=12345&total_value=100
+                String url = JsonApiHelper.BASEURL + JsonApiHelper.APPLYCOUPON + "user_id=" + AppUtils.getUserId(context) + "&coupon_code=" + text.trim() + "&total_value=" + totalPrice;
                 new CommonAsyncTaskHashmap(2, context, this).getqueryJsonbject(url, null, Request.Method.GET);
 
             } else {
@@ -152,7 +154,9 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
                 public void onClick(View view) {
 
                     if (!edt_comment.getText().toString().equalsIgnoreCase("")) {
+                        promocode = edt_comment.getText().toString();
                         applyCode(edt_comment.getText().toString());
+
                         dialog.dismiss();
                     } else {
                         edt_comment.setError("Please enter PromoCode");
@@ -234,12 +238,12 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
 
                 if (totalPrice > 0) {
                     Intent intent = new Intent(context, PaymentGateway.class);
-                    intent.putExtra("totalamount", totalPrice + "");
+                    intent.putExtra("totalamount", finalPrice);
                     intent.putExtra("name", AppUtils.getUserName(context));
                     intent.putExtra("address", "");
                     intent.putExtra("emailid", AppUtils.getUseremail(context));
                     intent.putExtra("mobileno", AppUtils.getUserMobile(context));
-                    intent.putExtra("orderid", "66665");
+                    intent.putExtra("orderid", AppUtils.getUserId(context));
                     intent.putExtra("city", "");
                     intent.putExtra("state", "");
                     startActivity(intent);
@@ -278,13 +282,21 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
 
 
     private void addPackagePrice(String price, boolean add) {
+        if (isPromoApplied) {
+            text_promocode.setText("Have a Promocode ?");
+            isPromoApplied = false;
+        }
         if (add) {
             totalPrice = totalPrice + Integer.parseInt(price);
             text_price.setText(totalPrice + "");
+            finalPrice = text_price.getText().toString();
         } else {
             totalPrice = totalPrice - Integer.parseInt(price);
             text_price.setText(totalPrice + "");
+            finalPrice = text_price.getText().toString();
         }
+
+
     }
 
     private void getServicelistRefresh() {
@@ -344,6 +356,26 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
                     if (mSwipeRefreshLayout != null) {
                         mSwipeRefreshLayout.setRefreshing(false);
                     }
+                }
+
+            } else if (position == 2) {
+
+                JSONObject commandResult = jObject.getJSONObject("commandResult");
+                if (commandResult.getString("success").equalsIgnoreCase("1")) {
+
+                    JSONObject data = commandResult.getJSONObject("data");
+
+                    finalPrice = data.getString("TotalValue");
+
+                    isPromoApplied = true;
+                    text_promocode.setText("Promocode Applied Sucessfully");
+                    String total = totalPrice + "";
+                    SpannableString spannable = new SpannableString(total);
+                    spannable.setSpan(new StrikethroughSpan(), 0, total.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                    text_price.setText(spannable + finalPrice);
+
+                } else {
+                    Toast.makeText(context, commandResult.getString("message"), Toast.LENGTH_SHORT).show();
                 }
 
             } else if (position == 4) {
