@@ -33,9 +33,11 @@ dependencies {
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:multidex:1.0.1'
+    compile 'com.google.firebase:firebase-messaging:9.4.0'
     compile 'com.googlecode.android-query:android-query:0.24.3'
     compile 'com.android.support:cardview-v7:25.0.0'
     compile 'com.prolificinteractive:material-calendarview:1.4.3'
     testCompile 'junit:junit:4.12'
     compile project(path: ':simple-crop-image-lib')
 }
+apply plugin: 'com.google.gms.google-services'

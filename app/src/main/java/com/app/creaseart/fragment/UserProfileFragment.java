@@ -175,12 +175,11 @@ public class UserProfileFragment extends BaseFragment implements ApiResponse {
 
     private void getProfile() {
 
-        // http://dev.stackmindz.com/trendi/api/getProfile.php?user_id=210
+        // http://dev.stackmindz.com/creaseart/api/getProfile.php?user_id=1
         if (AppUtils.isNetworkAvailable(mActivity)) {
 
-         /*   String url = JsonApiHelper.BASEURL + JsonApiHelper.GET_PROFILE + "user_id=" + AppUtils.getUserId(mActivity);
-            new CommonAsyncTaskHashmap(2, mActivity, this).getquery(url);
-*/
+            String url = JsonApiHelper.BASEURL + JsonApiHelper.GET_PROFILE + "user_id=" + AppUtils.getUserId(mActivity);
+            new CommonAsyncTaskHashmap(2, mActivity, this).getqueryJsonbject(url, null, Request.Method.GET);
         } else {
             Toast.makeText(mActivity, mActivity.getResources().getString(R.string.message_network_problem), Toast.LENGTH_SHORT).show();
         }

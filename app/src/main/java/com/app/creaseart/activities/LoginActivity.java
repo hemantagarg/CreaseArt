@@ -16,6 +16,7 @@ import com.app.creaseart.R;
 import com.app.creaseart.aynctask.CommonAsyncTaskHashmap;
 import com.app.creaseart.interfaces.ApiResponse;
 import com.app.creaseart.interfaces.JsonApiHelper;
+import com.app.creaseart.utils.AppConstant;
 import com.app.creaseart.utils.AppUtils;
 
 import org.json.JSONObject;
@@ -88,7 +89,7 @@ public class LoginActivity extends AppCompatActivity implements ApiResponse {
         if (AppUtils.isNetworkAvailable(mActivity)) {
 
             String url = JsonApiHelper.BASEURL + JsonApiHelper.LOGIN + "mobile=" + edtEmail.getText().toString() + "&password=" + edtPassword.getText().toString()
-                    + "&device_type=" + 1 + "&gcm=" + 123456 + "&user_type=" + "1";
+                    + "&device_type=" + AppConstant.DEVICE_TYPE + "&gcm=" + AppUtils.getGcmRegistrationKey(mActivity) + "&user_type=" + AppConstant.USERTYPE;
 
             //String url = JsonApiHelper.BASEURL + JsonApiHelper.LOGIN;
             new CommonAsyncTaskHashmap(1, mActivity, this).getqueryJsonNoProgress(url, null, Request.Method.GET);
@@ -124,8 +125,9 @@ public class LoginActivity extends AppCompatActivity implements ApiResponse {
                     AppUtils.setUserId(mActivity, data.getString("UserId"));
                     AppUtils.setUserMobile(mActivity, data.getString("Mobile"));
                     AppUtils.setUserRole(mActivity, data.getString("UserType"));
-                    AppUtils.setUniqueToken(mActivity,data.getString("Token"));
-                    AppUtils.setUserCode(mActivity,data.getString("ReferCode"));
+                    AppUtils.setUniqueToken(mActivity, data.getString("Token"));
+                    AppUtils.setUserCode(mActivity, data.getString("ReferCode"));
+                    AppUtils.setUserVerificationCode(mActivity, data.getString("unique_code"));
                     AppUtils.setUserName(mActivity, data.getString("Name"));
                     AppUtils.setUseremail(mActivity, data.getString("Email"));
                     AppUtils.setUserImage(mActivity, data.getString("ProfilePic"));

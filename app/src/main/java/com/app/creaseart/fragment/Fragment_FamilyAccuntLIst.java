@@ -1,6 +1,8 @@
 package com.app.creaseart.fragment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.app.creaseart.R;
 import com.app.creaseart.activities.Dashboard;
 import com.app.creaseart.adapter.AdapterFamilyList;
@@ -17,6 +20,7 @@ import com.app.creaseart.aynctask.CommonAsyncTaskHashmap;
 import com.app.creaseart.iclasses.HeaderViewManager;
 import com.app.creaseart.interfaces.ApiResponse;
 import com.app.creaseart.interfaces.ConnectionDetector;
+import com.app.creaseart.interfaces.GlobalConstants;
 import com.app.creaseart.interfaces.HeaderViewClickListener;
 import com.app.creaseart.interfaces.JsonApiHelper;
 import com.app.creaseart.interfaces.OnCustomItemClicListener;
@@ -116,13 +120,18 @@ public class Fragment_FamilyAccuntLIst extends BaseFragment implements ApiRespon
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout1);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorPrimaryDark);
         list_request = (RecyclerView) view.findViewById(R.id.list_request);
-        addfamily_member=(android.support.design.widget.FloatingActionButton)view.findViewById(R.id.addfamily_member);
+        addfamily_member = (android.support.design.widget.FloatingActionButton) view.findViewById(R.id.addfamily_member);
         layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         list_request.setLayoutManager(layoutManager);
         arrayList = new ArrayList<>();
         setlistener();
         manageHeaderView();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         getServicelistRefresh();
     }
 
@@ -136,12 +145,12 @@ public class Fragment_FamilyAccuntLIst extends BaseFragment implements ApiRespon
 
 
         });
-addfamily_member.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-
-    }
-});
+        addfamily_member.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Dashboard.getInstance().pushFragments(GlobalConstants.TAB_HOME_BAR, new SearchFamilyMember(), true);
+            }
+        });
 /*
         list_request.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -198,28 +207,68 @@ addfamily_member.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onItemClickListener(int position, int flag) {
 
-   /*     Intent in = new Intent(context, ActivityChat.class);
-        if (arrayList.get(position).getUserId().equalsIgnoreCase(AppUtils.getUserIdChat(context))) {
-            in.putExtra("reciever_id", arrayList.get(position).getSenderID());
-        } else {
-            in.putExtra("reciever_id", arrayList.get(position).getUserId());
+        if (flag == 1) {
+            showDeleteConfirmation(arrayList.get(position).getMemberId());
+
         }
-        in.putExtra("name", arrayList.get(position).getSenderName());
-        in.putExtra("image", arrayList.get(position).getReceiverImage());
-        in.putExtra("searchID", arrayList.get(position).getSearchId());
-        startActivity(in);*/
     }
 
 
+    private void showDeleteConfirmation(final String memberId) {
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                context);
+
+        alertDialog.setTitle("Delete !");
+
+        alertDialog.setMessage("Are you sure you want to delete this family member?");
+
+        alertDialog.setPositiveButton("YES",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        deleteFamilyMember(memberId);
+                    }
+
+                });
+
+        alertDialog.setNegativeButton("NO",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.cancel();
+                    }
+                });
+
+        alertDialog.show();
+
+
+    }
+
     private void getServicelistRefresh() {
-        Dashboard.getInstance().setProgressLoader(true);
         try {
             skipCount = 0;
             if (AppUtils.isNetworkAvailable(context)) {
                 //    http://sfscoring.betasportzfever.com/getNotifications/155/efc0c68e-8bb5-11e7-8cf8-008cfa5afa52
              /*   HashMap<String, Object> hm = new HashMap<>();*/
-                String url = JsonApiHelper.BASEURL + JsonApiHelper.FAMILYMEMBERLIST + "user_id=1";
+                String url = JsonApiHelper.BASEURL + JsonApiHelper.FAMILYMEMBERLIST + "user_id=" + AppUtils.getUserId(context);
                 new CommonAsyncTaskHashmap(1, context, this).getqueryNoProgress(url);
+
+            } else {
+                Toast.makeText(context, context.getResources().getString(R.string.message_network_problem), Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void deleteFamilyMember(String id) {
+        try {
+            if (AppUtils.isNetworkAvailable(context)) {
+                // http://dev.stackmindz.com/creaseart/api/deletefamilymember.php?user_id=1&member_id=2
+                String url = JsonApiHelper.BASEURL + JsonApiHelper.DELETEFAMILYMEMBER + "user_id=" + AppUtils.getUserId(context) + "&member_id=" + id;
+                new CommonAsyncTaskHashmap(2, context, this).getqueryJsonbject(url, null, Request.Method.GET);
 
             } else {
                 Toast.makeText(context, context.getResources().getString(R.string.message_network_problem), Toast.LENGTH_SHORT).show();
@@ -266,11 +315,23 @@ addfamily_member.setOnClickListener(new View.OnClickListener() {
                     }
 
                 } else {
+                    arrayList.clear();
+                    if (adapterFamilyList != null)
+                        adapterFamilyList.notifyDataSetChanged();
+
                     if (mSwipeRefreshLayout != null) {
                         mSwipeRefreshLayout.setRefreshing(false);
                     }
                 }
 
+            } else if (position == 2) {
+                JSONObject commandResult = jObject.getJSONObject("commandResult");
+                if (commandResult.getString("success").equalsIgnoreCase("1")) {
+                    Toast.makeText(context, commandResult.getString("message"), Toast.LENGTH_SHORT).show();
+                    getServicelistRefresh();
+                } else {
+                    Toast.makeText(context, commandResult.getString("message"), Toast.LENGTH_SHORT).show();
+                }
             } else if (position == 4) {
                 JSONObject commandResult = jObject.getJSONObject("commandResult");
                 if (commandResult.getString("success").equalsIgnoreCase("1")) {

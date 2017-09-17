@@ -3,6 +3,7 @@ package com.app.creaseart.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 /**
  * Created by admin on 26-11-2015.
  */
-public class AdapterFamilyList extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AdapterSearchFamilyList extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     ArrayList<ModelFamiyMember> detail;
     Context mContext;
@@ -31,7 +32,7 @@ public class AdapterFamilyList extends RecyclerView.Adapter<RecyclerView.ViewHol
     private final int VIEW_PROG = 0;
 
 
-    public AdapterFamilyList(Context context, OnCustomItemClicListener lis, ArrayList<ModelFamiyMember> list) {
+    public AdapterSearchFamilyList(Context context, OnCustomItemClicListener lis, ArrayList<ModelFamiyMember> list) {
 
         this.detail = list;
         this.mContext = context;
@@ -46,7 +47,7 @@ public class AdapterFamilyList extends RecyclerView.Adapter<RecyclerView.ViewHol
         RecyclerView.ViewHolder vh;
         if (viewType == VIEW_ITEM) {
             View v = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.row_familylist, parent, false);
+                    R.layout.row_search_familylist, parent, false);
 
             vh = new CustomViewHolder(v);
         } else {
@@ -89,7 +90,7 @@ public class AdapterFamilyList extends RecyclerView.Adapter<RecyclerView.ViewHol
                         .into(((CustomViewHolder) holder).image_viewers);
             }
 
-            ((CustomViewHolder) holder).image_delete.setOnClickListener(new View.OnClickListener() {
+            ((CustomViewHolder) holder).card_view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -109,10 +110,10 @@ public class AdapterFamilyList extends RecyclerView.Adapter<RecyclerView.ViewHol
         return detail.size();
     }
 
-    public class CustomViewHolder extends RecyclerView.ViewHolder  {
-        TextView text_name, text_message, text_date;
+    public class CustomViewHolder extends RecyclerView.ViewHolder {
+        TextView text_name, text_message;
         ImageView image_viewers, image_delete;
-
+        CardView card_view;
 
         public CustomViewHolder(View view) {
             super(view);
@@ -120,7 +121,7 @@ public class AdapterFamilyList extends RecyclerView.Adapter<RecyclerView.ViewHol
             this.text_name = (TextView) view.findViewById(R.id.text_name);
             this.text_message = (TextView) view.findViewById(R.id.text_message);
             this.image_delete = (ImageView) view.findViewById(R.id.image_delete);
-
+            this.card_view = (CardView) view.findViewById(R.id.card_view);
         }
 
     }

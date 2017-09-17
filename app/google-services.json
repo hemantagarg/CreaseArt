@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "431228328296",
+    "firebase_url": "https://creaseart-32497.firebaseio.com",
+    "project_id": "creaseart-32497",
+    "storage_bucket": "creaseart-32497.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:431228328296:android:bfeb8b58bd305f7c",
+        "android_client_info": {
+          "package_name": "com.app.creaseart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "431228328296-766griuntj1perhvqgesr1a0nuo86i11.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBr8PQ0f6PrLYDAWHAhtTAhWLJ5BUdqu6Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -20,9 +20,8 @@ public class AppConstant {
     public static final String MALE = "1";
     public static final String BOTH = "3";
     public static final String FEMALE = "2";
-    public static final String DEVICE_TYPE = "android";
-    public static final String USER = "2";
-    public static final String FREELANCER = "3";
+    public static final String DEVICE_TYPE = "1";
+    public static final String USERTYPE = "1";
     /*
        * Change this to your publishable key.
        *

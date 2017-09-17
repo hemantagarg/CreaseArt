@@ -135,6 +135,7 @@ public class AppUtils {
         }
 
     }
+
     public static void setIsChatVisible(Context context, Boolean userId) {
 
         try {
@@ -491,7 +492,39 @@ public class AppUtils {
             e.printStackTrace();
         }
         return "";
-    } public static void setUniqueToken(Context context, String image) {
+    }
+
+    public static void setUserVerificationCode(Context context, String image) {
+
+        try {
+            SharedPreferences preferences = PreferenceManager
+                    .getDefaultSharedPreferences(context);
+            SharedPreferences.Editor editor = preferences.edit();
+
+            editor.putString("Verificationcode", image);
+
+            editor.commit();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
+
+    public static String getUserVerificationCode(Context context) {
+
+        try {
+            SharedPreferences preferences = PreferenceManager
+                    .getDefaultSharedPreferences(context);
+            return preferences.getString("Verificationcode", "");
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static void setUniqueToken(Context context, String image) {
 
         try {
             SharedPreferences preferences = PreferenceManager

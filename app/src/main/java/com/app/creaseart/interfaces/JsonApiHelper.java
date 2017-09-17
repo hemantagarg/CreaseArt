@@ -16,6 +16,7 @@ public interface JsonApiHelper {
     String CITY = "city.php?";
     String LOCALITY = "locality.php?";
     String ZONE = "zone.php?";
+    String GET_PROFILE = "getProfile.php?";
     String UPDATE_PROFILE = "update-profile.php";
     String GET_NOTIFICATION = "notification-list.php?";
     String MYCOMPLETE_BOOKING = "completeBooking.php?";
@@ -23,5 +24,8 @@ public interface JsonApiHelper {
     String CHANGEPASSWORD = "change-password.php?";
     String PACKAGES = "package.php";
     String FAMILYMEMBERLIST = "familymemberlist.php?";
+    String SEARCHMEMBER = "searchMember.php?";
+    String DELETEFAMILYMEMBER = "deletefamilymember.php?";
+    String ADDMEMBER = "addMemeber.php?";
 
 }
