@@ -162,9 +162,7 @@ public class SearchFamilyMember extends BaseFragment implements ApiResponse, OnC
     public void onItemClickListener(int position, int flag) {
 
         if (flag == 1) {
-
             openAddDialog(arrayList.get(position).getMemberId());
-
         }
     }
 

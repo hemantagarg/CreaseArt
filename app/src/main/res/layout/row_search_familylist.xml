@@ -58,6 +58,7 @@
                     android:layout_toLeftOf="@+id/image_delete"
                     android:maxLines="2"
                     android:text=""
+                    android:layout_alignParentLeft="true"
                     android:textColor="@color/textcolordark"
                     android:textSize="@dimen/text_size_13" />
 

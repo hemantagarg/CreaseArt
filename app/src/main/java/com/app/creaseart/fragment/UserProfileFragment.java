@@ -411,7 +411,6 @@ public class UserProfileFragment extends BaseFragment implements ApiResponse {
             intent.putExtra("return-data", true);
             startActivityForResult(intent, REQUEST_CODE_TAKE_PICTURE);
         } catch (ActivityNotFoundException e) {
-
             Log.d(TAG, "cannot take picture", e);
         }
     }

@@ -33,7 +33,6 @@ import com.app.creaseart.fragment.Fragment_ChangePassword;
 import com.app.creaseart.fragment.Fragment_FamilyAccuntLIst;
 import com.app.creaseart.fragment.Fragment_Home;
 import com.app.creaseart.fragment.Fragment_Notification;
-import com.app.creaseart.fragment.Fragment_Package;
 import com.app.creaseart.fragment.UserBookingFragment;
 import com.app.creaseart.fragment.UserProfileFragment;
 import com.app.creaseart.interfaces.GlobalConstants;
@@ -66,7 +65,7 @@ public class Dashboard extends AppCompatActivity {
     private TextView text_profile, myorders, familymember, text_logout, changepass, text_activePackage;
     public static volatile Fragment currentFragment;
     private HashMap<String, Stack<Fragment>> mStacks;
-    private ImageView image_user,notification;
+    private ImageView image_user, notification;
 
     /***********************************************
      * Function Name : getInstance
@@ -430,7 +429,7 @@ public class Dashboard extends AppCompatActivity {
                         } else {
                             manageHeaderVisibitlity(false);
                         }
-                        // refreshFragments();
+                        refreshFragments();
                     }
                 }
             } else {
@@ -447,6 +446,13 @@ public class Dashboard extends AppCompatActivity {
 
             }
         }
+    }
+
+    private void refreshFragments() {
+
+        if (currentFragment instanceof Fragment_FamilyAccuntLIst)
+            ((Fragment_FamilyAccuntLIst) currentFragment).onResume();
+
     }
 
 }
