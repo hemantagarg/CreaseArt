@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/header_layout" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/image_user"
+                android:layout_width="@dimen/dp100"
+                android:layout_height="@dimen/dp100"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/dp10"
+                android:layout_marginTop="@dimen/dp20"
+                android:src="@drawable/user" />
+
+
+            <TextView
+                android:id="@+id/text_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:padding="@dimen/dp5"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size_15" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="@dimen/dp20">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/edtName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Name"
+                        android:padding="@dimen/dp10"
+                        android:singleLine="true"
+                        android:textColor="@color/textcolordark"
+                        android:textSize="@dimen/text_size_14" />
+
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp5">
+
+                    <EditText
+                        android:id="@+id/edtmobilenumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:editable="false"
+                        android:enabled="false"
+                        android:hint="Mobile Number"
+                        android:padding="@dimen/dp10"
+                        android:singleLine="true"
+                        android:textColor="@color/textcolordark"
+                        android:textSize="@dimen/text_size_14" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp5">
+
+                    <EditText
+                        android:id="@+id/edtEmailId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:editable="false"
+                        android:enabled="false"
+                        android:hint="Email Address"
+                        android:inputType="textEmailAddress"
+                        android:padding="@dimen/dp10"
+                        android:singleLine="true"
+                        android:textColor="@color/textcolordark"
+                        android:textSize="@dimen/text_size_14" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_state"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp5"
+                    android:visibility="visible">
+
+                    <Spinner
+                        android:id="@+id/spinner_state"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_margin="@dimen/dp10"
+                        android:gravity="bottom"
+                        android:textColor="@color/textcolordark"
+                        android:textSize="@dimen/text_size_13" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/spinner_state"
+                        android:background="@color/view_color" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp5"
+                    android:visibility="visible">
+
+                    <Spinner
+                        android:id="@+id/spinner_city"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_margin="@dimen/dp10"
+                        android:gravity="bottom"
+                        android:textColor="@color/textcolordark"
+                        android:textSize="@dimen/text_size_13" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/spinner_city"
+                        android:background="@color/view_color" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_locality"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp5"
+                    android:visibility="visible">
+
+                    <Spinner
+                        android:id="@+id/spinner_locality"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_margin="@dimen/dp10"
+                        android:gravity="bottom"
+                        android:textColor="@color/textcolordark"
+                        android:textSize="@dimen/text_size_13" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/spinner_locality"
+                        android:background="@color/view_color" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_zone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp5"
+                    android:visibility="visible">
+
+                    <Spinner
+                        android:id="@+id/spinner_zone"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_margin="@dimen/dp10"
+                        android:gravity="bottom"
+                        android:textColor="@color/textcolordark"
+                        android:textSize="@dimen/text_size_13" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/spinner_zone"
+                        android:background="@color/view_color" />
+
+                </RelativeLayout>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp5">
+
+                    <EditText
+                        android:id="@+id/edtAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Address"
+                        android:padding="@dimen/dp10"
+                        android:textColor="@color/textcolordark"
+                        android:textSize="@dimen/text_size_14" />
+
+                </android.support.design.widget.TextInputLayout>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp5"
+                    android:visibility="gone">
+
+                    <EditText
+                        android:id="@+id/edtWebsite"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Website"
+                        android:padding="@dimen/dp10"
+                        android:singleLine="true"
+                        android:textColor="@color/textcolordark"
+                        android:textSize="@dimen/text_size_14" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/dp5"
+                    android:visibility="gone">
+
+                    <EditText
+                        android:id="@+id/edtProfileDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top"
+                        android:hint="Profile Description"
+                        android:padding="@dimen/dp10"
+                        android:textColor="@color/textcolordark"
+                        android:textSize="@dimen/text_size_14" />
+
+                </android.support.design.widget.TextInputLayout>
+
+
+                <Button
+                    android:id="@+id/btn_updateprofile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp20"
+                    android:background="@drawable/button_selector"
+                    android:text="Update Profile"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

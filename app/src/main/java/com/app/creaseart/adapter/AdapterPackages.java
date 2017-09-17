@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.app.creaseart.R;
 import com.app.creaseart.interfaces.OnCustomItemClicListener;
-import com.app.creaseart.models.ModelNotification;
 import com.app.creaseart.models.ModelPackage;
 
 import java.util.ArrayList;
@@ -45,7 +44,7 @@ public class AdapterPackages extends RecyclerView.Adapter<RecyclerView.ViewHolde
         RecyclerView.ViewHolder vh;
         if (viewType == VIEW_ITEM) {
             View v = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.row_notification, parent, false);
+                    R.layout.row_package, parent, false);
 
             vh = new CustomViewHolder(v);
         } else {
@@ -123,9 +122,9 @@ public class AdapterPackages extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     }
 
-   @Override
+    @Override
     public int getItemViewType(int position) {
-       ModelPackage m1 = (ModelPackage) detail.get(position);
+        ModelPackage m1 = (ModelPackage) detail.get(position);
         if (detail.get(position).getRowType() == 1) {
             return VIEW_ITEM;
         } else if (detail.get(position).getRowType() == 2) {
