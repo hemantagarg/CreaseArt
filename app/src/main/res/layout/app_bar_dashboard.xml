@@ -27,7 +27,8 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/dp10"
                 android:paddingTop="@dimen/dp10"
-                android:src="@drawable/loginlogo" />
+                android:layout_gravity="left"
+                android:src="@drawable/creasename" />
 
             <ImageView
                 android:id="@+id/notification"

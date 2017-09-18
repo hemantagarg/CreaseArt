@@ -62,7 +62,8 @@
                 android:drawablePadding="@dimen/dp10"
                 android:inputType="textEmailAddress"
                 android:padding="@dimen/dp14"
-                android:text="amitg1370@gmail.com"
+                android:text=""
+                android:hint="Please Enter Email Id"
                 android:textColor="@color/textcolordark" />
         </android.support.design.widget.TextInputLayout>
 
@@ -82,7 +83,8 @@
                 android:drawablePadding="@dimen/dp10"
                 android:inputType="textPassword"
                 android:padding="@dimen/dp14"
-                android:text="admin"
+                android:text=""
+                android:hint="Please Enter Password"
                 android:textColor="@color/textcolordark" />
         </android.support.design.widget.TextInputLayout>
 

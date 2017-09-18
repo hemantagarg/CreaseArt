@@ -408,6 +408,9 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
                         serviceDetail.setPackageName(jo.getString("packageName"));
                         serviceDetail.setSelected(false);
                         serviceDetail.setPackagePrice(jo.getString("packagePrice"));
+                        serviceDetail.setDiscountPrice(jo.getString("discountPrice"));
+                        serviceDetail.setIsDiscount(jo.getString("isDiscount"));
+                        serviceDetail.setDiscount(jo.getString("discount"));
                         serviceDetail.setRowType(1);
 
                         arrayList.add(serviceDetail);
@@ -447,7 +450,7 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
                     JSONObject data = commandResult.getJSONObject("data");
                     finalPrice = data.getString("TotalValue");
                     isPromoApplied = true;
-                    text_promocode.setText("Promocode Applied Sucessfully");
+                    text_promocode.setText("Promo code Applied Sucessfully");
                     String total = totalPrice + "";
                     SpannableString spannable = new SpannableString(total + finalPrice);
                     spannable.setSpan(new StrikethroughSpan(), 0, total.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);

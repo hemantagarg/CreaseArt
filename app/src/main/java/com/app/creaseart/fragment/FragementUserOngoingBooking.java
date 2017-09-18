@@ -77,7 +77,7 @@ public class FragementUserOngoingBooking extends Fragment implements OnCustomIte
         swipeRefreshLayout.setRefreshing(true);
         if (AppUtils.isNetworkAvailable(mActivity)) {
 
-            String url = JsonApiHelper.BASEURL + JsonApiHelper.MYBOOKING + "user_id=1";
+            String url = JsonApiHelper.BASEURL + JsonApiHelper.MYBOOKING + "user_id="+AppUtils.getUserId(mActivity);
             new CommonAsyncTaskHashmap(1, mActivity, this).getqueryNoProgress(url);
 
         } else {

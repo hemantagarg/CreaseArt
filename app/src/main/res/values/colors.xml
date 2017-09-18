@@ -6,6 +6,7 @@
     <color name="appcolor">#B52421</color>
     <color name="text_selected_bg">#f4f4f4</color>
     <color name="view_color">#80979797</color>
+    <color name="gray">#d4d4d4</color>
     <color name="search_bg">#f4f4f4</color>
     <color name="layout_bg">#f6f7fb</color>
     <color name="textcolordark">#444444</color>

@@ -183,7 +183,12 @@ public class Fragment_Home extends BaseFragment implements ApiResponse, OnCustom
         rlWallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+Toast.makeText(getContext(),"Coming Soon",Toast.LENGTH_SHORT).show();
+            }
+        }); rlReedem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+Toast.makeText(getContext(),"Coming Soon",Toast.LENGTH_SHORT).show();
             }
         });
         rlPackages.setOnClickListener(new View.OnClickListener() {

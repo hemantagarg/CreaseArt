@@ -197,7 +197,7 @@ public class AppUtils {
         try {
             SharedPreferences preferences = PreferenceManager
                     .getDefaultSharedPreferences(context);
-            return preferences.getString("user_id", "155");
+            return preferences.getString("user_id", "");
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
