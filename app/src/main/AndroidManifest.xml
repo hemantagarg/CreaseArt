@@ -19,18 +19,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.Splash"
+        <activity
+            android:name=".activities.Splash"
             android:theme="@style/AppTheme.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity android:name="eu.janmuller.android.simplecropimage.CropImage" />
-
         <activity
             android:name=".activities.LoginActivity"
             android:screenOrientation="portrait"
@@ -46,15 +44,13 @@
         <activity
             android:name=".activities.Dashboard"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"
-            android:theme="@style/AppTheme.NoActionBar" />
-
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.PaymentGateway"
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
-
 
         <service android:name=".MyFirebaseMessagingService">
             <intent-filter>
@@ -67,6 +63,7 @@
             </intent-filter>
         </service>
 
+        <activity android:name=".activities.PayUMoneyActivity"></activity>
     </application>
 
 </manifest>

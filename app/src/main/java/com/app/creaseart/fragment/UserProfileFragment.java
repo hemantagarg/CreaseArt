@@ -114,7 +114,7 @@ public class UserProfileFragment extends BaseFragment implements ApiResponse {
         }
         manageHeaderView();
         setListener();
-        //   getProfile();
+        getProfile();
         getStateList();
 
         return view;
@@ -197,6 +197,31 @@ public class UserProfileFragment extends BaseFragment implements ApiResponse {
             }
         });
 
+        text_state.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                spinner_state.performClick();
+            }
+        });
+
+        text_city.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                spinner_city.performClick();
+            }
+        });
+        text_locality.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                spinner_locality.performClick();
+            }
+        });
+        text_zone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                spinner_zone.performClick();
+            }
+        });
         spinner_state.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
@@ -632,10 +657,6 @@ public class UserProfileFragment extends BaseFragment implements ApiResponse {
 
                     AppUtils.setZoneId(mActivity, data.getString("ZoneId"));
 
-
-
-
-
                     mActivity.onBackPressed();
 
                 } else {
@@ -657,8 +678,17 @@ public class UserProfileFragment extends BaseFragment implements ApiResponse {
                     edtmobilenumber.setEnabled(false);
                     edtEmailId.setEnabled(false);
 
+                    if (!data.getString("ZoneId").equalsIgnoreCase("") && !data.getString("ZoneId").equalsIgnoreCase("0")) {
+                        text_state.setText(data.getString("StateName"));
+                        text_city.setText(data.getString("CityName"));
+                        text_locality.setText(data.getString("LocalityName"));
+                        text_zone.setText(data.getString("ZoneName"));
+                        selectedZone = data.getString("ZoneId");
+                        selectedCity = data.getString("CityId");
+                        selectedLocality = data.getString("LocalityId");
+                        selectedState = data.getString("StateId");
+                    }
                     edtAddress.setText(data.getString("Address"));
-                    //   edtProfileDescription.setText(data.getString("Address"));
 
                 } else {
                     Toast.makeText(mActivity, commandResult.getString("message"), Toast.LENGTH_SHORT).show();

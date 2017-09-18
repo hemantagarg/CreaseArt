@@ -29,7 +29,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.app.creaseart.R;
 import com.app.creaseart.activities.Dashboard;
-import com.app.creaseart.activities.PaymentGateway;
+import com.app.creaseart.activities.PayUMoneyActivity;
 import com.app.creaseart.adapter.AdapterPackages;
 import com.app.creaseart.aynctask.CommonAsyncTaskHashmap;
 import com.app.creaseart.iclasses.HeaderViewManager;
@@ -240,7 +240,7 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
             public void onClick(View view) {
 
                 if (totalPrice > 0) {
-                    Intent intent = new Intent(context, PaymentGateway.class);
+                    Intent intent = new Intent(context, PayUMoneyActivity.class);
                     intent.putExtra("totalamount", "1");
                     intent.putExtra("name", AppUtils.getUserName(context));
                     intent.putExtra("address", "");

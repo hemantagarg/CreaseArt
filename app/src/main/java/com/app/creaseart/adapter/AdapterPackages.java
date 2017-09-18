@@ -5,12 +5,9 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.StrikethroughSpan;
-import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,30 +80,27 @@ public class AdapterPackages extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (holder instanceof CustomViewHolder) {
 
             ModelPackage m1 = (ModelPackage) detail.get(i);
-          /*  Spannable wordtoSpan = new SpannableString(m1.getDiscountPrice());
-
-            wordtoSpan.setSpan(new ForegroundColorSpan(Color.BLUE), 0, 0, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);*/
 
             ((CustomViewHolder) holder).text_name.setText(m1.getPackageName());
             ((CustomViewHolder) holder).dicountprice.setText(m1.getDiscountPrice());
-        /*    ((CustomViewHolder) holder).text_off.setText(m1.getDiscount()+" "+"% off");
-            ((CustomViewHolder) holder).text_message.setText(m1.getDiscountPrice());*/
-            if (m1.getIsDiscount().equalsIgnoreCase("1")){
-            SpannableString spannable = new SpannableString(m1.getPackagePrice());
-            spannable.setSpan(new StrikethroughSpan(), 0, m1.getPackagePrice().length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-            ((CustomViewHolder) holder).actualprice.setText(spannable);
+
+            if (m1.getIsDiscount().equalsIgnoreCase("1")) {
+                SpannableString spannable = new SpannableString(m1.getPackagePrice());
+                spannable.setSpan(new StrikethroughSpan(), 0, m1.getPackagePrice().length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                ((CustomViewHolder) holder).actualprice.setText(spannable);
                 ((CustomViewHolder) holder).actualprice.setTextColor(Color.parseColor("#d4d4d4"));
-            }
-            else {
+            } else {
                 ((CustomViewHolder) holder).actualprice.setText(m1.getPackagePrice());
                 ((CustomViewHolder) holder).actualprice.setTextColor(Color.parseColor("#000000"));
             }
-            if (m1.getIsDiscount().equalsIgnoreCase("1")){
-                ((CustomViewHolder) holder).text_off.setText(m1.getDiscount()+" "+"% off");
+            if (m1.getIsDiscount().equalsIgnoreCase("1")) {
+                ((CustomViewHolder) holder).text_off.setText(m1.getDiscount() + " " + "% off");
                 ((CustomViewHolder) holder).dicountprice.setText(m1.getDiscountPrice());
                 ((CustomViewHolder) holder).specialoffertext.setVisibility(View.VISIBLE);
                 ((CustomViewHolder) holder).specialoffer.setVisibility(View.VISIBLE);
-            }else {
+                ((CustomViewHolder) holder).text_off.setVisibility(View.VISIBLE);
+                ((CustomViewHolder) holder).dicountprice.setVisibility(View.VISIBLE);
+            } else {
                 ((CustomViewHolder) holder).text_off.setVisibility(View.GONE);
                 ((CustomViewHolder) holder).dicountprice.setVisibility(View.GONE);
                 ((CustomViewHolder) holder).specialoffertext.setVisibility(View.GONE);
@@ -114,7 +108,6 @@ public class AdapterPackages extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
 
             ((CustomViewHolder) holder).checkbox.setChecked(m1.isSelected());
-
 
             ((CustomViewHolder) holder).card_view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -143,7 +136,7 @@ public class AdapterPackages extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView text_name, actualprice, dicountprice,text_off,specialoffertext,specialoffer;
+        TextView text_name, actualprice, dicountprice, text_off, specialoffertext, specialoffer;
         ImageView image_viewers;
         CardView card_view;
         CheckBox checkbox;

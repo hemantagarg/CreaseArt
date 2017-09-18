@@ -107,7 +107,7 @@
                     <Spinner
                         android:id="@+id/spinner_state"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="0dp"
                         android:layout_margin="@dimen/dp10"
                         android:gravity="bottom"
                         android:textColor="@color/textcolordark"
@@ -115,17 +115,18 @@
 
                     <TextView
                         android:id="@+id/text_state"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
                         android:layout_centerVertical="true"
-                        android:paddingLeft="10dp"
+                        android:padding="10dp"
+                        android:text="Select State"
                         android:textColor="@color/textcolordark"
                         android:textSize="@dimen/text_size_15" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_below="@+id/spinner_state"
+                        android:layout_below="@+id/text_state"
                         android:background="@color/view_color" />
 
                 </RelativeLayout>
@@ -140,7 +141,7 @@
                     <Spinner
                         android:id="@+id/spinner_city"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="0dp"
                         android:layout_margin="@dimen/dp10"
                         android:gravity="bottom"
                         android:textColor="@color/textcolordark"
@@ -148,10 +149,11 @@
 
                     <TextView
                         android:id="@+id/text_city"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
                         android:layout_centerVertical="true"
-                        android:paddingLeft="10dp"
+                        android:padding="10dp"
+                        android:text="Select City"
                         android:textColor="@color/textcolordark"
                         android:textSize="@dimen/text_size_15" />
 
@@ -159,7 +161,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_below="@+id/spinner_city"
+                        android:layout_below="@+id/text_city"
                         android:background="@color/view_color" />
 
                 </RelativeLayout>
@@ -174,7 +176,7 @@
                     <Spinner
                         android:id="@+id/spinner_locality"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="0dp"
                         android:layout_margin="@dimen/dp10"
                         android:gravity="bottom"
                         android:textColor="@color/textcolordark"
@@ -182,10 +184,11 @@
 
                     <TextView
                         android:id="@+id/text_locality"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
                         android:layout_centerVertical="true"
-                        android:paddingLeft="10dp"
+                        android:padding="10dp"
+                        android:text="Select Locality"
                         android:textColor="@color/textcolordark"
                         android:textSize="@dimen/text_size_15" />
 
@@ -193,7 +196,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_below="@+id/spinner_locality"
+                        android:layout_below="@+id/text_locality"
                         android:background="@color/view_color" />
 
                 </RelativeLayout>
@@ -208,7 +211,7 @@
                     <Spinner
                         android:id="@+id/spinner_zone"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="0dp"
                         android:layout_margin="@dimen/dp10"
                         android:gravity="bottom"
                         android:textColor="@color/textcolordark"
@@ -216,17 +219,18 @@
 
                     <TextView
                         android:id="@+id/text_zone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
                         android:layout_centerVertical="true"
-                        android:paddingLeft="10dp"
+                        android:padding="10dp"
+                        android:text="Select Zone"
                         android:textColor="@color/textcolordark"
                         android:textSize="@dimen/text_size_15" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_below="@+id/spinner_zone"
+                        android:layout_below="@+id/text_zone"
                         android:background="@color/view_color" />
 
                 </RelativeLayout>

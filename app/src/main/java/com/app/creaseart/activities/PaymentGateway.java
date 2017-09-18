@@ -149,10 +149,10 @@ public class PaymentGateway extends Activity {
         post.append(mobileno);
         post.append("&");
         post.append("surl=");
-        post.append("https://khadi.org/response.php?status=success");
+        post.append("https://creaseart.org/response.php?status=success");
         post.append("&");
         post.append("furl=");
-        post.append("https://khadi.org/response.php?status=failed");
+        post.append("https://creaseart.org/response.php?status=failed");
         post.append("&");
 
         StringBuilder checkSumStr = new StringBuilder();
