@@ -25,6 +25,7 @@ import com.app.creaseart.interfaces.GlobalConstants;
 import com.app.creaseart.interfaces.HeaderViewClickListener;
 import com.app.creaseart.interfaces.JsonApiHelper;
 import com.app.creaseart.interfaces.OnCustomItemClicListener;
+import com.app.creaseart.utils.AppConstant;
 import com.app.creaseart.utils.AppUtils;
 import com.app.creaseart.utils.GPSTracker;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -270,16 +271,36 @@ public class Fragment_ServiceRequest extends BaseFragment implements ApiResponse
 
             //  http://dev.stackmindz.com/creaseart/api/sendServiceRequest.php?user_id=1&zone_id=16
             // &quantity=10&date=2017-10-9&address=sdaddasd
-            String url = JsonApiHelper.BASEURL + JsonApiHelper.SENDSERVICEREQUEST + "user_id=1" + "&zone_id=" + AppUtils.getZoneId(context)
-                    + "&address=" + edt_address.getText().toString() + "&quantity=" + edt_quantity.getText().toString() + "&date=" + text_date.getText().toString() + " " + text_time.getText().toString();
-
+            String url = JsonApiHelper.BASEURL + JsonApiHelper.SENDSERVICEREQUEST + "user_id="+ AppUtils.getUserId(context) + "&zone_id=" + AppUtils.getZoneId(context)
+                    + "&address=" + edt_address.getText().toString() + "&quantity=" + edt_quantity.getText().toString() + "&date=" + text_date.getText().toString() + "&time="+ text_time.getText().toString();
+            url = url.replace(" ", "%20");
             new CommonAsyncTaskHashmap(1, context, this).getqueryNoProgress(url);
 
         } else {
             Toast.makeText(context, context.getResources().getString(R.string.message_network_problem), Toast.LENGTH_SHORT).show();
         }
     }
+ /*  private void signupUser() {
 
+       //  http://dev.stackmindz.com/creaseart/api/register.php?name=test&mobile=1234567890&address=adadas
+       // &password=123456&email=amitg@gmail.com&gcm=23123&imei=dasda&device_type=1&user_type=&state=&locality=&city=&zone=
+
+       if (AppUtils.isNetworkAvailable(context)) {
+
+           String url = JsonApiHelper.BASEURL + JsonApiHelper.SENDSERVICEREQUEST + "name=" + edtFirstname.getText().toString()
+                   + "&mobile=" + edtMobileno.getText().toString() + "&password=" + edtPassword.getText().toString()
+                   + "&email=" + edtEmailId.getText().toString() + "&gcm=" + AppUtils.getGcmRegistrationKey(mActivity)
+                   + "&device_type=" + AppConstant.DEVICE_TYPE + "&imei=" + "";
+
+           url = url.replace(" ", "%20");
+
+           new CommonAsyncTaskHashmap(1, mActivity, this).getqueryNoProgress(url);
+
+       } else {
+           Toast.makeText(mActivity, mActivity.getResources().getString(R.string.message_network_problem), Toast.LENGTH_SHORT).show();
+       }
+
+   }*/
 
     @Override
     public void onPostSuccess(int method, JSONObject response) {
@@ -313,7 +334,7 @@ public class Fragment_ServiceRequest extends BaseFragment implements ApiResponse
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
         int month = monthOfYear + 1;
-        text_date.setText(year + "-" + dayOfMonth + "-" + month);
+        text_date.setText(year + "-" + month + "-" + dayOfMonth);
 
     }
 
@@ -396,7 +417,7 @@ public class Fragment_ServiceRequest extends BaseFragment implements ApiResponse
                     String formatted_address = formattedAddress.getString("formatted_address");
 
                     Log.e("formatted Adss from>>", formatted_address);
-                    edt_address.setText(formatted_address);
+                   // edt_address.setText(formatted_address);
 
                 }
             } catch (JSONException e) {

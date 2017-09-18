@@ -139,6 +139,8 @@ public class LoginActivity extends AppCompatActivity implements ApiResponse {
                     Toast.makeText(mActivity, commandResult.getString("message"), Toast.LENGTH_SHORT).show();
                 }
             }
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }

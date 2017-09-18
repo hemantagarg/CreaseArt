@@ -73,7 +73,7 @@ public class FragementUserCompleteBooking extends Fragment implements OnCustomIt
         //   http://dev.stackmindz.com/trendi/api/mycompletebooking.php?user_id=201&user_role=2
         if (AppUtils.isNetworkAvailable(mActivity)) {
 
-            String url = JsonApiHelper.BASEURL + JsonApiHelper.MYCOMPLETE_BOOKING + "user_id=1";
+            String url = JsonApiHelper.BASEURL + JsonApiHelper.MYCOMPLETE_BOOKING + "user_id="+ AppUtils.getUserId(mActivity);
             new CommonAsyncTaskHashmap(1, mActivity, this).getqueryNoProgress(url);
 
         } else {
@@ -88,7 +88,7 @@ public class FragementUserCompleteBooking extends Fragment implements OnCustomIt
 
         if (AppUtils.isNetworkAvailable(mActivity)) {
 
-            String url = JsonApiHelper.BASEURL + JsonApiHelper.MYCOMPLETE_BOOKING + "user_id=1";
+            String url = JsonApiHelper.BASEURL + JsonApiHelper.MYCOMPLETE_BOOKING + "user_id="+ AppUtils.getUserId(mActivity);
             new CommonAsyncTaskHashmap(1, mActivity, this).getqueryNoProgress(url);
 
         } else {

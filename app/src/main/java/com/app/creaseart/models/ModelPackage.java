@@ -12,7 +12,45 @@ public class ModelPackage implements Serializable {
     //private Item[] item;
     private String itemAttribute;
     private String itemName;
+
+    public String getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(String discount) {
+        this.discount = discount;
+    }
+
+    private String discount;
     private boolean isSelected = false;
+
+    public String getDiscountPrice() {
+        return discountPrice;
+    }
+
+    public void setDiscountPrice(String discountPrice) {
+        this.discountPrice = discountPrice;
+    }
+
+    public String getDiscountType() {
+        return discountType;
+    }
+
+    public void setDiscountType(String discountType) {
+        this.discountType = discountType;
+    }
+
+    public String getIsDiscount() {
+        return isDiscount;
+    }
+
+    public void setIsDiscount(String isDiscount) {
+        this.isDiscount = isDiscount;
+    }
+
+    private String discountPrice;
+    private String discountType;
+    private String isDiscount;
     private String itemPrice;
     private String jsonArray;
 
