@@ -26,7 +26,6 @@
                 android:layout_marginTop="@dimen/dp20"
                 android:src="@drawable/user" />
 
-
             <TextView
                 android:id="@+id/text_code"
                 android:layout_width="wrap_content"
@@ -114,6 +113,15 @@
                         android:textColor="@color/textcolordark"
                         android:textSize="@dimen/text_size_13" />
 
+                    <TextView
+                        android:id="@+id/text_state"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:paddingLeft="10dp"
+                        android:textColor="@color/textcolordark"
+                        android:textSize="@dimen/text_size_15" />
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -137,6 +145,16 @@
                         android:gravity="bottom"
                         android:textColor="@color/textcolordark"
                         android:textSize="@dimen/text_size_13" />
+
+                    <TextView
+                        android:id="@+id/text_city"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:paddingLeft="10dp"
+                        android:textColor="@color/textcolordark"
+                        android:textSize="@dimen/text_size_15" />
+
 
                     <View
                         android:layout_width="match_parent"
@@ -162,6 +180,16 @@
                         android:textColor="@color/textcolordark"
                         android:textSize="@dimen/text_size_13" />
 
+                    <TextView
+                        android:id="@+id/text_locality"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:paddingLeft="10dp"
+                        android:textColor="@color/textcolordark"
+                        android:textSize="@dimen/text_size_15" />
+
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -185,6 +213,15 @@
                         android:gravity="bottom"
                         android:textColor="@color/textcolordark"
                         android:textSize="@dimen/text_size_13" />
+
+                    <TextView
+                        android:id="@+id/text_zone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:paddingLeft="10dp"
+                        android:textColor="@color/textcolordark"
+                        android:textSize="@dimen/text_size_15" />
 
                     <View
                         android:layout_width="match_parent"

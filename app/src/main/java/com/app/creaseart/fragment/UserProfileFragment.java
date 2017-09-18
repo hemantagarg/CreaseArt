@@ -88,8 +88,8 @@ public class UserProfileFragment extends BaseFragment implements ApiResponse {
     ArrayAdapter<String> adapterZone;
     ArrayList<String> listZone = new ArrayList<>();
     ArrayList<String> listZoneID = new ArrayList<>();
-    private TextView text_code;
-    private String selectedCity, selectedState, selectedZone, selectedLocality;
+    private TextView text_code, text_zone, text_locality, text_city, text_state;
+    private String selectedCity = "", selectedState = "", selectedZone = "", selectedLocality = "";
 
     public static UserProfileFragment getInstance() {
         if (userProfileFragment == null)
@@ -262,7 +262,6 @@ public class UserProfileFragment extends BaseFragment implements ApiResponse {
         btn_updateprofile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if (isValidLoginDetails()) {
                     updateProfile();
                 }
@@ -277,6 +276,10 @@ public class UserProfileFragment extends BaseFragment implements ApiResponse {
         user_name.setText(AppUtils.getUserName(getContext()));
         edtmobilenumber = (EditText) view.findViewById(R.id.edtmobilenumber);
         text_code = (TextView) view.findViewById(R.id.text_code);
+        text_state = (TextView) view.findViewById(R.id.text_state);
+        text_city = (TextView) view.findViewById(R.id.text_city);
+        text_locality = (TextView) view.findViewById(R.id.text_locality);
+        text_zone = (TextView) view.findViewById(R.id.text_zone);
         text_code.setText(AppUtils.getUserVerificationCode(mActivity));
         edtmobilenumber.setText(AppUtils.getUserMobile(getContext()));
         edtEmailId = (EditText) view.findViewById(R.id.edtEmailId);
@@ -626,7 +629,13 @@ public class UserProfileFragment extends BaseFragment implements ApiResponse {
 
                     Toast.makeText(mActivity, commandResult.getString("message"), Toast.LENGTH_SHORT).show();
                     JSONObject data = commandResult.getJSONObject("data");
+
                     AppUtils.setZoneId(mActivity, data.getString("ZoneId"));
+
+
+
+
+
                     mActivity.onBackPressed();
 
                 } else {

@@ -171,8 +171,7 @@ public class Dashboard extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-        if (mStacks.get(mCurrentTab).lastElement() instanceof Fragment_Home
-                ) {
+        if (mStacks.get(mCurrentTab).lastElement() instanceof Fragment_Home) {
             manageHeaderVisibitlity(true);
         } else {
             manageHeaderVisibitlity(false);
