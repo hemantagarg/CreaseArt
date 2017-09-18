@@ -79,8 +79,8 @@ public class AdapterCoupans extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ModelCoupans m1 = (ModelCoupans) detail.get(i);
 
             ((CustomViewHolder) holder).text_name.setText(m1.getCoupon());
-            ((CustomViewHolder) holder).text_date.setText(m1.getCouponExpiryDate());
-            ((CustomViewHolder) holder).text_message.setText(m1.getCouponValue());
+            ((CustomViewHolder) holder).text_date.setText("Rs."+ m1.getCouponValue()+ " "+"Off");
+            ((CustomViewHolder) holder).text_message.setText("Expiry Date"+ ":"+ m1.getCouponExpiryDate());
             ((CustomViewHolder) holder).text_message.setVisibility(View.VISIBLE);
             ((CustomViewHolder) holder).card_view.setOnClickListener(new View.OnClickListener() {
                 @Override

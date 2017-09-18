@@ -16,28 +16,20 @@
 
         <RelativeLayout
             android:id="@+id/rl_header"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="5dp">
 
-            <ImageView
-                android:id="@+id/image_viewers"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/dp10"
-                android:padding="@dimen/dp5"
-                android:scaleType="fitXY"
-                android:visibility="gone" />
+
+
 
             <RelativeLayout
                 android:id="@+id/rl_top"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
+
                 android:layout_marginLeft="@dimen/dp10"
-                android:layout_toRightOf="@+id/image_viewers"
+
                 android:padding="@dimen/dp5">
 
                 <TextView
@@ -46,29 +38,32 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:text="Madhav"
+                    android:layout_alignParentTop="true"
+                    android:textStyle="bold"
                     android:textColor="@color/text_color_black"
                     android:textSize="@dimen/text_size_15" />
-
-                <TextView
-                    android:id="@+id/text_message"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/text_name"
-                    android:layout_marginTop="@dimen/dp3"
-                    android:maxLines="2"
-                    android:text="Reference site abouut lorel impsum, giving information on its origins..."
-                    android:textColor="@color/textcolordark"
-                    android:textSize="@dimen/text_size_13"
-                    android:visibility="gone" />
-
                 <TextView
                     android:id="@+id/text_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/text_name"
-                    android:text=""
-                    android:textColor="@color/textcolordark"
-                    android:textSize="@dimen/text_size_11" />
+                    android:text="sas"
+
+                    android:textColor="@color/offer_color"
+                    android:textSize="@dimen/text_size_14" />
+                <TextView
+                    android:id="@+id/text_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/text_date"
+                    android:layout_marginTop="@dimen/dp3"
+                    android:maxLines="2"
+                    android:text=" expiray date"
+                    android:textColor="@color/appcolor"
+                    android:textSize="@dimen/text_size_13"
+                   />
+
+
 
 
 
