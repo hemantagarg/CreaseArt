@@ -16,10 +16,34 @@
         android:orientation="vertical"
         android:padding="@dimen/dp30">
 
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Spinner android:id="@+id/spinner_deliverytype"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+
+            <TextView
+                android:id="@+id/text_delivery_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/search_bg"
+                android:gravity="center_vertical"
+                android:hint="Select Delivery type"
+                android:padding="@dimen/dp15"
+                android:textColor="@color/textcolordark"
+                android:textSize="@dimen/text_size_14" />
+
+        </RelativeLayout>
+
+
         <TextView
             android:id="@+id/text_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp20"
             android:background="@color/search_bg"
             android:gravity="center_vertical"
             android:hint="Select Date"

@@ -11,8 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +48,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -54,13 +58,19 @@ public class Fragment_ServiceRequest extends BaseFragment implements ApiResponse
 
     private Bundle b;
     private Activity context;
-    private TextView text_date, text_time;
+    private TextView text_date, text_time, text_delivery_type;
     private EditText edt_quantity, edt_address;
     private Button btnSubmit;
     String latitude = "0.0", longitude = "0.0";
     public static Fragment_ServiceRequest fragment_changePassword;
     private final String TAG = Fragment_ServiceRequest.class.getSimpleName();
     View view_about;
+    private Spinner spinner_deliverytype;
+    ArrayAdapter<String> adapterDeliveryType;
+    ArrayList<String> listDeliveryName = new ArrayList<>();
+    ArrayList<String> listDeliveryId = new ArrayList<>();
+    private String selectedDeliveryType = "";
+
 
     public static Fragment_ServiceRequest getInstance() {
         if (fragment_changePassword == null)
@@ -88,7 +98,9 @@ public class Fragment_ServiceRequest extends BaseFragment implements ApiResponse
 
         edt_address = (EditText) view.findViewById(R.id.edt_address);
         edt_quantity = (EditText) view.findViewById(R.id.edt_quantity);
+        spinner_deliverytype = (Spinner) view.findViewById(R.id.spinner_deliverytype);
         text_date = (TextView) view.findViewById(R.id.text_date);
+        text_delivery_type = (TextView) view.findViewById(R.id.text_delivery_type);
         text_time = (TextView) view.findViewById(R.id.text_time);
         btnSubmit = (Button) view.findViewById(R.id.btnSubmit);
         manageHeaderView();
@@ -101,6 +113,23 @@ public class Fragment_ServiceRequest extends BaseFragment implements ApiResponse
             showSettingsAlert();
         }
         setCurrentLocation();
+        getDeliveryType();
+    }
+
+    private void getDeliveryType() {
+        Dashboard.getInstance().setProgressLoader(true);
+        try {
+            if (AppUtils.isNetworkAvailable(context)) {
+                //       http://dev.stackmindz.com/creaseart/api/delivery_type.php
+                String url = JsonApiHelper.BASEURL + JsonApiHelper.DELIVERY_TYPE;
+                new CommonAsyncTaskHashmap(2, context, this).getqueryNoProgress(url);
+
+            } else {
+                Toast.makeText(context, context.getResources().getString(R.string.message_network_problem), Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -200,6 +229,29 @@ public class Fragment_ServiceRequest extends BaseFragment implements ApiResponse
 
     private void setlistener() {
 
+        text_delivery_type.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                spinner_deliverytype.performClick();
+
+            }
+        });
+        spinner_deliverytype.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+
+                if (position != 0) {
+                    selectedDeliveryType = listDeliveryId.get(position);
+                    text_delivery_type.setText(listDeliveryName.get(position));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         text_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -237,11 +289,14 @@ public class Fragment_ServiceRequest extends BaseFragment implements ApiResponse
 
                 if (!AppUtils.getZoneId(context).equalsIgnoreCase("")) {
                     if (!text_time.getText().toString().equalsIgnoreCase("") && !text_date.getText().toString().equalsIgnoreCase("")
-                            && !edt_address.getText().toString().equalsIgnoreCase("") && !edt_quantity.getText().toString().equalsIgnoreCase("")) {
+                            && !selectedDeliveryType.equalsIgnoreCase("") && !edt_address.getText().toString().equalsIgnoreCase("") && !edt_quantity.getText().toString().equalsIgnoreCase("")) {
 
                         submitRequest();
                     } else {
-                        if (text_date.getText().toString().equalsIgnoreCase("")) {
+                        if (selectedDeliveryType.equalsIgnoreCase("")) {
+                            text_delivery_type.requestFocus();
+                            text_delivery_type.setError("Please select Delivery type");
+                        } else if (text_date.getText().toString().equalsIgnoreCase("")) {
                             text_date.requestFocus();
                             text_date.setError("Please select date");
                         } else if (text_time.getText().toString().equalsIgnoreCase("")) {
@@ -271,8 +326,9 @@ public class Fragment_ServiceRequest extends BaseFragment implements ApiResponse
 
             //  http://dev.stackmindz.com/creaseart/api/sendServiceRequest.php?user_id=1&zone_id=16
             // &quantity=10&date=2017-10-9&address=sdaddasd
-            String url = JsonApiHelper.BASEURL + JsonApiHelper.SENDSERVICEREQUEST + "user_id="+ AppUtils.getUserId(context) + "&zone_id=" + AppUtils.getZoneId(context)
-                    + "&address=" + edt_address.getText().toString() + "&quantity=" + edt_quantity.getText().toString() + "&date=" + text_date.getText().toString() + "&time="+ text_time.getText().toString();
+            String url = JsonApiHelper.BASEURL + JsonApiHelper.SENDSERVICEREQUEST + "user_id=" + AppUtils.getUserId(context) + "&zone_id=" + AppUtils.getZoneId(context)
+                    + "&address=" + edt_address.getText().toString() + "&quantity=" + edt_quantity.getText().toString() + "&date=" + text_date.getText().toString()
+                    + "&time=" + text_time.getText().toString() + "&delivery_type=" + selectedDeliveryType;
             url = url.replace(" ", "%20");
             new CommonAsyncTaskHashmap(1, context, this).getqueryNoProgress(url);
 
@@ -311,6 +367,35 @@ public class Fragment_ServiceRequest extends BaseFragment implements ApiResponse
                     Toast.makeText(context, commandResult.getString("message"), Toast.LENGTH_SHORT).show();
                     context.onBackPressed();
                 } else {
+                    Toast.makeText(context, commandResult.getString("message"), Toast.LENGTH_SHORT).show();
+                }
+            } else if (method == 2) {
+                listDeliveryId.clear();
+                listDeliveryName.clear();
+
+                JSONObject commandResult = response
+                        .getJSONObject("commandResult");
+                if (commandResult.getString("success").equalsIgnoreCase("1")) {
+
+                    JSONObject data = commandResult.getJSONObject("data");
+                    JSONArray array = data.getJSONArray("delivery_type");
+
+                    listDeliveryName.add("Select Delivery type");
+                    listDeliveryId.add("-1");
+
+                    for (int i = 0; i < array.length(); i++) {
+
+                        JSONObject jsonObject = array.getJSONObject(i);
+                        listDeliveryName.add(jsonObject.getString("DeliveryName") + " (" + jsonObject.getString("DeliveryTime") + ")");
+                        listDeliveryId.add(jsonObject.getString("DeliveryId"));
+                    }
+
+                    adapterDeliveryType = new ArrayAdapter<String>(context, R.layout.row_spinner, R.id.text_view, listDeliveryName);
+                    spinner_deliverytype.setAdapter(adapterDeliveryType);
+                } else {
+                    listDeliveryName.add("Select Delivery type");
+                    listDeliveryId.add("-1");
+                    adapterDeliveryType.notifyDataSetChanged();
                     Toast.makeText(context, commandResult.getString("message"), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -417,7 +502,7 @@ public class Fragment_ServiceRequest extends BaseFragment implements ApiResponse
                     String formatted_address = formattedAddress.getString("formatted_address");
 
                     Log.e("formatted Adss from>>", formatted_address);
-                   // edt_address.setText(formatted_address);
+                    // edt_address.setText(formatted_address);
 
                 }
             } catch (JSONException e) {
