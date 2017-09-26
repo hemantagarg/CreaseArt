@@ -40,13 +40,21 @@ import com.app.creaseart.interfaces.HeaderViewClickListener;
 import com.app.creaseart.interfaces.JsonApiHelper;
 import com.app.creaseart.interfaces.OnCustomItemClicListener;
 import com.app.creaseart.models.ModelPackage;
+import com.app.creaseart.utils.AppConstant;
 import com.app.creaseart.utils.AppUtils;
+import com.sasidhar.smaps.payumoney.MakePaymentActivity;
+import com.sasidhar.smaps.payumoney.PayUMoney_Constants;
+import com.sasidhar.smaps.payumoney.Utils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by admin on 06-01-2016.
@@ -76,6 +84,7 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
 
     public static Fragment_Package fragmentPackage;
     private final String TAG = Fragment_Package.class.getSimpleName();
+    private String mStrTransId = "";
 
     public static Fragment_Package getInstance() {
         if (fragmentPackage == null)
@@ -240,22 +249,68 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
             public void onClick(View view) {
 
                 if (totalPrice > 0) {
-                    Intent intent = new Intent(context, PayUMoneyActivity.class);
-                    intent.putExtra("totalamount", "1");
-                    intent.putExtra("name", AppUtils.getUserName(context));
-                    intent.putExtra("address", "");
-                    intent.putExtra("emailid", AppUtils.getUseremail(context));
-                    intent.putExtra("mobileno", AppUtils.getUserMobile(context));
-                    intent.putExtra("orderid", AppUtils.getUserId(context));
-                    intent.putExtra("city", "");
-                    intent.putExtra("state", "");
-                    startActivityForResult(intent, REQUEST_CODE_PAYUMONEY);
+//                    Intent intent = new Intent(context, PayUMoneyActivity.class);
+//                    intent.putExtra("totalamount", "1");
+//                    intent.putExtra("name", AppUtils.getUserName(context));
+//                    intent.putExtra("address", "");
+//                    intent.putExtra("emailid", AppUtils.getUseremail(context));
+//                    intent.putExtra("mobileno", AppUtils.getUserMobile(context));
+//                    intent.putExtra("orderid", AppUtils.getUserId(context));
+//                    intent.putExtra("city", "");
+//                    intent.putExtra("state", "");
+//                    startActivityForResult(intent, REQUEST_CODE_PAYUMONEY);
+
+                    makePayment();
                 } else {
                     Toast.makeText(context, "Please select package", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
+
+    private String getTxnId() {
+        return ("" + System.currentTimeMillis());
+    }
+
+    private void makePayment() {
+
+        mStrTransId = getTxnId();
+
+        HashMap params = new HashMap<>();
+        params.put(PayUMoney_Constants.KEY, AppConstant.PayuKey); // Get merchant key from PayU Money Account
+        params.put(PayUMoney_Constants.TXN_ID, mStrTransId);
+        params.put(PayUMoney_Constants.AMOUNT, "1");
+        params.put(PayUMoney_Constants.PRODUCT_INFO, "Crease Art");
+        params.put(PayUMoney_Constants.FIRST_NAME, AppUtils.getUserName(context));
+        params.put(PayUMoney_Constants.EMAIL, AppUtils.getUseremail(context));
+        params.put(PayUMoney_Constants.PHONE, AppUtils.getUserMobile(context));
+        params.put(PayUMoney_Constants.SURL, "http://dev.stackmindz.com/creaseart/api/response.php?success=success");
+        params.put(PayUMoney_Constants.FURL, "http://dev.stackmindz.com/creaseart/api/response.php?success=failure");
+
+// User defined fields are optional (pass empty string)
+        params.put(PayUMoney_Constants.UDF1, "");
+        params.put(PayUMoney_Constants.UDF2, "");
+        params.put(PayUMoney_Constants.UDF3, "");
+        params.put(PayUMoney_Constants.UDF4, "");
+        params.put(PayUMoney_Constants.UDF5, "");
+
+
+// generate hash by passing params and salt
+        String hash = Utils.generateHash(params, AppConstant.Payusalt); // Get Salt from PayU Money Account
+        Log.e("hash", "**" + hash);
+        params.put(PayUMoney_Constants.HASH, hash);
+
+
+// SERVICE PROVIDER VALUE IS ALWAYS "payu_paisa".
+        params.put(PayUMoney_Constants.SERVICE_PROVIDER, "payu_paisa");
+
+
+        Intent intent = new Intent(context, MakePaymentActivity.class);
+        intent.putExtra(PayUMoney_Constants.ENVIRONMENT, PayUMoney_Constants.ENV_PRODUCTION);
+        intent.putExtra(PayUMoney_Constants.PARAMS, params);
+        startActivityForResult(intent, PayUMoney_Constants.PAYMENT_REQUEST);
+    }
+
 
     @Override
     public void onItemClickListener(int position, int flag) {
@@ -310,7 +365,23 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
             }
 
         }
+        if (requestCode == PayUMoney_Constants.PAYMENT_REQUEST) {
+            if (data != null) {
+                Log.e("payumoneyresponse", "**" + data.getData());
+                String merchantData = data.getStringExtra("result"); // Data received from surl/furl
+                String payuData = data.getStringExtra("payu_response"); // Response received from payu
 
+                Log.e("payumoneyresponse", "**" + data.getData() + "**" + merchantData + "***" + payuData);
+                switch (resultCode) {
+                    case RESULT_OK:
+                        Toast.makeText(context, "Payment Success.", Toast.LENGTH_SHORT).show();
+                        break;
+                    case RESULT_CANCELED:
+                        Toast.makeText(context, "Payment Cancelled | Failed.", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        }
     }
 
     private void makePayment(String payment_status, String transaction_id) {

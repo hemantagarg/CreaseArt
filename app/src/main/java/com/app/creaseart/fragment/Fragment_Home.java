@@ -84,6 +84,7 @@ public class Fragment_Home extends BaseFragment implements ApiResponse, OnCustom
         rlWallet = (android.support.v7.widget.CardView) view.findViewById(R.id.rlWallet);
         rlReedem = (android.support.v7.widget.CardView) view.findViewById(R.id.rlReedem);
 
+        setlistener();
         submitRequest();
 
     }
@@ -147,9 +148,7 @@ public class Fragment_Home extends BaseFragment implements ApiResponse, OnCustom
         dots[0].setImageDrawable(getResources().getDrawable(R.drawable.selecteditem_dot));
     }
 
-
-    private void setlistener() {
-
+    private void ViewPagerListener() {
         view_pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -180,15 +179,21 @@ public class Fragment_Home extends BaseFragment implements ApiResponse, OnCustom
             }
         });
 
+    }
+
+    private void setlistener() {
+
+
         rlWallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-Toast.makeText(getContext(),"Coming Soon",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Coming Soon", Toast.LENGTH_SHORT).show();
             }
-        }); rlReedem.setOnClickListener(new View.OnClickListener() {
+        });
+        rlReedem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-Toast.makeText(getContext(),"Coming Soon",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Coming Soon", Toast.LENGTH_SHORT).show();
             }
         });
         rlPackages.setOnClickListener(new View.OnClickListener() {
@@ -212,6 +217,7 @@ Toast.makeText(getContext(),"Coming Soon",Toast.LENGTH_SHORT).show();
                 Dashboard.getInstance().pushFragments(GlobalConstants.TAB_HOME_BAR, new Fragment_ServiceRequest(), true);
             }
         });
+
 
     }
 
@@ -295,7 +301,7 @@ Toast.makeText(getContext(),"Coming Soon",Toast.LENGTH_SHORT).show();
                     pager_indicator = (LinearLayout) view_about.findViewById(R.id.viewPagerCountDots);
                     setUiPageViewController();
                     view_pager.setCurrentItem(0);
-                    setlistener();
+                    ViewPagerListener();
                 }
             }
 

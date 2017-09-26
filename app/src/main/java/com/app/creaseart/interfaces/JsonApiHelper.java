@@ -31,6 +31,7 @@ public interface JsonApiHelper {
     String ADDMEMBER = "addMemeber.php?";
     String APPLYCOUPON = "applycoupon.php?";
     String COUPANS = "offers.php?";
+    String DELIVERY_TYPE = "delivery_type.php";
     String CANCELREQUEST = "cancelServiceRequest.php?";
     String SENDSERVICEREQUEST = "sendServiceRequest.php?";
 
