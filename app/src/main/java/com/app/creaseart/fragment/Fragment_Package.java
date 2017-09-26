@@ -3,10 +3,12 @@ package com.app.creaseart.fragment;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -28,8 +30,8 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.app.creaseart.R;
+import com.app.creaseart.activities.AppEnvironment;
 import com.app.creaseart.activities.Dashboard;
-import com.app.creaseart.activities.PayUMoneyActivity;
 import com.app.creaseart.adapter.AdapterPackages;
 import com.app.creaseart.aynctask.CommonAsyncTaskHashmap;
 import com.app.creaseart.iclasses.HeaderViewManager;
@@ -40,20 +42,28 @@ import com.app.creaseart.interfaces.HeaderViewClickListener;
 import com.app.creaseart.interfaces.JsonApiHelper;
 import com.app.creaseart.interfaces.OnCustomItemClicListener;
 import com.app.creaseart.models.ModelPackage;
-import com.app.creaseart.utils.AppConstant;
 import com.app.creaseart.utils.AppUtils;
-import com.sasidhar.smaps.payumoney.MakePaymentActivity;
-import com.sasidhar.smaps.payumoney.PayUMoney_Constants;
-import com.sasidhar.smaps.payumoney.Utils;
+import com.payumoney.core.PayUmoneyConfig;
+import com.payumoney.core.PayUmoneyConstants;
+import com.payumoney.core.PayUmoneySdkInitializer;
+import com.payumoney.core.entity.TransactionResponse;
+import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager;
+import com.payumoney.sdkui.ui.utils.ResultModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
-import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
 /**
@@ -81,10 +91,12 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
     private RelativeLayout rl_price;
     private TextView text_price, text_paynow, text_promocode;
     private int totalPrice = 0;
+    private PayUmoneySdkInitializer.PaymentParam mPaymentParams;
 
     public static Fragment_Package fragmentPackage;
     private final String TAG = Fragment_Package.class.getSimpleName();
     private String mStrTransId = "";
+    private String hashGenerated = "";
 
     public static Fragment_Package getInstance() {
         if (fragmentPackage == null)
@@ -122,6 +134,7 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
         list_request.setLayoutManager(layoutManager);
         arrayList = new ArrayList<>();
         setlistener();
+        mStrTransId = getTxnId();
         manageHeaderView();
         getServicelistRefresh();
     }
@@ -260,7 +273,7 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
 //                    intent.putExtra("state", "");
 //                    startActivityForResult(intent, REQUEST_CODE_PAYUMONEY);
 
-                    makePayment();
+                    getHash();
                 } else {
                     Toast.makeText(context, "Please select package", Toast.LENGTH_SHORT).show();
                 }
@@ -272,45 +285,198 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
         return ("" + System.currentTimeMillis());
     }
 
-    private void makePayment() {
+    /**
+     * This function prepares the data for payment and launches payumoney plug n play sdk
+     */
+    private void launchPayUMoneyFlow() {
 
-        mStrTransId = getTxnId();
+        PayUmoneyConfig payUmoneyConfig = PayUmoneyConfig.getInstance();
 
-        HashMap params = new HashMap<>();
-        params.put(PayUMoney_Constants.KEY, AppConstant.PayuKey); // Get merchant key from PayU Money Account
-        params.put(PayUMoney_Constants.TXN_ID, mStrTransId);
-        params.put(PayUMoney_Constants.AMOUNT, "1");
-        params.put(PayUMoney_Constants.PRODUCT_INFO, "Crease Art");
-        params.put(PayUMoney_Constants.FIRST_NAME, AppUtils.getUserName(context));
-        params.put(PayUMoney_Constants.EMAIL, AppUtils.getUseremail(context));
-        params.put(PayUMoney_Constants.PHONE, AppUtils.getUserMobile(context));
-        params.put(PayUMoney_Constants.SURL, "http://dev.stackmindz.com/creaseart/api/response.php?success=success");
-        params.put(PayUMoney_Constants.FURL, "http://dev.stackmindz.com/creaseart/api/response.php?success=failure");
+        //Use this to set your custom text on result screen button
+        payUmoneyConfig.setDoneButtonText("Done");
 
-// User defined fields are optional (pass empty string)
-        params.put(PayUMoney_Constants.UDF1, "");
-        params.put(PayUMoney_Constants.UDF2, "");
-        params.put(PayUMoney_Constants.UDF3, "");
-        params.put(PayUMoney_Constants.UDF4, "");
-        params.put(PayUMoney_Constants.UDF5, "");
+        //Use this to set your custom title for the activity
+        payUmoneyConfig.setPayUmoneyActivityTitle("Crease Art");
 
+        PayUmoneySdkInitializer.PaymentParam.Builder builder = new PayUmoneySdkInitializer.PaymentParam.Builder();
 
-// generate hash by passing params and salt
-        String hash = Utils.generateHash(params, AppConstant.Payusalt); // Get Salt from PayU Money Account
-        Log.e("hash", "**" + hash);
-        params.put(PayUMoney_Constants.HASH, hash);
+        double amount = 0;
+        try {
+            amount = Double.parseDouble("1");
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String txnId = mStrTransId;
+        String phone = AppUtils.getUserMobile(context);
+        String productName = "CreaseArt";
+        String firstName = AppUtils.getUserName(context);
+        String email = AppUtils.getUseremail(context);
+        String udf1 = "";
+        String udf2 = "";
+        String udf3 = "";
+        String udf4 = "";
+        String udf5 = "";
+        String udf6 = "";
+        String udf7 = "";
+        String udf8 = "";
+        String udf9 = "";
+        String udf10 = "";
 
-// SERVICE PROVIDER VALUE IS ALWAYS "payu_paisa".
-        params.put(PayUMoney_Constants.SERVICE_PROVIDER, "payu_paisa");
+        AppEnvironment appEnvironment = AppEnvironment.PRODUCTION;
+        builder.setAmount(amount)
+                .setTxnId(txnId)
+                .setPhone(phone)
+                .setProductName(productName)
+                .setFirstName(firstName)
+                .setEmail(email)
+                .setsUrl(appEnvironment.surl())
+                .setfUrl(appEnvironment.furl())
+                .setUdf1(udf1)
+                .setUdf2(udf2)
+                .setUdf3(udf3)
+                .setUdf4(udf4)
+                .setUdf5(udf5)
+                .setUdf6(udf6)
+                .setUdf7(udf7)
+                .setUdf8(udf8)
+                .setUdf9(udf9)
+                .setUdf10(udf10)
+                .setIsDebug(appEnvironment.debug())
+                .setKey(appEnvironment.merchant_Key())
+                .setMerchantId(appEnvironment.merchant_ID());
 
+        try {
+            mPaymentParams = builder.build();
+            //   generateHashFromServer(mPaymentParams);
+            Log.e("mPaymentParams", "&*" + mPaymentParams.getParams());
+            mPaymentParams.setMerchantHash(hashGenerated);
+            PayUmoneyFlowManager.startPayUMoneyFlow(mPaymentParams, context, R.style.AppTheme_default, false);
 
-        Intent intent = new Intent(context, MakePaymentActivity.class);
-        intent.putExtra(PayUMoney_Constants.ENVIRONMENT, PayUMoney_Constants.ENV_PRODUCTION);
-        intent.putExtra(PayUMoney_Constants.PARAMS, params);
-        startActivityForResult(intent, PayUMoney_Constants.PAYMENT_REQUEST);
+        } catch (Exception e) {
+            // some exception occurred
+            e.printStackTrace();
+        }
     }
 
+    public void generateHashFromServer(PayUmoneySdkInitializer.PaymentParam paymentParam) {
+        //nextButton.setEnabled(false); // lets not allow the user to click the button again and again.
+
+        HashMap<String, String> params = paymentParam.getParams();
+
+        // lets create the post params
+        StringBuffer postParamsBuffer = new StringBuffer();
+        postParamsBuffer.append(concatParams(PayUmoneyConstants.KEY, params.get(PayUmoneyConstants.KEY)));
+        postParamsBuffer.append(concatParams(PayUmoneyConstants.AMOUNT, params.get(PayUmoneyConstants.AMOUNT)));
+        postParamsBuffer.append(concatParams(PayUmoneyConstants.TXNID, params.get(PayUmoneyConstants.TXNID)));
+        postParamsBuffer.append(concatParams(PayUmoneyConstants.EMAIL, params.get(PayUmoneyConstants.EMAIL)));
+        postParamsBuffer.append(concatParams("productinfo", params.get(PayUmoneyConstants.PRODUCT_INFO)));
+        postParamsBuffer.append(concatParams("firstname", params.get(PayUmoneyConstants.FIRSTNAME)));
+        postParamsBuffer.append(concatParams(PayUmoneyConstants.UDF1, params.get(PayUmoneyConstants.UDF1)));
+        postParamsBuffer.append(concatParams(PayUmoneyConstants.UDF2, params.get(PayUmoneyConstants.UDF2)));
+        postParamsBuffer.append(concatParams(PayUmoneyConstants.UDF3, params.get(PayUmoneyConstants.UDF3)));
+        postParamsBuffer.append(concatParams(PayUmoneyConstants.UDF4, params.get(PayUmoneyConstants.UDF4)));
+        postParamsBuffer.append(concatParams(PayUmoneyConstants.UDF5, params.get(PayUmoneyConstants.UDF5)));
+
+        String postParams = postParamsBuffer.charAt(postParamsBuffer.length() - 1) == '&' ? postParamsBuffer.substring(0, postParamsBuffer.length() - 1).toString() : postParamsBuffer.toString();
+        Log.e("postParams", postParams);
+        // lets make an api call
+        GetHashesFromServerTask getHashesFromServerTask = new GetHashesFromServerTask();
+        getHashesFromServerTask.execute(postParams);
+    }
+
+
+    protected String concatParams(String key, String value) {
+        return key + "=" + value + "&";
+    }
+
+    /**
+     * This AsyncTask generates hash from server.
+     */
+    private class GetHashesFromServerTask extends AsyncTask<String, String, String> {
+        private ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setMessage("Please wait...");
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... postParams) {
+
+            String merchantHash = "";
+            try {
+                //TODO Below url is just for testing purpose, merchant needs to replace this with their server side hash generation url
+                URL url = new URL("https://payu.herokuapp.com/get_hash");
+
+                String postParam = postParams[0];
+
+                byte[] postParamsByte = postParam.getBytes("UTF-8");
+
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestProperty("Content-Length", String.valueOf(postParamsByte.length));
+                conn.setDoOutput(true);
+                conn.getOutputStream().write(postParamsByte);
+
+                InputStream responseInputStream = conn.getInputStream();
+                StringBuffer responseStringBuffer = new StringBuffer();
+                byte[] byteContainer = new byte[1024];
+                for (int i; (i = responseInputStream.read(byteContainer)) != -1; ) {
+                    responseStringBuffer.append(new String(byteContainer, 0, i));
+                }
+
+                JSONObject response = new JSONObject(responseStringBuffer.toString());
+
+                Iterator<String> payuHashIterator = response.keys();
+                while (payuHashIterator.hasNext()) {
+                    String key = payuHashIterator.next();
+                    switch (key) {
+                        /**
+                         * This hash is mandatory and needs to be generated from merchant's server side
+                         *
+                         */
+                        case "payment_hash":
+                            merchantHash = response.getString(key);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return merchantHash;
+        }
+
+        @Override
+        protected void onPostExecute(String merchantHash) {
+            super.onPostExecute(merchantHash);
+
+            progressDialog.dismiss();
+            if (merchantHash.isEmpty() || merchantHash.equals("")) {
+                Toast.makeText(context, "Could not generate hash", Toast.LENGTH_SHORT).show();
+            } else {
+
+                Log.e("merchantHash", "**" + merchantHash);
+                mPaymentParams.setMerchantHash(merchantHash);
+
+                PayUmoneyFlowManager.startPayUMoneyFlow(mPaymentParams, context, R.style.AppTheme_default, false);
+            }
+
+        }
+    }
 
     @Override
     public void onItemClickListener(int position, int flag) {
@@ -365,21 +531,38 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
             }
 
         }
-        if (requestCode == PayUMoney_Constants.PAYMENT_REQUEST) {
-            if (data != null) {
-                Log.e("payumoneyresponse", "**" + data.getData());
-                String merchantData = data.getStringExtra("result"); // Data received from surl/furl
-                String payuData = data.getStringExtra("payu_response"); // Response received from payu
+        if (requestCode == PayUmoneyFlowManager.REQUEST_CODE_PAYMENT && resultCode == RESULT_OK && data !=
+                null) {
 
-                Log.e("payumoneyresponse", "**" + data.getData() + "**" + merchantData + "***" + payuData);
-                switch (resultCode) {
-                    case RESULT_OK:
-                        Toast.makeText(context, "Payment Success.", Toast.LENGTH_SHORT).show();
-                        break;
-                    case RESULT_CANCELED:
-                        Toast.makeText(context, "Payment Cancelled | Failed.", Toast.LENGTH_SHORT).show();
-                        break;
+
+            TransactionResponse transactionResponse = data.getParcelableExtra(PayUmoneyFlowManager
+                    .INTENT_EXTRA_TRANSACTION_RESPONSE);
+
+            ResultModel resultModel = data.getParcelableExtra(PayUmoneyFlowManager.ARG_RESULT);
+
+            // Check which object is non-null
+            if (transactionResponse != null && transactionResponse.getPayuResponse() != null) {
+                if (transactionResponse.getTransactionStatus().equals(TransactionResponse.TransactionStatus.SUCCESSFUL)) {
+
+                    makePayment("success", "");
+                    //Success Transaction
+                } else {
+                    makePayment("failed", "");
+                    //Failure Transaction
                 }
+
+                // Response from Payumoney
+                String payuResponse = transactionResponse.getPayuResponse();
+
+                // Response from SURl and FURL
+                String merchantResponse = transactionResponse.getTransactionDetails();
+                Log.e("payumoneyresponse", "**" + data.getData() + merchantResponse);
+
+
+            } else if (resultModel != null && resultModel.getError() != null) {
+                Log.e(TAG, "Error response : " + resultModel.getError().getTransactionResponse());
+            } else {
+                Log.e(TAG, "Both objects are null!");
             }
         }
     }
@@ -402,12 +585,31 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
                 //http://dev.stackmindz.com/creaseart/api/payment.php?user_id=1&transaction_id=AG565JH078
                 // &total_value=100&promo_code=TEST&package_id=2&payment_status=
                 String url = JsonApiHelper.BASEURL + JsonApiHelper.PAYMENT + "user_id=" + AppUtils.getUserId(context) + "&transaction_id="
-                        + transaction_id + "&total_value=" + finalPrice + "&promo_code=" + promocode + "&package_id=" + packages + "&payment_status=" + payment_status;
-                new CommonAsyncTaskHashmap(1, context, this).getqueryJsonbject(url, null, Request.Method.GET);
+                        + mStrTransId + "&total_value=" + finalPrice + "&promo_code=" + promocode + "&package_id=" + packages + "&payment_status=" + payment_status;
+                new CommonAsyncTaskHashmap(11, context, this).getqueryJsonbject(url, null, Request.Method.GET);
             } else {
                 Toast.makeText(context, context.getResources().getString(R.string.message_network_problem), Toast.LENGTH_SHORT).show();
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void getHash() {
+        try {
+            if (AppUtils.isNetworkAvailable(context)) {
+                //   http://dev.stackmindz.com/creaseart/api/getHash.php?txnid=1&amount=10&productinfo=Test
+                // &firstname=test&email=test@gmail.com&udf1=&udf2=&udf3=&udf4=&udf5=
+                String url = JsonApiHelper.BASEURL + JsonApiHelper.GET_HASH + "txnid=" + mStrTransId + "&amount=" + finalPrice +
+                        "&productinfo=CreaseArt" + "&firstname=" + AppUtils.getUserName(context) + "&email=" + AppUtils.getUseremail(context) +
+                        "&udf1=&udf2=&udf3=&udf4=&udf5=";
+                new CommonAsyncTaskHashmap(21, context, this).getqueryJsonbject(url, null, Request.Method.GET);
+
+            } else {
+                Toast.makeText(context, context.getResources().getString(R.string.message_network_problem), Toast.LENGTH_SHORT).show();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -419,8 +621,7 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
         try {
             skipCount = 0;
             if (AppUtils.isNetworkAvailable(context)) {
-                //    http://sfscoring.betasportzfever.com/getNotifications/155/efc0c68e-8bb5-11e7-8cf8-008cfa5afa52
-             /*   HashMap<String, Object> hm = new HashMap<>();*/
+
                 String url = JsonApiHelper.BASEURL + JsonApiHelper.PACKAGES;
                 new CommonAsyncTaskHashmap(1, context, this).getqueryJsonbject(url, null, Request.Method.GET);
 
@@ -560,6 +761,14 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
                     adapterPackages.notifyDataSetChanged();
                     skipCount = skipCount - 10;
                     loading = true;
+                }
+            } else if (position == 21) {
+                JSONObject commandResult = jObject.getJSONObject("commandResult");
+                if (commandResult.getString("success").equalsIgnoreCase("1")) {
+
+                    hashGenerated = commandResult.getString("data");
+                    launchPayUMoneyFlow();
+
                 }
             }
         } catch (JSONException e) {

@@ -23,6 +23,7 @@ public interface JsonApiHelper {
     String MYBOOKING = "ongoingBooking.php?";
     String CHANGEPASSWORD = "change-password.php?";
     String PACKAGES = "package.php";
+    String GET_HASH = "getHash.php?";
     String PAYMENT = "payment.php?";
     String ACTIVEPACKAGE = "activepackage.php?";
     String FAMILYMEMBERLIST = "familymemberlist.php?";
