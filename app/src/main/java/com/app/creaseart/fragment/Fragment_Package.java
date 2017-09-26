@@ -275,11 +275,9 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
             }
             adapterPackages.notifyDataSetChanged();
 
-
             if (rl_price.getVisibility() == View.GONE) {
                 rl_price.setVisibility(View.VISIBLE);
             }
-
         }
     }
 
