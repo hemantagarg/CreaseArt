@@ -20,7 +20,12 @@ public interface JsonApiHelper {
     String UPDATE_PROFILE = "update-profile.php";
     String GET_NOTIFICATION = "notification-list.php?";
     String MYCOMPLETE_BOOKING = "completeBooking.php?";
+    String PICKUPBOYCOMPLETED = "pickupcompletebooking.php?";
     String MYBOOKING = "ongoingBooking.php?";
+    String PICKUPBOYNEWLEAD = "pickupongoingbooking.php?";
+    String PICKUPBOYCANCELREQUEST = "rejectservicerequest.php?";
+    String PICKUPBOYACCEPTREQUEST = "acceptservicerequest.php?";
+    String PICKUPBOYCONVERTEDLEAD = "pickupconvertedbooking.php?";
     String CHANGEPASSWORD = "change-password.php?";
     String PACKAGES = "package.php";
     String GET_HASH = "getHash.php?";

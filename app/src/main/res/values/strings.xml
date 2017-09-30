@@ -14,7 +14,7 @@
     <string name="hint_enter_password">Enter Password</string>
     <string name="hint_enter_mbno">Enter Mobile Number</string>
     <string name="hint_enter_name">Enter Name</string>
-    <string name="sign_in">Sign In</string>
+    <string name="sign_in">User Sign In</string>
     <string name="log_in">Log In</string>
     <string name="signup">Sign Up</string>
     <string name="enter_email">Please enter email</string>

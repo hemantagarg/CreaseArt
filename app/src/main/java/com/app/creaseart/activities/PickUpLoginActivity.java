@@ -21,7 +21,7 @@ import com.app.creaseart.utils.AppUtils;
 
 import org.json.JSONObject;
 
-public class LoginActivity extends AppCompatActivity implements ApiResponse {
+public class PickUpLoginActivity extends AppCompatActivity implements ApiResponse {
 
     private Activity mActivity;
     private EditText edtEmail, edtPassword;
@@ -33,8 +33,8 @@ public class LoginActivity extends AppCompatActivity implements ApiResponse {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
-        mActivity = LoginActivity.this;
+        setContentView(R.layout.pickuplogin);
+        mActivity = PickUpLoginActivity.this;
         initViews();
         setListener();
 
@@ -70,20 +70,14 @@ public class LoginActivity extends AppCompatActivity implements ApiResponse {
             @Override
             public void onClick(View view) {
 
-                startActivity(new Intent(mActivity, ForgotPassword.class));
+                startActivity(new Intent(mActivity, PickUpForgotPassword.class));
             }
         });
-        createAccount.setOnClickListener(new View.OnClickListener() {
+      pickuplogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                startActivity(new Intent(mActivity, SignupActivity.class));
-            }
-        });pickuplogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                startActivity(new Intent(mActivity, PickUpLoginActivity.class));
+                startActivity(new Intent(mActivity, LoginActivity.class));
             }
         });
 
@@ -95,7 +89,7 @@ public class LoginActivity extends AppCompatActivity implements ApiResponse {
         if (AppUtils.isNetworkAvailable(mActivity)) {
 
             String url = JsonApiHelper.BASEURL + JsonApiHelper.LOGIN + "mobile=" + edtEmail.getText().toString() + "&password=" + edtPassword.getText().toString()
-                    + "&device_type=" + AppConstant.DEVICE_TYPE + "&gcm=" + AppUtils.getGcmRegistrationKey(mActivity) + "&user_type=" + AppConstant.USERTYPE;
+                    + "&device_type=" + AppConstant.DEVICE_TYPE + "&gcm=" + AppUtils.getGcmRegistrationKey(mActivity) + "&user_type=" + AppConstant.PICKUPBOYTYPE;
 
             //String url = JsonApiHelper.BASEURL + JsonApiHelper.LOGIN;
             new CommonAsyncTaskHashmap(1, mActivity, this).getqueryJsonNoProgress(url, null, Request.Method.GET);

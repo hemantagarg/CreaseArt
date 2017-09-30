@@ -18,7 +18,7 @@ import com.app.creaseart.utils.AppUtils;
 
 import org.json.JSONObject;
 
-public class ForgotPassword extends AppCompatActivity implements ApiResponse {
+public class PickUpForgotPassword extends AppCompatActivity implements ApiResponse {
 
 
     private Button btnSubmit;
@@ -61,7 +61,7 @@ public class ForgotPassword extends AppCompatActivity implements ApiResponse {
         if (AppUtils.isNetworkAvailable(mActivity)) {
 
             // http://dev.stackmindz.com/trendi/api/forget-password.php?mobile=aaa@gmail.com
-            String url = JsonApiHelper.BASEURL + JsonApiHelper.FORGOTPASSWORD + "mobile=" + edtEmail.getText().toString()+ "&user_type=" + AppConstant.USERTYPE;
+            String url = JsonApiHelper.BASEURL + JsonApiHelper.FORGOTPASSWORD + "mobile=" + edtEmail.getText().toString()+ "&user_type=" + AppConstant.PICKUPBOYTYPE;
             new CommonAsyncTaskHashmap(1, mActivity, this).getqueryNoProgress(url);
 
         } else {

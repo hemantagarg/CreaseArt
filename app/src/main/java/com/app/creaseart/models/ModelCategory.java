@@ -14,6 +14,16 @@ public class ModelCategory {
 
     private String Time;
 
+    public String getZone() {
+        return Zone;
+    }
+
+    public void setZone(String zone) {
+        Zone = zone;
+    }
+
+    private String Zone;
+
     private String Date;
 
     private String OrderNo;

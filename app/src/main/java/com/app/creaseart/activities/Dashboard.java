@@ -28,11 +28,13 @@ import android.widget.TextView;
 
 import com.app.creaseart.R;
 import com.app.creaseart.fragment.BaseFragment;
+import com.app.creaseart.fragment.FragementPickUpCompleteBooking;
 import com.app.creaseart.fragment.Fragment_ActivePackage;
 import com.app.creaseart.fragment.Fragment_ChangePassword;
 import com.app.creaseart.fragment.Fragment_FamilyAccuntLIst;
 import com.app.creaseart.fragment.Fragment_Home;
 import com.app.creaseart.fragment.Fragment_Notification;
+import com.app.creaseart.fragment.PickUpBookingFragment;
 import com.app.creaseart.fragment.UserBookingFragment;
 import com.app.creaseart.fragment.UserProfileFragment;
 import com.app.creaseart.interfaces.GlobalConstants;
@@ -251,7 +253,7 @@ public class Dashboard extends AppCompatActivity {
                 setWhiteColor();
                 myorders.setTextColor(getResources().getColor(R.color.appcolor));
                 myorders.setBackgroundResource(R.drawable.text_bg);
-                pushFragments(GlobalConstants.TAB_HOME_BAR, new UserBookingFragment(), true);
+                pushFragments(GlobalConstants.TAB_HOME_BAR, new PickUpBookingFragment(), true);
                 drawer.closeDrawer(GravityCompat.START);
             }
         });

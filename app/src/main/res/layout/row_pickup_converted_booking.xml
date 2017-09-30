@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/rl_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/dp5"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <ImageView
+            android:id="@+id/image_service"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_60"
+
+            android:layout_margin="@dimen/dp5"
+        />
+
+        <RelativeLayout
+            android:id="@+id/lineartop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp10"
+            android:layout_marginTop="@dimen/dp15"
+            android:layout_toRightOf="@+id/image_service">
+
+            <com.app.creaseart.utils.CustomTextView
+                android:id="@+id/text_servicename"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mellisa Curning"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                android:textColor="@color/textcolordark"
+                android:textSize="@dimen/text_size_14" />
+            <com.app.creaseart.utils.CustomTextView
+                android:id="@+id/text_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mellisa Curning"
+
+                android:textAllCaps="true"
+                android:layout_below="@+id/text_servicename"
+                android:textColor="@color/textcolordark"
+                android:textSize="@dimen/text_size_14" />
+            <com.app.creaseart.utils.CustomTextView
+                android:id="@+id/text_serviceprice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp5"
+                android:layout_below="@+id/text_username"
+                android:text="25"
+                android:textColor="@color/textcolordark"
+                android:textSize="@dimen/text_size_12"
+                android:textStyle="bold" />
+
+            <com.app.creaseart.utils.CustomTextView
+                android:id="@+id/text_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="2/07/17"
+
+                android:textAllCaps="true"
+                android:textColor="@color/textcolordark"
+                android:textSize="@dimen/text_size_11"
+                 />
+
+
+            <com.app.creaseart.utils.CustomTextView
+                android:id="@+id/text_servicesubcat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_serviceprice"
+                android:text="London"
+                android:textColor="@color/textcolordark"
+                android:textSize="@dimen/text_size_12" />
+
+            <com.app.creaseart.utils.CustomTextView
+                android:id="@+id/text_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_servicesubcat"
+                android:text="Completed"
+
+                android:textAllCaps="true"
+                android:textColor="@color/primary_green"
+                android:textSize="@dimen/text_size_12"
+              />
+            <LinearLayout
+
+                android:layout_below="@+id/text_status"
+                android:layout_width="match_parent"
+android:gravity="right"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/btn_confirm"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dp30"
+                    android:text="Accept"
+                    android:visibility="gone"
+                    android:gravity="right"
+                    android:layout_gravity="right"
+                    android:layout_margin="@dimen/dp10"
+                    android:background="@drawable/button_selectoraccept"
+                    android:textColor="@color/white"
+                    android:layout_weight="1"/>
+                <Button
+                    android:id="@+id/btn_confirmorder"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dp30"
+                    android:text="Confirm order"
+
+                    android:background="@drawable/button_selectoraccept"
+                    android:layout_margin="@dimen/dp10"
+                                           android:textColor="@color/white"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/rl_top"
+        android:background="@color/view_color" />
+</RelativeLayout>

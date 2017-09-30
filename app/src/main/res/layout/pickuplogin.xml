@@ -30,7 +30,7 @@
             android:layout_gravity="start"
             android:layout_margin="@dimen/dp10"
             android:paddingTop="@dimen/dp10"
-            android:text="@string/sign_in"
+            android:text="Agent Login"
             android:textSize="@dimen/text_size_20"
             android:textStyle="bold" />
 
@@ -112,6 +112,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/dp10"
                 android:text="New User? Sign Up"
+                android:visibility="gone"
                 android:textColor="@color/textcolordark"
                 android:textSize="@dimen/text_size_13" />
 
@@ -141,7 +142,7 @@
 
         android:layout_centerInParent="true"
         android:paddingBottom="@dimen/dp10"
-        android:text="Pickup Agent Login"
+        android:text="User Login"
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_13" />
 </RelativeLayout>

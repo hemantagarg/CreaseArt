@@ -605,6 +605,7 @@ public class Fragment_Package extends BaseFragment implements ApiResponse, OnCus
                 String url = JsonApiHelper.BASEURL + JsonApiHelper.GET_HASH + "txnid=" + mStrTransId + "&amount=" + finalPrice +
                         "&productinfo=CreaseArt" + "&firstname=" + AppUtils.getUserName(context) + "&email=" + AppUtils.getUseremail(context) +
                         "&udf1=&udf2=&udf3=&udf4=&udf5=";
+                url=url.replace(" ","%20");
                 new CommonAsyncTaskHashmap(21, context, this).getqueryJsonbject(url, null, Request.Method.GET);
 
             } else {

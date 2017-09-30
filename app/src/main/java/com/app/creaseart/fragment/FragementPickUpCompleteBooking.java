@@ -1,9 +1,6 @@
 package com.app.creaseart.fragment;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,11 +10,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Toast;
 
-
 import com.app.creaseart.R;
-import com.app.creaseart.adapter.AdapterUserOngoingBookings;
+import com.app.creaseart.adapter.AdapterPickUpCompleteBookings;
+
 import com.app.creaseart.aynctask.CommonAsyncTaskHashmap;
 import com.app.creaseart.interfaces.ApiResponse;
 import com.app.creaseart.interfaces.JsonApiHelper;
@@ -31,14 +29,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 
-public class FragementUserOngoingBooking extends Fragment implements OnCustomItemClicListener, ApiResponse {
+public class FragementPickUpCompleteBooking extends BaseFragment implements OnCustomItemClicListener, ApiResponse {
 
     private RecyclerView recycler_service;
-    private ArrayList<ModelCategory> arrayList;
-    private AdapterUserOngoingBookings adapterUserOngoingBookings;
+    private ArrayList<ModelCategory> imagelist;
+    private AdapterPickUpCompleteBookings adapterPickUpCompleteBookings;
     private Activity mActivity;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private String orderId="";
 
 
     @Override
@@ -53,7 +50,7 @@ public class FragementUserOngoingBooking extends Fragment implements OnCustomIte
         super.onViewCreated(view, savedInstanceState);
 
         mActivity = getActivity();
-        arrayList = new ArrayList<>();
+        imagelist = new ArrayList<>();
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimaryDark);
         recycler_service = (RecyclerView) view.findViewById(R.id.recycler_services);
@@ -74,10 +71,11 @@ public class FragementUserOngoingBooking extends Fragment implements OnCustomIte
     }
 
     private void refreshData() {
-        swipeRefreshLayout.setRefreshing(true);
+        //   http://dev.stackmindz.com/trendi/api/mycompletebooking.php?user_id=201&user_role=2
         if (AppUtils.isNetworkAvailable(mActivity)) {
 
-            String url = JsonApiHelper.BASEURL + JsonApiHelper.MYBOOKING + "user_id="+AppUtils.getUserId(mActivity);
+            //String url = JsonApiHelper.BASEURL + JsonApiHelper.PICKUPBOYCOMPLETED + "user_id="+ AppUtils.getUserId(mActivity);
+            String url = JsonApiHelper.BASEURL + JsonApiHelper.PICKUPBOYCOMPLETED + "user_id="+ 3;
             new CommonAsyncTaskHashmap(1, mActivity, this).getqueryNoProgress(url);
 
         } else {
@@ -85,70 +83,27 @@ public class FragementUserOngoingBooking extends Fragment implements OnCustomIte
         }
     }
 
-    private void getData() {
+
+   private void getData() {
         //  http://dev.stackmindz.com/trendi/api/mybooking.php?user_id=200&user_role=3
 
 
         if (AppUtils.isNetworkAvailable(mActivity)) {
 
-            String url = JsonApiHelper.BASEURL + JsonApiHelper.MYBOOKING + "user_id="+AppUtils.getUserId(mActivity);
+           // String url = JsonApiHelper.BASEURL + JsonApiHelper.PICKUPBOYCOMPLETED + "user_id="+ AppUtils.getUserId(mActivity);
+            String url = JsonApiHelper.BASEURL + JsonApiHelper.PICKUPBOYCOMPLETED + "user_id="+ 3;
             new CommonAsyncTaskHashmap(1, mActivity, this).getqueryNoProgress(url);
 
         } else {
             Toast.makeText(mActivity, mActivity.getResources().getString(R.string.message_network_problem), Toast.LENGTH_SHORT).show();
         }
     }
-    private void showDeleteConfirmation(final String memberId) {
 
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(
-                mActivity);
-
-        alertDialog.setTitle("Delete !");
-
-        alertDialog.setMessage("Are you sure you want to cancel service?");
-
-        alertDialog.setPositiveButton("YES",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        cancelService(memberId);
-                    }
-
-                });
-
-        alertDialog.setNegativeButton("NO",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        dialog.cancel();
-                    }
-                });
-
-        alertDialog.show();
-
-
-    }
 
     @Override
     public void onItemClickListener(int position, int flag) {
-        if (flag == 11) {
 
-            showDeleteConfirmation(arrayList.get(position).getOrderId());
-        }
     }
-
-    private void cancelService(String id) {
-
-        if (AppUtils.isNetworkAvailable(mActivity)) {
-orderId=id;
-            String url = JsonApiHelper.BASEURL + JsonApiHelper.CANCELREQUEST + "user_id=" + AppUtils.getUserId(mActivity) + "&service_id=" + id;
-            new CommonAsyncTaskHashmap(2, mActivity, this).getqueryNoProgress(url);
-
-        } else {
-            Toast.makeText(mActivity, mActivity.getResources().getString(R.string.message_network_problem), Toast.LENGTH_SHORT).show();
-        }
-    }
-
 
     @Override
     public void onPostSuccess(int method, JSONObject response) {
@@ -159,58 +114,33 @@ orderId=id;
 
                     JSONObject data = commandResult.getJSONObject("data");
                     JSONArray array = data.getJSONArray("Booking");
-                    arrayList.clear();
+                    imagelist.clear();
                     for (int i = 0; i < array.length(); i++) {
 
                         JSONObject jo = array.getJSONObject(i);
 
                         ModelCategory serviceDetail = new ModelCategory();
 
-
                         serviceDetail.setOrderNo(jo.getString("OrderNo"));
                         serviceDetail.setQuantity(jo.getString("Quantity"));
                         serviceDetail.setAddress(jo.getString("Address"));
                         serviceDetail.setStatus(jo.getString("Status"));
                         serviceDetail.setDate(jo.getString("Date"));
-                        serviceDetail.setOrderId(jo.getString("OrderId"));
                         serviceDetail.setUserName(jo.getString("userName"));
                         serviceDetail.setUserImage(jo.getString("userImage"));
                         serviceDetail.setZone(jo.getString("Zone"));
 
 
-                        // serviceDetail.setServicePrice(jo.getString("ServiceDate"));
-                        // serviceDetail.setServicePrice(jo.getString("ServiceTime"));
 
-                        arrayList.add(serviceDetail);
+                        imagelist.add(serviceDetail);
+
                     }
-                    adapterUserOngoingBookings = new AdapterUserOngoingBookings(mActivity, FragementUserOngoingBooking.this, arrayList);
-                    recycler_service.setAdapter(adapterUserOngoingBookings);
+                    adapterPickUpCompleteBookings = new AdapterPickUpCompleteBookings(mActivity, FragementPickUpCompleteBooking.this, imagelist);
+                    recycler_service.setAdapter(adapterPickUpCompleteBookings);
                     if (swipeRefreshLayout != null) {
                         swipeRefreshLayout.setRefreshing(false);
                     }
 
-                } else {
-                    arrayList.clear();
-                    if(adapterUserOngoingBookings!=null){
-                        adapterUserOngoingBookings.notifyDataSetChanged();
-                    }
-                    if (swipeRefreshLayout != null) {
-                        swipeRefreshLayout.setRefreshing(false);
-
-                    }
-                    Toast.makeText(mActivity, commandResult.getString("message"), Toast.LENGTH_SHORT).show();
-                }
-            } else if (method == 2) {
-                JSONObject commandResult = response.getJSONObject("commandResult");
-                if (commandResult.getString("success").equalsIgnoreCase("1")) {
-                    Toast.makeText(mActivity, commandResult.getString("message"), Toast.LENGTH_SHORT).show();
-                    refreshData();
-                    /*Intent intent = new Intent(mActivity, ActivityRating.class);
-                    intent.putExtra("orderid",orderId);
-                    startActivity(intent);*/
-
-                } else {
-                    Toast.makeText(mActivity, commandResult.getString("message"), Toast.LENGTH_SHORT).show();
                 }
             }
         } catch (Exception e) {

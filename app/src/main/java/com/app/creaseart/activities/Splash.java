@@ -8,6 +8,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.app.creaseart.R;
+import com.app.creaseart.utils.AppConstant;
 import com.app.creaseart.utils.AppUtils;
 
 public class Splash extends AppCompatActivity {
@@ -25,7 +26,24 @@ public class Splash extends AppCompatActivity {
             @Override
             public void run() {
 
-                if (AppUtils.getUserId(getApplicationContext()).equalsIgnoreCase("")) {
+
+                if (AppUtils.getUserRole(getApplicationContext()).equalsIgnoreCase(AppConstant.PICKUPBOYTYPE)) {
+                    if (AppUtils.getUserId(getApplicationContext()).equalsIgnoreCase("")) {
+                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                        finish();
+                    }else {
+                        startActivity(new Intent(getApplicationContext(), ForgotPassword.class));
+                        finish();
+                    }
+                } else if (AppUtils.getUserRole(getApplicationContext()).equalsIgnoreCase(AppConstant.USERTYPE)) {
+                    startActivity(new Intent(getApplicationContext(), Dashboard.class));
+                    finish();
+                }else{
+                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                    finish();
+                }
+
+                /*if (AppUtils.getUserId(getApplicationContext()).equalsIgnoreCase("")) {
 
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(intent);
@@ -33,7 +51,7 @@ public class Splash extends AppCompatActivity {
                 } else {
                     Intent intent = new Intent(getApplicationContext(), Dashboard.class);
                     startActivity(intent);
-                    finish();}
+                    finish();}*/
             }
         }, 2000);
 

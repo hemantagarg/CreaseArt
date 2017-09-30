@@ -3,7 +3,6 @@ package com.app.creaseart.fragment;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,8 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-
 import com.app.creaseart.R;
+import com.app.creaseart.adapter.AdapterPickUpNewBookings;
 import com.app.creaseart.adapter.AdapterUserOngoingBookings;
 import com.app.creaseart.aynctask.CommonAsyncTaskHashmap;
 import com.app.creaseart.interfaces.ApiResponse;
@@ -31,11 +30,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 
-public class FragementUserOngoingBooking extends Fragment implements OnCustomItemClicListener, ApiResponse {
+public class FragementPickUpNewBooking extends Fragment implements OnCustomItemClicListener, ApiResponse {
 
     private RecyclerView recycler_service;
     private ArrayList<ModelCategory> arrayList;
-    private AdapterUserOngoingBookings adapterUserOngoingBookings;
+    private AdapterPickUpNewBookings adapterPickUpNewBookings;
     private Activity mActivity;
     private SwipeRefreshLayout swipeRefreshLayout;
     private String orderId="";
@@ -77,7 +76,7 @@ public class FragementUserOngoingBooking extends Fragment implements OnCustomIte
         swipeRefreshLayout.setRefreshing(true);
         if (AppUtils.isNetworkAvailable(mActivity)) {
 
-            String url = JsonApiHelper.BASEURL + JsonApiHelper.MYBOOKING + "user_id="+AppUtils.getUserId(mActivity);
+            String url = JsonApiHelper.BASEURL + JsonApiHelper.PICKUPBOYNEWLEAD + "user_id="+3;
             new CommonAsyncTaskHashmap(1, mActivity, this).getqueryNoProgress(url);
 
         } else {
@@ -91,7 +90,7 @@ public class FragementUserOngoingBooking extends Fragment implements OnCustomIte
 
         if (AppUtils.isNetworkAvailable(mActivity)) {
 
-            String url = JsonApiHelper.BASEURL + JsonApiHelper.MYBOOKING + "user_id="+AppUtils.getUserId(mActivity);
+            String url = JsonApiHelper.BASEURL + JsonApiHelper.PICKUPBOYNEWLEAD + "user_id="+3;
             new CommonAsyncTaskHashmap(1, mActivity, this).getqueryNoProgress(url);
 
         } else {
@@ -128,6 +127,36 @@ public class FragementUserOngoingBooking extends Fragment implements OnCustomIte
 
 
     }
+ private void showAcceptConfirmation(final String memberId) {
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                mActivity);
+
+        alertDialog.setTitle("Accept !");
+
+        alertDialog.setMessage("Are you sure you want to Accept service?");
+
+        alertDialog.setPositiveButton("YES",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        acceptservice(memberId);
+                    }
+
+                });
+
+        alertDialog.setNegativeButton("NO",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.cancel();
+                    }
+                });
+
+        alertDialog.show();
+
+
+    }
 
     @Override
     public void onItemClickListener(int position, int flag) {
@@ -135,13 +164,18 @@ public class FragementUserOngoingBooking extends Fragment implements OnCustomIte
 
             showDeleteConfirmation(arrayList.get(position).getOrderId());
         }
+        else if (flag == 12) {
+
+            showAcceptConfirmation(arrayList.get(position).getOrderId());
+        }
     }
+
 
     private void cancelService(String id) {
 
         if (AppUtils.isNetworkAvailable(mActivity)) {
 orderId=id;
-            String url = JsonApiHelper.BASEURL + JsonApiHelper.CANCELREQUEST + "user_id=" + AppUtils.getUserId(mActivity) + "&service_id=" + id;
+            String url = JsonApiHelper.BASEURL + JsonApiHelper.PICKUPBOYCANCELREQUEST + "user_id=" + AppUtils.getUserId(mActivity) + "&service_id=" + id;
             new CommonAsyncTaskHashmap(2, mActivity, this).getqueryNoProgress(url);
 
         } else {
@@ -149,6 +183,17 @@ orderId=id;
         }
     }
 
+    private void acceptservice(String id) {
+
+        if (AppUtils.isNetworkAvailable(mActivity)) {
+            orderId=id;
+            String url = JsonApiHelper.BASEURL + JsonApiHelper.PICKUPBOYACCEPTREQUEST + "user_id=" + AppUtils.getUserId(mActivity) + "&service_id=" + id;
+            new CommonAsyncTaskHashmap(2, mActivity, this).getqueryNoProgress(url);
+
+        } else {
+            Toast.makeText(mActivity, mActivity.getResources().getString(R.string.message_network_problem), Toast.LENGTH_SHORT).show();
+        }
+    }
 
     @Override
     public void onPostSuccess(int method, JSONObject response) {
@@ -176,6 +221,7 @@ orderId=id;
                         serviceDetail.setUserName(jo.getString("userName"));
                         serviceDetail.setUserImage(jo.getString("userImage"));
                         serviceDetail.setZone(jo.getString("Zone"));
+                        serviceDetail.setUserMobile(jo.getString("userMobile"));
 
 
                         // serviceDetail.setServicePrice(jo.getString("ServiceDate"));
@@ -183,16 +229,16 @@ orderId=id;
 
                         arrayList.add(serviceDetail);
                     }
-                    adapterUserOngoingBookings = new AdapterUserOngoingBookings(mActivity, FragementUserOngoingBooking.this, arrayList);
-                    recycler_service.setAdapter(adapterUserOngoingBookings);
+                    adapterPickUpNewBookings = new AdapterPickUpNewBookings(mActivity, FragementPickUpNewBooking.this, arrayList);
+                    recycler_service.setAdapter(adapterPickUpNewBookings);
                     if (swipeRefreshLayout != null) {
                         swipeRefreshLayout.setRefreshing(false);
                     }
 
                 } else {
                     arrayList.clear();
-                    if(adapterUserOngoingBookings!=null){
-                        adapterUserOngoingBookings.notifyDataSetChanged();
+                    if(adapterPickUpNewBookings!=null){
+                        adapterPickUpNewBookings.notifyDataSetChanged();
                     }
                     if (swipeRefreshLayout != null) {
                         swipeRefreshLayout.setRefreshing(false);

@@ -15,8 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-
 import com.app.creaseart.R;
+import com.app.creaseart.activities.LoginActivity;
+import com.app.creaseart.adapter.AdapterPickUpConvertedBookings;
 import com.app.creaseart.adapter.AdapterUserOngoingBookings;
 import com.app.creaseart.aynctask.CommonAsyncTaskHashmap;
 import com.app.creaseart.interfaces.ApiResponse;
@@ -31,11 +32,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 
-public class FragementUserOngoingBooking extends Fragment implements OnCustomItemClicListener, ApiResponse {
+public class FragementPickUpConvertedBooking extends Fragment implements OnCustomItemClicListener, ApiResponse {
 
     private RecyclerView recycler_service;
     private ArrayList<ModelCategory> arrayList;
-    private AdapterUserOngoingBookings adapterUserOngoingBookings;
+    private AdapterPickUpConvertedBookings adapterPickUpConvertedBookings;
     private Activity mActivity;
     private SwipeRefreshLayout swipeRefreshLayout;
     private String orderId="";
@@ -77,7 +78,7 @@ public class FragementUserOngoingBooking extends Fragment implements OnCustomIte
         swipeRefreshLayout.setRefreshing(true);
         if (AppUtils.isNetworkAvailable(mActivity)) {
 
-            String url = JsonApiHelper.BASEURL + JsonApiHelper.MYBOOKING + "user_id="+AppUtils.getUserId(mActivity);
+            String url = JsonApiHelper.BASEURL + JsonApiHelper.PICKUPBOYCONVERTEDLEAD + "user_id="+3;
             new CommonAsyncTaskHashmap(1, mActivity, this).getqueryNoProgress(url);
 
         } else {
@@ -91,63 +92,25 @@ public class FragementUserOngoingBooking extends Fragment implements OnCustomIte
 
         if (AppUtils.isNetworkAvailable(mActivity)) {
 
-            String url = JsonApiHelper.BASEURL + JsonApiHelper.MYBOOKING + "user_id="+AppUtils.getUserId(mActivity);
+            String url = JsonApiHelper.BASEURL + JsonApiHelper.PICKUPBOYCONVERTEDLEAD + "user_id="+3;
             new CommonAsyncTaskHashmap(1, mActivity, this).getqueryNoProgress(url);
 
         } else {
             Toast.makeText(mActivity, mActivity.getResources().getString(R.string.message_network_problem), Toast.LENGTH_SHORT).show();
         }
     }
-    private void showDeleteConfirmation(final String memberId) {
 
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(
-                mActivity);
-
-        alertDialog.setTitle("Delete !");
-
-        alertDialog.setMessage("Are you sure you want to cancel service?");
-
-        alertDialog.setPositiveButton("YES",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        cancelService(memberId);
-                    }
-
-                });
-
-        alertDialog.setNegativeButton("NO",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        dialog.cancel();
-                    }
-                });
-
-        alertDialog.show();
-
-
-    }
 
     @Override
     public void onItemClickListener(int position, int flag) {
         if (flag == 11) {
 
-            showDeleteConfirmation(arrayList.get(position).getOrderId());
+            Intent inte=new Intent(getContext(),LoginActivity.class);
+            startActivity(inte);
         }
     }
 
-    private void cancelService(String id) {
 
-        if (AppUtils.isNetworkAvailable(mActivity)) {
-orderId=id;
-            String url = JsonApiHelper.BASEURL + JsonApiHelper.CANCELREQUEST + "user_id=" + AppUtils.getUserId(mActivity) + "&service_id=" + id;
-            new CommonAsyncTaskHashmap(2, mActivity, this).getqueryNoProgress(url);
-
-        } else {
-            Toast.makeText(mActivity, mActivity.getResources().getString(R.string.message_network_problem), Toast.LENGTH_SHORT).show();
-        }
-    }
 
 
     @Override
@@ -176,6 +139,7 @@ orderId=id;
                         serviceDetail.setUserName(jo.getString("userName"));
                         serviceDetail.setUserImage(jo.getString("userImage"));
                         serviceDetail.setZone(jo.getString("Zone"));
+                        serviceDetail.setUserMobile(jo.getString("userMobile"));
 
 
                         // serviceDetail.setServicePrice(jo.getString("ServiceDate"));
@@ -183,16 +147,16 @@ orderId=id;
 
                         arrayList.add(serviceDetail);
                     }
-                    adapterUserOngoingBookings = new AdapterUserOngoingBookings(mActivity, FragementUserOngoingBooking.this, arrayList);
-                    recycler_service.setAdapter(adapterUserOngoingBookings);
+                    adapterPickUpConvertedBookings = new AdapterPickUpConvertedBookings(mActivity, FragementPickUpConvertedBooking.this, arrayList);
+                    recycler_service.setAdapter(adapterPickUpConvertedBookings);
                     if (swipeRefreshLayout != null) {
                         swipeRefreshLayout.setRefreshing(false);
                     }
 
                 } else {
                     arrayList.clear();
-                    if(adapterUserOngoingBookings!=null){
-                        adapterUserOngoingBookings.notifyDataSetChanged();
+                    if(adapterPickUpConvertedBookings!=null){
+                        adapterPickUpConvertedBookings.notifyDataSetChanged();
                     }
                     if (swipeRefreshLayout != null) {
                         swipeRefreshLayout.setRefreshing(false);
